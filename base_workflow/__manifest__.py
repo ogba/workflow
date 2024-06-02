@@ -12,7 +12,7 @@
     'company': 'Aztek computers',
     'maintainer': 'Aztek computers',
     'website': "https://www.aztekcomputers.com",
-    'depends': ['base', 'mail', 'hr','account','base_model_filters', 'base_validation_error_messages'],
+    'depends': ['base', 'mail', 'hr','account'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
