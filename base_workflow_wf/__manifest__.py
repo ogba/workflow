@@ -1,5 +1,5 @@
 {
-    'name': "Workflow",
+    'name': "Workflow Engine , Dynamic approval - process flow",
     'version': '17.0',
     'sequence': 1,
     'category': 'Asas/Administration',
