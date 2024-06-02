@@ -1,9 +1,10 @@
 {
-    'name': "11111",
+    'name': "workflow engine workflow approval SLA , Dynamic approvals Delegation delegate",
     'version': '17.0',
     'sequence': 1,
-    'summary': '2222',
-    'description': """3333
+    'summary': 'workflow engine  workflow Dynamic  approvals  Delegation of Approvals  SLA  Email notifications Dynamic Flexible Workflow  Approval Process Sequential Approvals',
+    'description': """workflow engine to automate all odoo process flow without code need , just do configuration
+    you can manage workflow  approvals  Delegation of Approvals  SLA  Email notifications Dynamic Flexible Workflow  Approval Process Sequential Approvals and many other condition
     """,
 
     'author': 'Aztek computers',
