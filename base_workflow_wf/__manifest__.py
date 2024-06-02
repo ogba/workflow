@@ -2,7 +2,6 @@
     'name': "Workflow",
     'version': '17.0',
     'sequence': 1,
-    'category': 'Asas/Administration',
     'summary': 'Manage dynamic workflow',
     'description': """ manage and automate sequential tasks or processes, improving efficiency and collaboration within a system or organization.
             It provides a structured framework for defining, executing, and monitoring workflows, 
