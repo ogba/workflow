@@ -8,7 +8,7 @@
             <field name="email_to">{{ctx['mail_to']}}</field>
             <field name="email_cc">{{ctx['mail_cc']}}</field>
             <field name="model_id"
-                   ref="base_workflow.model_workflow_approval_line"/>
+                   ref="base_workflow_wf.model_workflow_approval_line"/>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -138,7 +138,7 @@
             <field name="email_cc">{{ctx['mail_cc']}}
             </field>
             <field name="model_id"
-                   ref="base_workflow.model_workflow_approval_line"/>
+                   ref="base_workflow_wf.model_workflow_approval_line"/>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -260,7 +260,7 @@
             <field name="email_cc">{{ctx['mail_cc']}}
             </field>
             <field name="model_id"
-                   ref="base_workflow.model_workflow_approval_line"/>
+                   ref="base_workflow_wf.model_workflow_approval_line"/>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -382,7 +382,7 @@
             <field name="email_cc">{{ctx['mail_cc']}}
             </field>
             <field name="model_id"
-                   ref="base_workflow.model_workflow_approval_line"/>
+                   ref="base_workflow_wf.model_workflow_approval_line"/>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -482,7 +482,7 @@
             <field name="email_to">{{ctx['mail_to']}}</field>
             <field name="email_cc">{{ctx['mail_cc']}}</field>
             <field name="model_id"
-                   ref="base_workflow.model_workflow_approval_line"/>
+                   ref="base_workflow_wf.model_workflow_approval_line"/>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
@@ -604,7 +604,7 @@
             <field name="email_to">{{ctx['mail_to']}}</field>
             <field name="email_cc">{{ctx['mail_cc']}}</field>
             <field name="model_id"
-                   ref="base_workflow.model_workflow_approval_line"/>
+                   ref="base_workflow_wf.model_workflow_approval_line"/>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">

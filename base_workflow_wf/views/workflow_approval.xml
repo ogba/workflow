@@ -10,11 +10,11 @@
                         <field name="can_approve" invisible="1"/>
                         <button name="action_approve" string="Approve"
                                 class="btn btn-success"
-                                groups="base_workflow.group_workflow_user"
+                                groups="base_workflow_wf.group_workflow_user"
                                 invisible="not can_approve"
                                 type="object"/>
                         <button name="action_reject" string="Reject"
-                                groups="base_workflow.group_workflow_user"
+                                groups="base_workflow_wf.group_workflow_user"
                                 invisible="not can_approve"
                                 class="btn btn-danger" type="object"/>
 
@@ -140,13 +140,13 @@
         <menuitem name="All Approvals"
                   id="workflow_approval_menu"
                   action="workflow_approval_action"
-                  parent="base_workflow.workflow_menu"
+                  parent="base_workflow_wf.workflow_menu"
                   sequence="2"/>
 
         <record id="multi_approve_action" model="ir.actions.server">
             <field name="name">Approve</field>
-            <field name="model_id" ref="base_workflow.model_workflow_approval_line"/>
-            <field name="binding_model_id" ref="base_workflow.model_workflow_approval_line"/>
+            <field name="model_id" ref="base_workflow_wf.model_workflow_approval_line"/>
+            <field name="binding_model_id" ref="base_workflow_wf.model_workflow_approval_line"/>
             <field name="binding_view_types">list</field>
             <field name="state">code</field>
             <field name="code">
@@ -156,8 +156,8 @@
 
         <record id="multi_reject_action" model="ir.actions.server">
             <field name="name">Reject</field>
-            <field name="model_id" ref="base_workflow.model_workflow_approval_line"/>
-            <field name="binding_model_id" ref="base_workflow.model_workflow_approval_line"/>
+            <field name="model_id" ref="base_workflow_wf.model_workflow_approval_line"/>
+            <field name="binding_model_id" ref="base_workflow_wf.model_workflow_approval_line"/>
             <field name="binding_view_types">list</field>
             <field name="state">code</field>
             <field name="code">

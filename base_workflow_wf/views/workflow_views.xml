@@ -256,13 +256,13 @@
 
     <menuitem name="Workflow Engine"
               id="workflow_menu"
-              web_icon="base_workflow,static/description/icon_2.png"
-              groups="base_workflow.group_workflow_user"
+              web_icon="base_workflow_wf,static/description/icon_2.png"
+              groups="base_workflow_wf.group_workflow_user"
               sequence="50"/>
 
     <menuitem name="Workflow Template"
               id="workflow_template_menu"
               action="workflow_action"
-              parent="base_workflow.workflow_menu"
+              parent="base_workflow_wf.workflow_menu"
               sequence="1"/>
 </odoo>

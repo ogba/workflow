@@ -4,7 +4,7 @@
 
 		<record id="workflow_sla_escalation_cron" model="ir.cron">
             <field name="name">SLA Escalation</field>
-            <field name="model_id" ref="base_workflow.model_workflow_approval_line"/>
+            <field name="model_id" ref="base_workflow_wf.model_workflow_approval_line"/>
             <field name="state">code</field>
             <field name="code">model._cron_workflow_escalate()</field>
             <field name="interval_number">1</field>

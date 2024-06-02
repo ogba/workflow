@@ -7,8 +7,8 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app data-string="Workflow" string="Workflows" name="base_workflow"
-                     groups="base_workflow.group_workflow_user">
+                <app data-string="Workflow" string="Workflows" name="base_workflow_wf"
+                     groups="base_workflow_wf.group_workflow_user">
                     <block title="Workflow" name="workflow_setting_container">
                         <setting id="workflow-delegate" string="Workflow Delegate Domain"
                                  help="Select Delegate domain">
@@ -25,12 +25,12 @@
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
-        <field name="context">{'module' : 'base_workflow'}</field>
+        <field name="context">{'module' : 'base_workflow_wf'}</field>
     </record>
 
     <menuitem id="menu_workflow_config_configuration"
               name="Configuration"
-              parent="base_workflow.workflow_menu"
+              parent="base_workflow_wf.workflow_menu"
               sequence="99"
               groups="base.group_system"/>
 

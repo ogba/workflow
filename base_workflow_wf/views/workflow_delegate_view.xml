@@ -60,6 +60,6 @@
     <menuitem name="Workflow Delegates"
               id="workflow_delegate_menu"
               action="workflow_delegate_action"
-              parent="base_workflow.menu_workflow_config_configuration"
+              parent="base_workflow_wf.menu_workflow_config_configuration"
               sequence="2"/>
 </odoo>
