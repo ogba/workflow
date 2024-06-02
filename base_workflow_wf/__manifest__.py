@@ -1,12 +1,13 @@
 {
-    'name': "Workflow Engine , Dynamic approval - process flow",
+    'name': "Workflow approval , Dynamic approval - process flow approvals",
     'version': '17.0',
     'sequence': 1,
     'category': 'Asas/Administration',
     'summary': 'Manage dynamic workflow',
-    'description': """ manage and automate sequential tasks or processes, improving efficiency and collaboration within a system or organization.
-            It provides a structured framework for defining, executing, and monitoring workflows, 
-            ensuring smooth and streamlined operations.""",
+    'description': """workflow engine to automate all odoo process flow without code need , just do configuration
+    you can manage workflow , approvals , Delegation of Approvals, SLA , Email notifications Dynamic,Flexible Workflow, Approval Process,Sequential Approvals ,and many other condition
+    
+    """,
 
     'author': 'Aztek computers',
     'company': 'Aztek computers',
