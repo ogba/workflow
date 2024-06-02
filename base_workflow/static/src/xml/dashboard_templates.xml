@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <!-- This is a comment describing the workflow dashboard section -->
+    <t t-name="WFDashboard">
+        <div class="oh_dashboards"
+             style="margin-top: 20px; overflow-y: scroll;vertical-align: middle;overflow-x: clip;max-height: -webkit-fill-available;">
+            <div class="container-fluid my-5 o_hr_dashboard">
+                <t t-call="LoginUser"/>
+                <t t-call="Managercrm"/>
+                <t t-call="Admincrm"/>
+            </div>
+        </div>
+    </t>
+    <!-- This is a comment describing the LoginUser section -->
+    <t t-name="LoginUser">
+        <section class="dashboard_main_section" id="main_section_login">
+            <div class="row">
+                <div class="col-sm-12 mb-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-8">
+                            <h2 class="section-header">
+                            </h2>
+                        </div>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+        </section>
+    </t>
+    <!-- Manager CRM Section -->
+    <t t-name="Managercrm">
+        <section class="dashboard_main_section"
+                 id="main_section_manager">
+
+            <div class="crm_dash_cards row">
+                 <t t-foreach="card_wf_category" t-as="card" t-key="card">
+
+                        <div class="col-sm-12 col-md-3">
+                            <div class="dashboard-card card-shadow my_lead"
+                             t-on-click="(e) => this.my_lead(card[2])">
+                            <div class="dashboard-card__icon-container bg-mauve-light d-flex justify-content-center align-items-center" t-if="card[3] != 'upload'">
+                                <i class="fa fa-users text-mauve" t-if="card[3] == 'default'"/>
+                                <i t-att-class="'fa ' + card[4] + ' text-mauve'" t-if="card[3] == 'font_aws'"/>
+                            </div>
+                            <div class="dashboard-card__icon-container  d-flex justify-content-center align-items-center" t-if="card[3] == 'upload'">
+                                <img t-att-src="'data:image/png;base64,' + card[5]" t-if="card[3] == 'upload'" style="height: inherit;"/>
+
+                            </div>
+                            <div class="dashboard-card__details">
+                                <h3>
+                                    <span>
+                                        <t t-esc="card[1]" />
+                                    </span>
+                                </h3>
+
+                                <p>
+                                    <span>
+                                        <t t-esc="card[0]" />
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        </div>
+                 </t>
+                <div class="col-sm-12 col-md-3">
+                    <div class="dashboard-card card-shadow unassigned_leads"
+                         t-on-click="(e) => this.all_pending_request(e)">
+                        <div
+                                class="dashboard-card__icon-container bg-mauve-light d-flex justify-content-center align-items-center">
+                            <i class="fa fa-user-times text-mauve"/>
+                        </div>
+                        <div class="dashboard-card__details">
+                            <h3>
+                                <span>
+                                    <t t-esc="get_count_all_wf_request"/>
+                                </span>
+                            </h3>
+                            <p>Pending Request</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="funnel_chart_div col-sm-6 col-md-8">
+                     <div class="chart-container card-shadow">
+                        <h3>Approval List</h3>
+                        <hr/>
+                        <table class="table table-hover"
+                               id="workflow_approval_table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Request By</th>
+                                    <th>Start Date</th>
+                                    <th>Approve / Reject</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="top_workflow_to_approve"
+                                   t-as="activity" t-key="activity">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="activity[0]" />
+                                        </td>
+                                        <td>
+                                            <t t-esc="activity[1]"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="activity[3]"/>
+                                        </td>
+                                         <td>
+                                            <t t-esc="activity[2]"  widget="remaining_days"/>
+                                        </td>
+                                        <td>
+                                            <button  title="Approve" class="btn fa fa-check text-success"/>
+                                            <button  title="Reject"  class="btn fa fa-times-circle text-danger"/>
+                                            <button  title="View Request" t-on-click="(e) => this.my_approval_list(activity)" class="btn fa fa-folder-open-o"/>
+
+
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="chart-container card-shadow">
+                        <h3>Delayed / On time </h3>
+                        <hr/>
+                        <div class="graph_canvas">
+                            <canvas class="workflow_pie_chart" width="200"
+                                    height="120"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </t>
+    <!-- Admin CRM Section -->
+    <t t-name="Admincrm">
+    </t>
+</templates>

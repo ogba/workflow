@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="workflow_approval_line_view_form" model="ir.ui.view">
+            <field name="name">workflow.approval.line.view.form</field>
+            <field name="model">workflow.approval.line</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false" delete="false">
+                    <header>
+                        <field name="can_approve" invisible="1"/>
+                        <button name="action_approve" string="Approve"
+                                class="btn btn-success"
+                                groups="base_workflow.group_workflow_user"
+                                invisible="not can_approve"
+                                type="object"/>
+                        <button name="action_reject" string="Reject"
+                                groups="base_workflow.group_workflow_user"
+                                invisible="not can_approve"
+                                class="btn btn-danger" type="object"/>
+
+                        <div class="oe_button_box" name="button_box">
+                            <button name="open_request" type="object" class="oe_link" icon="fa-file-text-o">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Open Document</span>
+                                </div>
+                            </button>
+                        </div>
+                        <field name="status" widget="statusbar"
+                               class="oe_inline oe_right"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="res_id_record_name"/>
+                                <field name="name"/>
+                                <field name="user_id"/>
+                                <field name="approval_start_time"/>
+                                <field name="approval_end_time"/>
+                                <field name="sla_due_datetime"/>
+                                <field name="sla_reminder_datetime"/>
+                            </group>
+                            <group>
+                                <field name="sequence"/>
+                                <field name="required"/>
+                                <field name="create_date"/>
+                                <field name="write_date"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="eligible_user_ids" widget="many2many_tags"/>
+                            <field name="notify_user_ids" widget="many2many_tags"/>
+                            <field name="forward_user_ids" widget="many2many_tags" force_save="1"/>
+                            <field name="rmi_user_ids" widget="many2many_tags" force_save="1"/>
+                            <field name="delegated_user_ids" widget="many2many_tags"/>
+                            <field name="comment"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="workflow_approval_line_view_tree_grouped" model="ir.ui.view">
+            <field name="name">workflow.approval.line.view.tree</field>
+            <field name="model">workflow.approval.line</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="sequence"/>
+                    <field name="name"/>
+                    <field name="res_id_record_name"/>
+                    <field name="eligible_user_ids" widget="many2many_tags"/>
+                    <field name="res_model_id" optional="hide"/>
+                    <field name="workflow_id" optional="hide"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="approval_start_time" widget="remaining_days"/>
+                    <field name="approval_end_time"/>
+                    <field name="sla_due_datetime" widget="remaining_days"/>
+                    <field name="comment"/>
+                    <field name="status" widget="badge" decoration-success="status == 'approved'"
+                           decoration-info="status == 'pending'" decoration-danger="status == 'rejected'"/>
+                    <field name="can_approve" column_invisible="True"/>
+                    <button name="action_approve" string=" Approve "
+                            class="btn fa fa-check text-success"
+                            invisible="not can_approve"
+                            type="object"/>
+                    <button name="action_reject" string=" Reject "
+                            invisible="not can_approve"
+                            class="btn fa fa-times-circle text-danger"
+                             type="object"/>
+                    <button type="object" name="open_request"  class="btn fa fa-folder-open-o"
+                            title="View Request"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="workflow_approval_line_view_tree" model="ir.ui.view">
+            <field name="name">workflow.approval.line.view.tree</field>
+            <field name="model">workflow.approval.line</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="sequence"/>
+                    <field name="name"/>
+                    <field name="res_id_record_name"/>
+                    <field name="eligible_user_ids" widget="many2many_tags"/>
+                    <field name="res_model_id" optional="hide"/>
+                    <field name="workflow_id" optional="hide"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="approval_start_time" widget="remaining_days"/>
+                    <field name="approval_end_time"/>
+                    <field name="sla_due_datetime" widget="remaining_days"/>
+                    <field name="sla_reminder_datetime" widget="remaining_days"/>
+                    <field name="status" widget="badge" decoration-success="status == 'approved'"
+                           decoration-info="status == 'pending'" decoration-danger="status == 'rejected'"/>
+                    <field name="can_approve" column_invisible="True"/>
+                    <button name="action_approve" string=" Approve "
+                            class="btn fa fa-check text-success"
+                            invisible="not can_approve"
+                            type="object"/>
+                    <button name="action_reject" string=" Reject "
+                            invisible="not can_approve"
+                            class="btn fa fa-times-circle text-danger"
+                             type="object"/>
+                    <button type="object" name="open_request"  class="btn fa fa-folder-open-o"
+                            title="View Request"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="workflow_approval_action" model="ir.actions.act_window">
+            <field name="name">Workflow Approvals</field>
+            <field name="res_model">workflow.approval.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'group_by': ['workflow_id', 'res_id_record_name']}</field>
+            <field name="view_id" ref="workflow_approval_line_view_tree_grouped"/>
+        </record>
+
+        <menuitem name="All Approvals"
+                  id="workflow_approval_menu"
+                  action="workflow_approval_action"
+                  parent="base_workflow.workflow_menu"
+                  sequence="2"/>
+
+        <record id="multi_approve_action" model="ir.actions.server">
+            <field name="name">Approve</field>
+            <field name="model_id" ref="base_workflow.model_workflow_approval_line"/>
+            <field name="binding_model_id" ref="base_workflow.model_workflow_approval_line"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_approve_multi()
+            </field>
+        </record>
+
+        <record id="multi_reject_action" model="ir.actions.server">
+            <field name="name">Reject</field>
+            <field name="model_id" ref="base_workflow.model_workflow_approval_line"/>
+            <field name="binding_model_id" ref="base_workflow.model_workflow_approval_line"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_reject_multi()
+            </field>
+        </record>
+    </data>
+</odoo>

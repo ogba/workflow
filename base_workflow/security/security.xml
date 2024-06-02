@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+    <record id="group_workflow_user" model="res.groups">
+        <field name="name">Manage Workflow Templates</field>
+    </record>
+
+    <record id="res_workflow_rule" model="ir.rule">
+        <field name="name">Workflow multi company rule</field>
+        <field name="model_id" ref="model_res_workflow"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]
+        </field>
+    </record>
+    <record id="workflow_delegate_rule" model="ir.rule">
+        <field name="name">Workflow Delegate multi company rule</field>
+        <field name="model_id" ref="model_workflow_delegate"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+</odoo>

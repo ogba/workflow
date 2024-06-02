@@ -1,0 +1,35 @@
+<odoo>
+
+    <record id="forward_wizard_view_form" model="ir.ui.view">
+        <field name="name">Forward</field>
+        <field name="model">forward.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>Please select forward user before confirm.</h1>
+                    <group>
+                        <field name="user_ids" widget="many2many_tags"
+                               options="{'no_open': True, 'no_create': True}"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Confirm" class="btn-primary" name="action_confirm" type="object"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="forward_wizard_action" model="ir.actions.server">
+        <field name="name">Forward</field>
+        <field name="model_id" ref="base_workflow.model_workflow_approval_line"/>
+        <field name="binding_model_id" ref="base_workflow.model_workflow_approval_line"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.action_forward_multi()
+        </field>
+    </record>
+
+</odoo>

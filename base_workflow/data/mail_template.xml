@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="mail_template_workflow_approval_line_waiting"
+                model="mail.template">
+            <field name="name">Workflow Approval: Waiting Notification</field>
+            <field name="subject">{{ctx['mail_subject']}}</field>
+            <field name="email_to">{{ctx['mail_to']}}</field>
+            <field name="email_cc">{{ctx['mail_cc']}}</field>
+            <field name="model_id"
+                   ref="base_workflow.model_workflow_approval_line"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear <t t-out="ctx['line'].name or ''"></t>,
+                    </p>
+                    <br/>
+                    <p>This is request <t t-out="ctx['record'].name or ''"></t> that requires your
+                        approval.
+                    </p>
+                    <br/>
+                    <p t-if="ctx.get('access_link')">You can process the request in the following
+                        <a t-att-href="ctx['access_link']"
+                           style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px">
+                            <t>View</t>
+                        </a>
+                    </p>
+                    <div style="margin: 0px; padding: 0px;" t-if="ctx.get('request_name')">
+                        <table width="100%" style="font-size: 15px; border-collapse: collapse;">
+                            <tr style="border-bottom: 2px solid #dee2e6;color: #FFFFFF; text-decoration: none; background-color: #875A7B;">
+                                <td>
+                                    <center>
+                                        <strong>Request Details</strong>
+                                    </center>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%"
+                               style="color: #454748; font-size: 12px; border-collapse: collapse;">
+                            <tr style="background-color: #f2f2f2;font-size: 15px">
+                                <td colspan="4">
+                                </td>
+                                <td colspan="4">
+                                    <t t-if="ctx.get('request_name')">
+                                        <strong t-out="ctx['request_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Requester Name:
+                                    <t t-if="ctx.get('requester_name')">
+                                        <strong t-out="ctx['requester_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester code:
+                                    <t t-if="ctx.get('employee_pin')">
+                                        <strong t-out="ctx['employee_pin'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester Mobile:
+                                    <t t-if="ctx.get('employee_mobile')">
+                                        <strong t-out="ctx['employee_mobile'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Request Number:
+                                    <t t-if="ctx.get('request_number')">
+                                        <strong t-out="ctx['request_number'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Date:
+                                    <t t-if="ctx.get('request_date')">
+                                        <strong t-out="format_datetime(dt=ctx['request_date'], tz=mail_tz, dt_format='yyyy-MM-dd', lang_code=object.env.lang)"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Status:
+                                    <t t-if="ctx.get('request_state')">
+                                        <strong t-out="ctx['request_state'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Approval Stage:
+                                    <t t-if="object.name">
+                                        <strong t-out="object.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval User:
+                                    <t t-if="object.user_id">
+                                        <strong t-out="object.user_id.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval Status:
+                                    <t t-if="object.status">
+                                        <strong t-out="object.status"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <p>
+                        <em style="text-decoration: underline;">
+                            Disclaimer: Please do not reply to this mailbox;
+                            emails are not monitored.
+                            Alternatively please submit your issue via
+                        </em>
+                    </p>
+
+                    <p>
+                        Best Regards,
+                        <br/>
+                        <t t-out="ctx['mail_signature'] or ''"></t>
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ctx['record'].create_uid.lang}}</field>
+        </record>
+
+        <record id="mail_workflow_approval_line_done"
+                model="mail.template">
+            <field name="name">Workflow Approval: Done Notification</field>
+            <field name="subject">{{ctx['mail_subject']}}</field>
+            <field name="email_to">{{ctx['mail_to']}}</field>
+            <field name="email_cc">{{ctx['mail_cc']}}
+            </field>
+            <field name="model_id"
+                   ref="base_workflow.model_workflow_approval_line"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear <t t-out="ctx['line'].name or ''"></t>,
+                    </p>
+                    <br/>
+                    <p>This is request <t t-out="ctx['record'].name or ''"></t> is <strong
+                            t-out="object.status"></strong>.
+                    </p>
+                    <br/>
+                    <div style="margin: 0px; padding: 0px;" t-if="ctx.get('request_name')">
+                        <table width="100%" style="font-size: 15px; border-collapse: collapse;">
+                            <tr style="border-bottom: 2px solid #dee2e6;color: #FFFFFF; text-decoration: none; background-color: #875A7B;">
+                                <td>
+                                    <center>
+                                        <strong>Request Details</strong>
+                                    </center>
+
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%"
+                               style="color: #454748; font-size: 12px; border-collapse: collapse;">
+                            <tr style="background-color: #f2f2f2;font-size: 15px">
+                                <td colspan="4"></td>
+                                <td colspan="4">
+                                    <t t-if="ctx.get('request_name')">
+                                        <strong t-out="ctx['request_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Requester Name:
+                                    <t t-if="ctx.get('requester_name')">
+                                        <strong t-out="ctx['requester_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester code:
+                                    <t t-if="ctx.get('employee_pin')">
+                                        <strong t-out="ctx['employee_pin'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester Mobile:
+                                    <t t-if="ctx.get('employee_mobile')">
+                                        <strong t-out="ctx['employee_mobile'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Request Number:
+                                    <t t-if="ctx.get('request_number')">
+                                        <strong t-out="ctx['request_number'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Date:
+                                    <t t-if="ctx.get('request_date')">
+                                        <strong t-out="format_datetime(dt=ctx['request_date'], tz=mail_tz, dt_format='yyyy-MM-dd', lang_code=object.env.lang)"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Status:
+                                    <t t-if="ctx.get('request_state')">
+                                        <strong t-out="ctx['request_state'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Approval Stage:
+                                    <t t-if="object.name">
+                                        <strong t-out="object.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval User:
+                                    <t t-if="object.user_id">
+                                        <strong t-out="object.user_id.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval Status:
+                                    <t t-if="object.status">
+                                        <strong t-out="object.status"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <p>
+                        <em style="text-decoration: underline;">
+                            Disclaimer: Please do not reply to this mailbox;
+                            emails are not monitored.
+                            Alternatively please submit your issue via
+                        </em>
+                    </p>
+                    <p>
+                        Best Regards,
+                        <br/>
+                        <t t-out="ctx['mail_signature'] or ''"></t>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">{{ctx['record'].create_uid.lang}}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="mail_workflow_approval_line_notify_users"
+                model="mail.template">
+            <field name="name">Workflow Approval: Users Notification</field>
+            <field name="subject">{{ctx['mail_subject']}}</field>
+            <field name="email_to">{{ctx['mail_to']}}</field>
+            <field name="email_cc">{{ctx['mail_cc']}}
+            </field>
+            <field name="model_id"
+                   ref="base_workflow.model_workflow_approval_line"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear <t t-out="ctx['line'].name or ''"></t>,
+                    </p>
+                    <br/>
+                    <p>This is request <t t-out="ctx['record'].name or ''"></t> is <strong
+                            t-out="object.status"></strong>.
+                    </p>
+                    <br/>
+                    <div style="margin: 0px; padding: 0px;" t-if="ctx.get('request_name')">
+                        <table width="100%" style="font-size: 15px; border-collapse: collapse;">
+                            <tr style="border-bottom: 2px solid #dee2e6;color: #FFFFFF; text-decoration: none; background-color: #875A7B;">
+                                <td>
+                                    <center>
+                                        <strong>Request Details</strong>
+                                    </center>
+
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%"
+                               style="color: #454748; font-size: 12px; border-collapse: collapse;">
+                            <tr style="background-color: #f2f2f2;font-size: 15px">
+                                <td colspan="4"></td>
+                                <td colspan="4">
+                                    <t t-if="ctx.get('request_name')">
+                                        <strong t-out="ctx['request_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Requester Name:
+                                    <t t-if="ctx.get('requester_name')">
+                                        <strong t-out="ctx['requester_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester code:
+                                    <t t-if="ctx.get('employee_pin')">
+                                        <strong t-out="ctx['employee_pin'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester Mobile:
+                                    <t t-if="ctx.get('employee_mobile')">
+                                        <strong t-out="ctx['employee_mobile'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Request Number:
+                                    <t t-if="ctx.get('request_number')">
+                                        <strong t-out="ctx['request_number'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Date:
+                                    <t t-if="ctx.get('request_date')">
+                                        <strong t-out="format_datetime(dt=ctx['request_date'], tz=mail_tz, dt_format='yyyy-MM-dd', lang_code=object.env.lang)"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Status:
+                                    <t t-if="ctx.get('request_state')">
+                                        <strong t-out="ctx['request_state'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Approval Stage:
+                                    <t t-if="object.name">
+                                        <strong t-out="object.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval User:
+                                    <t t-if="object.user_id">
+                                        <strong t-out="object.user_id.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval Status:
+                                    <t t-if="object.status">
+                                        <strong t-out="object.status"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <p>
+                        <em style="text-decoration: underline;">
+                            Disclaimer: Please do not reply to this mailbox;
+                            emails are not monitored.
+                            Alternatively please submit your issue via
+                        </em>
+                    </p>
+                    <p>
+                        Best Regards,
+                        <br/>
+                        <t t-out="ctx['mail_signature'] or ''"></t>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">{{ctx['record'].create_uid.lang}}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="mail_workflow_notification_create"
+                model="mail.template">
+            <field name="name">Workflow Notification: New Request</field>
+            <field name="subject">{{ctx['mail_subject']}}</field>
+            <field name="email_to">{{ctx['mail_to']}}</field>
+            <field name="email_cc">{{ctx['mail_cc']}}
+            </field>
+            <field name="model_id"
+                   ref="base_workflow.model_workflow_approval_line"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dears,
+                    </p>
+                    <br/>
+                    <p>The request <t t-out="ctx['name'] or ''"></t> has been created.
+                    </p>
+                    <br/>
+                    <div style="margin: 0px; padding: 0px;" t-if="ctx.get('request_name')">
+                        <table width="100%" style="font-size: 15px; border-collapse: collapse;">
+                            <tr style="border-bottom: 2px solid #dee2e6;color: #FFFFFF; text-decoration: none; background-color: #875A7B;">
+                                <td>
+                                    <center>
+                                        <strong>Request Details</strong>
+                                    </center>
+
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%"
+                               style="color: #454748; font-size: 12px; border-collapse: collapse;">
+                            <tr style="background-color: #f2f2f2;font-size: 15px">
+                                <td colspan="4"></td>
+                                <td colspan="4">
+                                    <t t-if="ctx.get('request_name')">
+                                        <strong t-out="ctx['request_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Requester Name:
+                                    <t t-if="ctx.get('requester_name')">
+                                        <strong t-out="ctx['requester_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester code:
+                                    <t t-if="ctx.get('employee_pin')">
+                                        <strong t-out="ctx['employee_pin'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester Mobile:
+                                    <t t-if="ctx.get('employee_mobile')">
+                                        <strong t-out="ctx['employee_mobile'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Request Number:
+                                    <t t-if="ctx.get('request_number')">
+                                        <strong t-out="ctx['request_number'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Date:
+                                    <t t-if="ctx.get('request_date')">
+                                        <strong t-out="format_datetime(dt=ctx['request_date'], tz=mail_tz, dt_format='yyyy-MM-dd', lang_code=object.env.lang)"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Status:
+                                    <t t-if="ctx.get('request_state')">
+                                        <strong t-out="ctx['request_state'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <p>
+                        <em style="text-decoration: underline;">
+                            Disclaimer: Please do not reply to this mailbox;
+                            emails are not monitored.
+                            Alternatively please submit your issue via
+                        </em>
+                    </p>
+                    <p>
+                        Best Regards,
+                        <br/>
+                        <t t-out="ctx['mail_signature'] or ''"></t>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">{{user.lang}}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="mail_template_workflow_approval_sla_escalation"
+                model="mail.template">
+            <field name="name">Workflow Approval: SLA Escalation</field>
+            <field name="subject">{{ctx['mail_subject']}}</field>
+            <field name="email_to">{{ctx['mail_to']}}</field>
+            <field name="email_cc">{{ctx['mail_cc']}}</field>
+            <field name="model_id"
+                   ref="base_workflow.model_workflow_approval_line"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear,
+                    </p>
+                    <br/>
+                    <p>This is request <t t-out="ctx['record'].name or ''"></t> has been escalated for you.
+                    </p>
+                    <br/>
+                    <div style="margin: 0px; padding: 0px;" t-if="ctx.get('request_name')">
+                        <table width="100%" style="font-size: 15px; border-collapse: collapse;">
+                            <tr style="border-bottom: 2px solid #dee2e6;color: #FFFFFF; text-decoration: none; background-color: #875A7B;">
+                                <td>
+                                    <center>
+                                        <strong>Request Details</strong>
+                                    </center>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%"
+                               style="color: #454748; font-size: 12px; border-collapse: collapse;">
+                            <tr style="background-color: #f2f2f2;font-size: 15px">
+                                <td colspan="4">
+                                </td>
+                                <td colspan="4">
+                                    <t t-if="ctx.get('request_name')">
+                                        <strong t-out="ctx['request_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Requester Name:
+                                    <t t-if="ctx.get('requester_name')">
+                                        <strong t-out="ctx['requester_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester code:
+                                    <t t-if="ctx.get('employee_pin')">
+                                        <strong t-out="ctx['employee_pin'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester Mobile:
+                                    <t t-if="ctx.get('employee_mobile')">
+                                        <strong t-out="ctx['employee_mobile'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Request Number:
+                                    <t t-if="ctx.get('request_number')">
+                                        <strong t-out="ctx['request_number'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Date:
+                                    <t t-if="ctx.get('request_date')">
+                                        <strong t-out="format_datetime(dt=ctx['request_date'], tz=mail_tz, dt_format='yyyy-MM-dd', lang_code=object.env.lang)"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Status:
+                                    <t t-if="ctx.get('request_state')">
+                                        <strong t-out="ctx['request_state'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Approval Stage:
+                                    <t t-if="object.name">
+                                        <strong t-out="object.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval User:
+                                    <t t-if="object.user_id">
+                                        <strong t-out="object.user_id.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval Status:
+                                    <t t-if="object.status">
+                                        <strong t-out="object.status"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <p>
+                        <em style="text-decoration: underline;">
+                            Disclaimer: Please do not reply to this mailbox;
+                            emails are not monitored.
+                            Alternatively please submit your issue via
+                        </em>
+                    </p>
+
+                    <p>
+                        Best Regards,
+                        <br/>
+                        <t t-out="ctx['mail_signature'] or ''"></t>
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ctx['record'].create_uid.lang}}</field>
+        </record>
+
+        <record id="mail_template_workflow_approval_line_sla_reminder"
+                model="mail.template">
+            <field name="name">Workflow Approval: Reminder Notification</field>
+            <field name="subject">{{ctx['mail_subject']}}</field>
+            <field name="email_to">{{ctx['mail_to']}}</field>
+            <field name="email_cc">{{ctx['mail_cc']}}</field>
+            <field name="model_id"
+                   ref="base_workflow.model_workflow_approval_line"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear <t t-out="ctx['line'].name or ''"></t>,
+                    </p>
+                    <br/>
+                        Reminder !
+                    <br/>
+                    <p>This is request <t t-out="ctx['record'].name or ''"></t> that requires your
+                        approval.
+                    </p>
+                    <br/>
+                    <p t-if="ctx.get('access_link')">You can process the request in the following
+                        <a t-att-href="ctx['access_link']"
+                           style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px">
+                            <t>View</t>
+                        </a>
+                    </p>
+                    <div style="margin: 0px; padding: 0px;" t-if="ctx.get('request_name')">
+                        <table width="100%" style="font-size: 15px; border-collapse: collapse;">
+                            <tr style="border-bottom: 2px solid #dee2e6;color: #FFFFFF; text-decoration: none; background-color: #875A7B;">
+                                <td>
+                                    <center>
+                                        <strong>Request Details</strong>
+                                    </center>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%"
+                               style="color: #454748; font-size: 12px; border-collapse: collapse;">
+                            <tr style="background-color: #f2f2f2;font-size: 15px">
+                                <td colspan="4">
+                                </td>
+                                <td colspan="4">
+                                    <t t-if="ctx.get('request_name')">
+                                        <strong t-out="ctx['request_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Requester Name:
+                                    <t t-if="ctx.get('requester_name')">
+                                        <strong t-out="ctx['requester_name'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester code:
+                                    <t t-if="ctx.get('employee_pin')">
+                                        <strong t-out="ctx['employee_pin'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Requester Mobile:
+                                    <t t-if="ctx.get('employee_mobile')">
+                                        <strong t-out="ctx['employee_mobile'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Request Number:
+                                    <t t-if="ctx.get('request_number')">
+                                        <strong t-out="ctx['request_number'] or ''"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Date:
+                                    <t t-if="ctx.get('request_date')">
+                                        <strong t-out="format_datetime(dt=ctx['request_date'], tz=mail_tz, dt_format='yyyy-MM-dd', lang_code=object.env.lang)"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Request Status:
+                                    <t t-if="ctx.get('request_state')">
+                                        <strong t-out="ctx['request_state'] or ''"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f2f2f2">
+                                <td colspan="4">
+                                    Approval Stage:
+                                    <t t-if="object.name">
+                                        <strong t-out="object.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval User:
+                                    <t t-if="object.user_id">
+                                        <strong t-out="object.user_id.name"></strong>
+                                    </t>
+                                </td>
+                                <td colspan="4">
+                                    Approval Status:
+                                    <t t-if="object.status">
+                                        <strong t-out="object.status"></strong>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <p>
+                        <em style="text-decoration: underline;">
+                            Disclaimer: Please do not reply to this mailbox;
+                            emails are not monitored.
+                            Alternatively please submit your issue via
+                        </em>
+                    </p>
+
+                    <p>
+                        Best Regards,
+                        <br/>
+                        <t t-out="ctx['mail_signature'] or ''"></t>
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ctx['record'].create_uid.lang}}</field>
+        </record>
+
+
+    </data>
+</odoo>

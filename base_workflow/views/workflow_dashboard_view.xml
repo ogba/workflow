@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="workflow_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">workflow.dashboard.kanban</field>
+        <field name="model">res.workflow</field>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <kanban create="false" class="o_kanban_dashboard o_account_kanban"
+                    js_class="account.account_dashboard_kanban">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="res_model"/>
+                <field name="workflow_type"/>
+                <field name="show_on_dashboard"/>
+                <field name="company_id"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="d-flex flex-column flex-fill">
+                            <t t-call="WORKFLOWTop"/>
+                            <div t-att-class="'container o_kanban_card_content'">
+                                <div class="row">
+                                    <t t-call="WORKFLOWBody"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-name="WORKFLOWTop">
+                        <div t-attf-class="o_kanban_card_header">
+                            <div class="o_kanban_card_header_title">
+                                <div class="o_primary">
+                                    <a type="object" name="open_action">
+                                        <field name="name"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-name="kanban-menu">
+                        <div class="container">
+                            <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                <div class="col-8">
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+
+                            <div class="row o_kanban_card_manage_settings">
+                                <field name="show_on_dashboard" widget="boolean_favorite" class="col-6"/>
+                                <div class="col-6 text-end">
+                                    <a class="dropdown-item" t-if="widget.editable" type="edit">Configuration</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-name="WORKFLOWBody" id="base_workflow.WORKFLOWBody">
+                        <div class="col-12 col-sm-5 mb-3 mb-sm-0 o_kanban_primary_left">
+                            <t>
+                                <button type="object" name="action_create_new" class="btn btn-primary o_invoice_new">
+                                    <span>New Request</span>
+                                </button>
+                            </t>
+                        </div>
+                        <div class="col-12 col-sm-7 o_kanban_primary_right">
+                            <div class="row">
+                                <div class="col overflow-hidden text-start">
+                                    <a type="object" name="show_pending_approvals">
+                                        <span title="Pending Approval">
+                                            <field name="pending_count"/>
+                                            Pending
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="col-auto text-end">
+                                    <span>
+                                        <field name="approval_count"/>
+                                        Request
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col overflow-hidden text-start">
+                                    <a type="object" name="show_late_approvals">
+                                        <span title="Pending Approval">
+                                            <field name="late_count"/>
+                                            SLA Late
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="col-auto text-end">
+                                    <span>
+                                        <field name="approved_count"/>
+                                        Approved
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col overflow-hidden text-start">
+
+                                </div>
+                                <div class="col-auto text-end">
+                                    <span>
+                                        <field name="rejected_count"/>
+                                        Rejected
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="workflow_category_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">workflow.dashboard.kanban</field>
+        <field name="model">workflow.category</field>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <kanban create="false" class="o_kanban_dashboard o_account_kanban"
+                    js_class="account.account_dashboard_kanban">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="show_on_dashboard"/>
+                <field name="company_id"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="d-flex flex-column flex-fill">
+                            <t t-call="WORKFLOWTop"/>
+                            <div t-att-class="'container o_kanban_card_content'">
+                                <div class="row">
+                                    <t t-call="WORKFLOWBody"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-name="WORKFLOWTop">
+                        <div t-attf-class="o_kanban_card_header">
+                            <div class="o_kanban_card_header_title">
+                                <div class="o_primary">
+                                    <a type="object" name="open_action">
+                                        <field name="name"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-name="kanban-menu">
+                        <div class="container">
+                            <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                <div class="col-8">
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+
+                            <div class="row o_kanban_card_manage_settings">
+                                <field name="show_on_dashboard" widget="boolean_favorite" class="col-6"/>
+                                <div class="col-6 text-end">
+                                    <a class="dropdown-item" t-if="widget.editable" type="edit">Configuration</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-name="WORKFLOWBody" id="base_workflow.WORKFLOWBody">
+                        <div class="col-12 col-sm-7 o_kanban_primary_right">
+                            <div class="row">
+                                <div class="col overflow-hidden text-start">
+                                    <a type="object" name="show_pending_approvals">
+                                        <span title="Pending Approval">
+                                            <field name="pending_count"/>
+                                            Pending
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="open_workflow_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">res.workflow</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="workflow_dashboard_kanban_view"/>
+        <field name="usage">menu</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_neutral_face">
+                This is the workflow dashboard
+            </p>
+        </field>
+    </record>
+
+    <record id="open_workflow_category_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">workflow.category</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="workflow_category_dashboard_kanban_view"/>
+        <field name="usage">menu</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_neutral_face">
+                This is the workflow category dashboard
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="workflow_dashboard_menu" name="Dashboard" action="open_workflow_category_dashboard_kanban"
+              parent="workflow_menu" sequence="0"/>
+
+</odoo>

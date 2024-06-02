@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="workflow_delegate_from_view" model="ir.ui.view">
+        <field name="name">workflow.delegate.form</field>
+        <field name="model">workflow.delegate</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Reference"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name='employee_id' options="{'no_open': True, 'no_quick_create': True}"/>
+                            <field name='employee_replace_id' options="{'no_open': True, 'no_quick_create': True}"/>
+                        </group>
+                        <group>
+                            <label for="date_from" string="Delegate Duration"/>
+                            <div class="o_row">
+                                <field name="date_from" required="1"/>
+                                -
+                                <field name="date_to" required="1"/>
+                            </div>
+                            <field name="active" invisible="1"/>
+                            <field name='company_id' groups="base.group_multi_company"
+                                   options="{'no_open': True, 'no_quick_create': True}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="workflow_delegate_tree_view" model="ir.ui.view">
+        <field name="name">workflow.delegate.tree</field>
+        <field name="model">workflow.delegate</field>
+        <field name="arch" type="xml">
+            <tree string="Workflows">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="employee_replace_id"/>
+                <field name='company_id' groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="workflow_delegate_action" model="ir.actions.act_window">
+        <field name="name">Workflow Delegates</field>
+        <field name="res_model">workflow.delegate</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Workflow Delegates"
+              id="workflow_delegate_menu"
+              action="workflow_delegate_action"
+              parent="base_workflow.menu_workflow_config_configuration"
+              sequence="2"/>
+</odoo>

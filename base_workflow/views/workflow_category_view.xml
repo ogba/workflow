@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="workflow_category_from_view" model="ir.ui.view">
+        <field name="name">workflow.category.form</field>
+        <field name="model">workflow.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Name"/>
+                        <h1>
+                            <field name="name"/>
+                            <div>
+                                <field name="font_aws_icon" invisible="icon_type != 'font_aws'"/>
+                                <div class="btn fa fa-users" invisible="icon_type != 'default'"></div>
+                                <field name="card_icon" string="Icon" widget="image" invisible="icon_type != 'upload'"/>
+                             </div>
+
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="icon_type"/>
+                            <field name='parent_id' domain="[('id', '!=', id)]" options="{'no_open': True, 'no_quick_create': True}"/>
+                        </group>
+                        <group>
+                            <field name='company_id' groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="workflow_category_tree_view" model="ir.ui.view">
+        <field name="name">workflow.category.tree</field>
+        <field name="model">workflow.category</field>
+        <field name="arch" type="xml">
+            <tree string="Category">
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name='company_id' groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="workflow_category_action" model="ir.actions.act_window">
+        <field name="name">Workflow Category</field>
+        <field name="res_model">workflow.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Workflow Category"
+              id="workflow_category_menu"
+              action="workflow_category_action"
+              parent="menu_workflow_config_configuration"
+              sequence="1"/>
+</odoo>
