@@ -1,11 +1,9 @@
 {
-    'name': "Workflow Engine , Dynamic approval - process flow approvals",
+    'name': "11111",
     'version': '17.0',
     'sequence': 1,
-    'summary': 'workflow engine ,workflow Dynamic, approvals , Delegation of Approvals, SLA , Email notifications Dynamic,Flexible Workflow, Approval Process,Sequential Approvals',
-    'description': """workflow engine to automate all odoo process flow without code need , just do configuration
-    you can manage workflow , approvals , Delegation of Approvals, SLA , Email notifications Dynamic,Flexible Workflow, Approval Process,Sequential Approvals ,and many other condition
-    
+    'summary': '2222',
+    'description': """3333
     """,
 
     'author': 'Aztek computers',
