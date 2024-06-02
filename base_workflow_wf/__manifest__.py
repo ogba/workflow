@@ -1,8 +1,8 @@
 {
-    'name': "Workflow engine , Dynamic approval - process flow approvals",
+    'name': "Workflow Engine , Dynamic approval - process flow approvals",
     'version': '17.0',
     'sequence': 1,
-    'summary': 'workflow engine , approvals , Delegation of Approvals, SLA , Email notifications Dynamic,Flexible Workflow, Approval Process,Sequential Approvals',
+    'summary': 'workflow engine ,workflow Dynamic, approvals , Delegation of Approvals, SLA , Email notifications Dynamic,Flexible Workflow, Approval Process,Sequential Approvals',
     'description': """workflow engine to automate all odoo process flow without code need , just do configuration
     you can manage workflow , approvals , Delegation of Approvals, SLA , Email notifications Dynamic,Flexible Workflow, Approval Process,Sequential Approvals ,and many other condition
     
