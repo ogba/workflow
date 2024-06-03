@@ -1,11 +1,11 @@
 {
-    'name': "Workflow",
+    'name': "odoo workflow engine  approval SLA  Dynamic approvals employee Delegation ",
     'version': '17.0',
     'sequence': 1,
-    'summary': 'Manage dynamic workflow',
-    'description': """ manage and automate sequential tasks or processes, improving efficiency and collaboration within a system or organization.
-            It provides a structured framework for defining, executing, and monitoring workflows, 
-            ensuring smooth and streamlined operations.""",
+    'summary': 'workflow , workflow process , automation , base approve workflow mixin , workflow approval process ,odoo workflow engine , workflow approval process , workflow Dynamic , multi-level approval , process in odoo delegate Delegation of Approvals ,  SLA , workflow state , Workflow process ,  process Notifier , Email notifications , Dynamic Flexible Workflow , Approval Process , Sequential Approvals , Process flow , advanced statusbar',
+    'description': """workflow engine to automate all odoo process flow without code need , just do configuration
+    you can manage workflow  approvals  Delegation of Approvals  SLA  Email notifications Dynamic Flexible Workflow  Approval Process Sequential Approvals and many other condition
+    """,
 
     'author': 'Aztek computers',
     'company': 'Aztek computers',
