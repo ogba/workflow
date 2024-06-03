@@ -2,7 +2,7 @@
     'name': "odoo workflow engine  approval SLA  Dynamic approvals employee Delegation ",
     'version': '17.0',
     'sequence': 1,
-    'summary': 'odoo workflow engine  workflow Dynamic   approvals Approval Notification all process in odoo delegate Delegation of Approvals  SLA  approval Engine Notifier Email notifications Dynamic Flexible Workflow  Approval Process Sequential Approvals approval dynamic Process flow',
+    'summary': ' workflow , workflow process , odoo workflow engine , workflow approval process , workflow Dynamic , multi-level approval , process in odoo delegate Delegation of Approvals ,  SLA , workflow state , Workflow process ,  process Notifier , Email notifications , Dynamic Flexible Workflow , Approval Process , Sequential Approvals , Process flow , advanced statusbar',
     'description': """workflow engine to automate all odoo process flow without code need , just do configuration
     you can manage workflow  approvals  Delegation of Approvals  SLA  Email notifications Dynamic Flexible Workflow  Approval Process Sequential Approvals and many other condition
     """,
