@@ -99,7 +99,7 @@
                             <tbody>
                                 <t t-foreach="top_workflow_to_approve"
                                    t-as="activity" t-key="activity">
-                                    <tr>
+                                    <tr t-on-click="(e) => this.my_approval_list(activity)">
                                         <td>
                                             <t t-esc="activity[0]" />
                                         </td>
@@ -113,11 +113,7 @@
                                             <t t-esc="activity[2]"  widget="remaining_days"/>
                                         </td>
                                         <td>
-                                            <button  title="Approve" class="btn fa fa-check text-success"/>
-                                            <button  title="Reject"  class="btn fa fa-times-circle text-danger"/>
-                                            <button  title="View Request" t-on-click="(e) => this.my_approval_list(activity)" class="btn fa fa-folder-open-o"/>
-
-
+                                            <button  title="View Request"  class="btn fa fa-folder-open-o"/>
                                         </td>
                                     </tr>
                                 </t>

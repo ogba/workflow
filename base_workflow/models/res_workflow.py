@@ -29,6 +29,9 @@ class Workflow(models.Model):
     res_model = fields.Char("Model Name", compute='_compute_res_model',
                             store=True)
     category_id = fields.Many2one('workflow.category', string='Category', required=True, ondelete='cascade', tracking=True)
+    workflow_state = fields.Selection(
+        [('not_active', 'Not Active'), ('active', 'Active')],
+        default='not_active', string="State", tracking=True)
     workflow_type = fields.Selection(
         [('approval', 'Approval'), ('notify', 'Notification')],
         default='approval', string="Workflow Type", required=True, tracking=True)
@@ -37,7 +40,7 @@ class Workflow(models.Model):
     workflow_notify_type = fields.Selection([('group', 'Role'), ('user', 'User'), ('hierarchy', 'Hierarchy'),
                                              ('department', 'Department Manager'), ('filter', 'Domain Filter')],
                                             string="Notify Approval By", tracking=True)
-    action_ids = fields.One2many('workflow.action', 'workflow_id', string='Actions')
+    action_ids = fields.One2many('workflow.action', 'workflow_id', string='Actions',compute='')
     action_on_submit_ids = fields.Many2many('workflow.action', string='Action to be run on Submit',
                                             help='the method that be called when start workflow , Example : send to approve ')
     approve_method_name = fields.Many2one('workflow.action',string='Approve method', help="The approval method to be applied in the workflow approved")
@@ -74,17 +77,15 @@ class Workflow(models.Model):
     _sql_constraints = [
         ('uniq_name', 'unique(company_id, name)', _("Workflow name must be unique."))]
 
-    @api.model
+
+
+
     def create(self, vals):
         record = super(Workflow, self).create(vals)
         record.create_inherited_view()
         return record
 
-    def write(self, vals):
-        res = super(Workflow, self).write(vals)
-        if res:
-            self.create_inherited_view()
-        return res
+
 
     def _compute_dashboard_count(self):
         user = self.env.user
@@ -208,8 +209,8 @@ class Workflow(models.Model):
                     ''' % button_hide_xpath,
 
                 }).id
-
-        return True
+        if self.inherited_view_id:
+            self.workflow_state = 'active'
 
 
 
@@ -277,7 +278,8 @@ class Workflow(models.Model):
 
     def write(self, vals):
         """Override to prevent overriding workflow_type."""
-
+        if self.workflow_state == 'active' and any(field in vals for field in vals):
+            vals['workflow_state'] = 'not_active'
         if 'workflow_type' in vals:
             approvals = self.env["workflow.approval.line"].sudo().search_count([("workflow_id", "in", self.ids)])
             if vals['workflow_type'] == 'notify' and approvals > 0:
@@ -306,6 +308,11 @@ class WorkflowCondition(models.Model):
     model_domain = fields.Text(
         help="pyhton expression that returns True or False to determine whether the condition is valid or not.")
 
+    @api.constrains('condition_step_ids')
+    def _check_condition_step_ids(self):
+        for record in self:
+            if not record.condition_step_ids:
+                raise ValidationError(_("You must add at least one line in step  '  %s  ' in Conditions", record.name))
 
 class WorkflowStep(models.Model):
     _name = 'workflow.condition.step'
@@ -348,6 +355,7 @@ class WorkflowStep(models.Model):
     required = fields.Boolean("Required Stage", default=True)
     sla_id = fields.Many2one('workflow.sla', string='SLA')
 
+
     @api.constrains('type_hierarchy_level')
     def _check_hierarchy_level(self):
         for rec in self:
@@ -370,6 +378,9 @@ class WorkflowActions(models.Model):
     description = fields.Char('Description')
     required_comment = fields.Boolean(string='Required Comment', default=False)
     step_id = fields.Many2one('workflow.condition.step', string='Step', ondelete='cascade')
+
+
+
 
 
 class WorkflowMethodActions(models.Model):

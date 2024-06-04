@@ -288,9 +288,17 @@ class WorkflowApproval(models.AbstractModel):
         """Signal line rejection for children models use.
 
         To be implemented by inherited models."""
-        for method in line.step_line_id.method_action_ids.filtered(lambda x: x.type == 'reject'):
-            safe_eval(method.name)
+        for fun in line.step_line_id.method_action_ids.filtered(lambda x: x.type == 'reject'):
+            cxt = {
+                'object': self._name,
+                'env': self.env,
+                'record': self,
+            }
 
+            if fun.parameter:
+                self.call_function(self, fun.name, fun.parameter)
+            else:
+                self.call_function(self, self, fun.name)
     def action_approval_line_request_correction(self, line):
         """Signal line Request For Correction for children models use.
 
