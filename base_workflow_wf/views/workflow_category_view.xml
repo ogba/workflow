@@ -11,10 +11,10 @@
                         <h1>
                             <field name="name"/>
                             <div>
-                                <field name="font_aws_icon" invisible="icon_type != 'font_aws'"/>
-                                <div class="btn fa fa-users" invisible="icon_type != 'default'"></div>
+                                <field name="font_aws_icon"  placeholder="fa-money "  invisible="icon_type != 'font_aws'"/>
+
                                 <field name="card_icon" string="Icon" widget="image" invisible="icon_type != 'upload'"/>
-                             </div>
+                            </div>
 
                         </h1>
                     </div>
