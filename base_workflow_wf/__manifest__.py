@@ -1,0 +1,58 @@
+{
+    'name': "odoo workflow engine  approval SLA  Dynamic approvals employee Delegation ",
+    'version': '17.0',
+    'sequence': 1,
+    'summary': 'workflow , workflow process , automation , base approve workflow mixin , workflow approval process ,odoo workflow engine , workflow approval process , workflow Dynamic , multi-level approval , process in odoo delegate Delegation of Approvals ,  SLA , workflow state , Workflow process ,  process Notifier , Email notifications , Dynamic Flexible Workflow , Approval Process , Sequential Approvals , Process flow , advanced statusbar',
+    'description': """workflow engine to automate all odoo process flow without code need , just do configuration
+    you can manage workflow  approvals  Delegation of Approvals  SLA  Email notifications Dynamic Flexible Workflow  Approval Process Sequential Approvals and many other condition
+    """,
+
+    'author': 'Aztek computers',
+    'company': 'Aztek computers',
+    'maintainer': 'Aztek computers',
+    'website': "https://www.aztekcomputers.com",
+    'depends': ['base', 'mail', 'hr','account'],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'data/ir_sequence.xml',
+        'data/mail_template.xml',
+        'data/ir_cron.xml',
+        'wizards/approval_wizard_views.xml',
+        'wizards/forward_wizard_views.xml',
+        'views/workflow_views.xml',
+        'views/res_config_settings_views.xml',
+        'views/workflow_dashboard_views.xml',
+        'views/workflow_category_view.xml',
+        'views/workflow_dashboard_view.xml',
+        'views/workflow_delegate_view.xml',
+        'views/workflow_sla_view.xml',
+        'views/workflow_approval.xml',
+        'views/workflow_request_view.xml',
+    ],
+
+    'assets': {
+            'web.assets_backend': [
+                'base_workflow_wf/static/src/css/dashboard.css',
+                'base_workflow_wf/static/src/css/style.scss',
+                'base_workflow_wf/static/src/css/material-gauge.css',
+                'base_workflow_wf/static/src/js/workflow_dashboard.js',
+                'base_workflow_wf/static/src/js/lib/highcharts.js',
+                'base_workflow_wf/static/src/js/lib/Chart.bundle.js',
+                'base_workflow_wf/static/src/js/lib/funnel.js',
+                'base_workflow_wf/static/src/js/lib/d3.min.js',
+                'base_workflow_wf/static/src/js/lib/material-gauge.js',
+                'base_workflow_wf/static/src/js/lib/columnHeatmap.min.js',
+                'base_workflow_wf/static/src/js/lib/columnHeatmap.js',
+                'base_workflow_wf/static/src/xml/dashboard_templates.xml',
+            ],
+        },
+
+    'images': ['static/description/banner.png'],
+    'license': 'OPL-1',
+	'currency': 'EUR',
+	'price': '389',
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+}

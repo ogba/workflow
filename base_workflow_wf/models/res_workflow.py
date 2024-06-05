@@ -330,7 +330,7 @@ class WorkflowStep(models.Model):
     type_hierarchy_level = fields.Integer(default=1)
     filter_group_id = fields.Many2one('ir.model.filter', string='Filter')
     waiting_template_id = fields.Many2one("mail.template", string='Waiting Approval Template',
-                                         default= lambda self: self.env.ref('base_workflow.mail_template_workflow_approval_line_waiting').id,  domain="[('model', '=', 'workflow.approval.line')]")
+                                         default= lambda self: self.env.ref('base_workflow_wf.mail_template_workflow_approval_line_waiting').id,  domain="[('model', '=', 'workflow.approval.line')]")
     notify_type = fields.Selection([('group', 'Role'), ('user', 'User'), ('hierarchy', 'Hierarchy'),
                                     ('department', 'Department Manager'), ('filter', 'Domain Filter')],
                                    string="Notify Approval By")
@@ -341,7 +341,7 @@ class WorkflowStep(models.Model):
     notify_template_id = fields.Many2one("mail.template", string='Notify Template',
                                          domain="[('model', '=', 'workflow.approval.line')]")
     done_template_id = fields.Many2one("mail.template", string='Done Approval template',
-                                       default= lambda self: self.env.ref('base_workflow.mail_workflow_approval_line_done').id,domain="[('model', '=', 'workflow.approval.line')]")
+                                       default= lambda self: self.env.ref('base_workflow_wf.mail_workflow_approval_line_done').id,domain="[('model', '=', 'workflow.approval.line')]")
     method_action_ids = fields.One2many('workflow.step.action', 'step_id', string='Actions')
     required_field_ids = fields.Many2many('ir.model.fields', 'condition_required_field_rel', string='Required Fields',
                                           domain="[('model_id', '=', 'workflow.approval')]")

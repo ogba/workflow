@@ -53,7 +53,7 @@
                             </div>
                         </div>
                     </t>
-                    <t t-name="WORKFLOWBody" id="base_workflow.WORKFLOWBody">
+                    <t t-name="WORKFLOWBody" id="base_workflow_wf.WORKFLOWBody">
                         <div class="col-12 col-sm-5 mb-3 mb-sm-0 o_kanban_primary_left">
                             <t>
                                 <button type="object" name="action_create_new" class="btn btn-primary o_invoice_new">
@@ -162,7 +162,7 @@
                             </div>
                         </div>
                     </t>
-                    <t t-name="WORKFLOWBody" id="base_workflow.WORKFLOWBody">
+                    <t t-name="WORKFLOWBody" id="base_workflow_wf.WORKFLOWBody">
                         <div class="col-12 col-sm-7 o_kanban_primary_right">
                             <div class="row">
                                 <div class="col overflow-hidden text-start">

@@ -86,6 +86,6 @@
     <menuitem name="Workflow SLA"
               id="workflow_sla_menu"
               action="workflow_sla_action"
-              parent="base_workflow.menu_workflow_config_configuration"
+              parent="base_workflow_wf.menu_workflow_config_configuration"
               sequence="3"/>
 </odoo>

@@ -74,6 +74,6 @@
     <menuitem name="Requests"
               id="workflow_request_menu"
               action="workflow_request_action"
-              parent="base_workflow.workflow_menu"
+              parent="base_workflow_wf.workflow_menu"
               sequence="3"/>
 </odoo>

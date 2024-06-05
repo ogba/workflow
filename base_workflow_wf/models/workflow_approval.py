@@ -227,7 +227,7 @@ class WorkflowApproval(models.AbstractModel):
             'type': 'ir.actions.act_window',
             'name': _("Approvals"),
             'res_model': 'workflow.approval.line',
-            'views':  [(self.env.ref('base_workflow.workflow_approval_line_view_tree_grouped').id,'tree')],
+            'views':  [(self.env.ref('base_workflow_wf.workflow_approval_line_view_tree_grouped').id,'tree')],
             'domain': [('res_model', '=', self._name),
                        ('res_id', '=', self.id)],
 
@@ -337,7 +337,7 @@ class WorkflowApproval(models.AbstractModel):
     def action_approval_wizard(self):
         """Store overall approval status as rejected."""
         self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow.approval_wizard_action")
+        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow_wf.approval_wizard_action")
         action['context'] = dict(self.env.context)
         action['context']['default_reference'] = self.name
         action['context']['default_model_name'] = self._name
@@ -349,7 +349,7 @@ class WorkflowApproval(models.AbstractModel):
     def action_reject_wizard(self):
         """Store overall approval status as rejected."""
         self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow.approval_wizard_action")
+        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow_wf.approval_wizard_action")
         action['context'] = dict(self.env.context)
         action['context']['default_reference'] = self.name
         action['context']['default_model_name'] = self._name
@@ -362,7 +362,7 @@ class WorkflowApproval(models.AbstractModel):
     def action_rfc_wizard(self):
         """Store overall approval status as Request For Correction."""
         self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow.approval_wizard_action")
+        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow_wf.approval_wizard_action")
         approvals = self.env['workflow.approval.line'].search([
             ('res_model', '=', self._name),
             ('res_id', '=', self.id), ('status', '=', 'approved')])
@@ -379,7 +379,7 @@ class WorkflowApproval(models.AbstractModel):
     def action_rmi_wizard(self):
         """Store overall approval status as Request More Information."""
         self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow.approval_wizard_action")
+        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow_wf.approval_wizard_action")
         action['context'] = dict(self.env.context)
         action['context']['default_reference'] = self.name
         action['context']['default_model_name'] = self._name
@@ -391,7 +391,7 @@ class WorkflowApproval(models.AbstractModel):
     def action_forward_wizard(self):
         """Store overall approval status as Forward."""
         self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow.approval_wizard_action")
+        action = self.env["ir.actions.actions"]._for_xml_id("base_workflow_wf.approval_wizard_action")
         action['context'] = dict(self.env.context)
         action['context']['default_reference'] = self.name
         action['context']['default_model_name'] = self._name
@@ -429,12 +429,12 @@ class WorkflowApproval(models.AbstractModel):
         if not mail_to:
             return False
         ctx.update(mail_to=mail_to)
-        template = line.step_line_id.done_template_id or self.env.ref('base_workflow.mail_workflow_approval_line_done')
+        template = line.step_line_id.done_template_id or self.env.ref('base_workflow_wf.mail_workflow_approval_line_done')
         if action == 'waiting':
             ctx.update(mail_subject=("%s , %s is waiting for your "
                                      "approval") % (self._description, self.name))
             template = line.step_line_id.waiting_template_id or self.env.ref(
-                'base_workflow'
+                'base_workflow_wf'
                 '.mail_template_workflow_approval_line_waiting'
             )
             # record last notification date for reminders
@@ -485,7 +485,7 @@ class WorkflowApproval(models.AbstractModel):
             return False
         ctx.update(mail_to=mail_to)
         template = line.step_line_id.notify_template_id or self.env.ref(
-            'base_workflow.mail_workflow_approval_line_notify_users')
+            'base_workflow_wf.mail_workflow_approval_line_notify_users')
         # obtain link for the current record
         if not ctx.get('access_link') \
                 and hasattr(self, '_notify_get_action_link'):
@@ -554,7 +554,7 @@ class WorkflowApproval(models.AbstractModel):
             return False
         ctx.update(mail_to=mail_to)
         template = template_id.notify_template_id or self.env.ref(
-            'base_workflow.mail_workflow_notification_create')
+            'base_workflow_wf.mail_workflow_notification_create')
         vals = {
             'subject': mail_subject,
             'body_html': template.body_html,
@@ -595,7 +595,7 @@ class WorkflowApproval(models.AbstractModel):
             return False
         ctx.update(mail_to=mail_to)
         template = line.step_line_id.notify_template_id or self.env.ref(
-            'base_workflow.mail_template_workflow_approval_sla_escalation')
+            'base_workflow_wf.mail_template_workflow_approval_sla_escalation')
         # obtain link for the current record
         if not ctx.get('access_link') \
                 and hasattr(self, '_notify_get_action_link'):
@@ -634,7 +634,7 @@ class WorkflowApproval(models.AbstractModel):
             return False
         ctx.update(mail_to=mail_to)
         template = line.step_line_id.notify_template_id or self.env.ref(
-            'base_workflow.mail_template_workflow_approval_line_sla_reminder')
+            'base_workflow_wf.mail_template_workflow_approval_line_sla_reminder')
         # obtain link for the current record
         if not ctx.get('access_link') \
                 and hasattr(self, '_notify_get_action_link'):
@@ -935,7 +935,7 @@ class WorkflowApprovalLine(models.Model):
     def action_approve(self):
         """Switch this stage to approved status."""
         for line in self:
-            if not line.can_approve and not (self.env.user.has_group('base_workflow.group_workflow_user')):
+            if not line.can_approve and not (self.env.user.has_group('base_workflow_wf.group_workflow_user')):
                 raise UserError(_("You can't approve the request at this "
                                   "stage."))
 
@@ -967,7 +967,7 @@ class WorkflowApprovalLine(models.Model):
     def action_reject(self):
         """Switch this stage to rejected status."""
         for line in self:
-            if not line.can_approve and not (self.env.user.has_group('base_workflow.group_workflow_user')):
+            if not line.can_approve and not (self.env.user.has_group('base_workflow_wf.group_workflow_user')):
                 raise UserError(_("You can't reject the request at this "
                                   "stage."))
             line.status = 'rejected'
@@ -1025,7 +1025,7 @@ class WorkflowApprovalLine(models.Model):
     def action_request_forward(self):
         """Add Forward to line."""
         for line in self:
-            if not line.can_approve and not (self.env.user.has_group('base_workflow.group_workflow_user')):
+            if not line.can_approve and not (self.env.user.has_group('base_workflow_wf.group_workflow_user')):
                 raise UserError(_("You can't Forward the request at this "
                                   "stage."))
             line.forward_user_ids = self.env.context.get('user_ids', False)
