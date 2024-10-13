@@ -51,7 +51,7 @@
     'images': ['static/description/banner.png'],
     'license': 'OPL-1',
 	'currency': 'EUR',
-	'price': '389',
+	'price': '100',
     'installable': True,
     'auto_install': False,
     'application': True,
