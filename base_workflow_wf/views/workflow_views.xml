@@ -92,7 +92,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="create_inherited_view" type="object" string="Update View"></button>
+                    <button name="create_inherited_view" type="object" string="Set to Active"  invisible="workflow_state == 'active'"/>
+                    <field name="workflow_state" widget="statusbar"/>
+
                 </header>
                 <sheet>
                     <div class="oe_title">
