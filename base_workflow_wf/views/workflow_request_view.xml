@@ -7,25 +7,15 @@
             <form>
                 <header>
 
-
+                <field name="status" widget="statusbar"
+                               class="oe_inline oe_right"/>
+                <button name="approve" type="object" string="Approve request"  invisible="status == 'approved'"/>
+                <button name="approve" type="object" string="Approve request2"  invisible="status == 'approved'"/>
+                <button name="approve" type="object" string="Approve request3"  invisible="status == 'approved'"/>
+                <button name="reject" type="object" string="Reject request" class="btn btn-danger" invisible="status == 'rejected'"/>
 
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <field name="approval_template_id" invisible="1"/>
-                        <button name="action_open_approvals" type="object"
-                                class="oe_stat_button" icon="fa-lock"
-                                invisible="not approval_template_id"
-                                help="Approval Status: click to open list of approvals.">
-                            <div class="o_form_field o_stat_info">
-                                <span class="o_stat_text">
-                                    <field name="approvals_done"/>
-                                    <span>/</span>
-                                    <field name="approvals_count"/>
-                                </span>
-                            </div>
-                        </button>
-                    </div>
                     <div class="oe_title">
                         <label for="name" string="Reference"/>
                         <h1>

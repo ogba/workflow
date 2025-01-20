@@ -26,8 +26,22 @@ class WorkflowRequest(models.Model):
     date = fields.Date(default=lambda self: fields.Date.context_today(self))
     description = fields.Html()
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.user.company_id)
+    status = fields.Selection(
+        [('draft', 'Draft'), ('pending', 'In progress'),
+         ('approved', 'Approved'),
+         ('rejected', 'Rejected')],
+        "Approval Status",
+        default='draft',
+        readonly=True,
+        Tracking=True,
+        copy=False
+    )
 
+    def approve(self):
+        self.status ='approved'
 
+    def reject(self):
+        self.status ='rejected'
     # Create a new view that inherits from the base view
 
     @api.model_create_multi

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="workflow_category_human_resource" model="workflow.category">
+            <field name="name">Human Resource</field>
+            <field name="icon_type">upload</field>
+            <field name="card_icon" type="base64" file="base_workflow_wf/static/src/img/employee.png"/>
+        </record>
+        <record id="workflow_category_leave_request" model="workflow.category">
+            <field name="name">Leave Request</field>
+            <field name="icon_type">upload</field>
+            <field name="card_icon" type="base64" file="base_workflow_wf/static/src/img/leave_icon.png"/>
+        </record>
+        <record id="workflow_category_general_request" model="workflow.category">
+            <field name="name">General Request</field>
+            <field name="icon_type">upload</field>
+            <field name="card_icon" type="base64" file="base_workflow_wf/static/src/img/general.png"/>
+        </record>
+
+    </data>
+</odoo>

@@ -41,7 +41,9 @@ class Workflow(models.Model):
                                              ('department', 'Department Manager'), ('filter', 'Domain Filter')],
                                             string="Notify Approval By", tracking=True)
     action_ids = fields.One2many('workflow.action', 'workflow_id', string='Actions',compute='')
-    action_on_submit_ids = fields.Many2many('workflow.action', string='Action to be run on Submit',
+    action_to_hide_ids = fields.Many2many('workflow.action', string='Button to hide',
+                                            help='the button to hide in model that no more needs to be shown')
+    action_on_submit_name = fields.Many2one('workflow.action', string='Action to be run on Submit',
                                             help='the method that be called when start workflow , Example : send to approve ')
     approve_method_name = fields.Many2one('workflow.action',string='Approve method', help="The approval method to be applied in the workflow approved")
     reject_method_name = fields.Many2one('workflow.action', string='Reject method',help="The method that will be called when the workflow is rejected by user")
@@ -53,7 +55,7 @@ class Workflow(models.Model):
     notify_user_ids = fields.Many2many('res.users', 'workflow_notify_users_rel', string='Notify Users', tracking=True)
     notify_group_ids = fields.Many2many('res.groups', 'workflow_notify_group_rel', string='Notify Roles', tracking=True)
     notify_hierarchy_level = fields.Integer(default=1, tracking=True)
-    notify_filter_group_id = fields.Many2one('ir.model.filter', string='Notify Filter', tracking=True)
+    notify_filter_group_id = fields.Many2one('ir.model.access', string='Notify Filter', tracking=True)
     condition_ids = fields.One2many('workflow.condition', 'workflow_id', tracking=True)
     step_ids = fields.One2many('workflow.condition.step', 'workflow_id', tracking=True)
     active = fields.Boolean(string='Active', default=True, tracking=True)
@@ -66,7 +68,7 @@ class Workflow(models.Model):
     color = fields.Integer("Color Index", default=0)
     view_to_inherit_id = fields.Many2one('ir.ui.view',domain="[('model','=',res_model),('type','=','form')]",
                                          string='View to add Inherit',)
-    inherited_view_id = fields.Many2one('ir.ui.view', string='Inherited view',store=True)
+    inherited_view_id = fields.Many2one('ir.ui.view', string='New workflow view',store=True)
     approval_count = fields.Integer()
     pending_count = fields.Integer(compute='_compute_dashboard_count')
     late_count = fields.Integer(compute='_compute_dashboard_count')
@@ -146,16 +148,40 @@ class Workflow(models.Model):
             ])
 
         return button_hide_xpath
+
+    def deactivate_workflow(self):
+        # Check if the inherited view exists
+        if self.inherited_view_id:
+            # Remove the inherited view
+            self.inherited_view_id.unlink()
+            # Optionally, you may need to restore specific fields or buttons manually
+            base_view = self.env.ref(self.view_to_inherit_id.xml_id)
+
+            # Invalidate the cache for views in Odoo 17
+            self.env['ir.ui.view'].clear_caches()
+
+            # Commit the transaction to ensure the changes are applied
+            self.env.cr.commit()  # Commit the database transaction
+
+            # Reset inherited view ID and workflow state
+            self.inherited_view_id = False
+            self.workflow_state = 'not_active'
+
+            # Manually trigger a view update if necessary
+            # This will force the view to refresh, ensuring the inherited changes are cleared
+            base_view.arch = base_view.arch  # Reassign to force refres
+
     def create_inherited_view(self):
         # remove the view
         self.env['ir.ui.view'].sudo().search([('id','=',self.inherited_view_id.id)]).unlink()
 
         view = self.env['ir.ui.view']
         base_view = self.env.ref(self.view_to_inherit_id.xml_id)
-        button_to_hide = [button for button in [self.approve_method_name.name,self.reject_method_name.name]if button]
+        button_to_hide_from_user = self.action_to_hide_ids.mapped('name')
+        button_to_hide = [button for button in [self.approve_method_name.name,self.reject_method_name.name,self.redraft_method_name.name]if button]
+        button_to_hide_combined = button_to_hide + button_to_hide_from_user
 
-        button_hide_xpath = self.xpath_button_hide(button_to_hide)
-
+        button_hide_xpath = self.xpath_button_hide(button_to_hide_combined)
         self.inherited_view_id = view.create({
             'name': 'Inherited View',
             'type': 'form',
@@ -165,34 +191,18 @@ class Workflow(models.Model):
                 '''
                 <data>
                         <xpath expr="//header" position="inside">
-                        <field name="approval_status" invisible="1"/>
-                            <button name="action_submit" type="object" string="Submit" class="oe_highlight"
-                                invisible="approval_status != 'draft'"/>
+                            <field name="approval_status" invisible="1"/>
+                            <button name="action_submit" type="object" string="Submit" class="oe_highlight" invisible="approval_status != 'draft'"/>
                             <field name="approval_next_line_ids" invisible="1"/>
-                            <button name="action_approval_wizard" string="Approve"
-                                class="btn btn-success"
-                                invisible="not approval_next_line_ids"
-                                type="object"/>
-                            <button name="action_reject_wizard" string="Reject"
-                                invisible="not approval_next_line_ids"
-                                class="btn btn-danger" type="object"/>
-                            <button name="action_rfc_wizard" string="Return For Correction"
-                                invisible="not approval_next_line_ids"
-                                class="oe_highlight oe_inline" type="object"/>
-                            <button name="action_rmi_wizard" string="Request More Information"
-                                invisible="not approval_next_line_ids"
-                                class="oe_highlight oe_inline" type="object"/>
-                            <button name="action_forward_wizard" string="Forward"
-                                invisible="not approval_next_line_ids"
-                                class="oe_highlight oe_inline" type="object"/>
+                            <button name="action_approval_wizard" string="Approve" class="btn btn-success" invisible="not approval_next_line_ids" type="object"/>
+                            <button name="action_reject_wizard" string="Reject" invisible="not approval_next_line_ids" class="btn btn-danger" type="object"/>
+                            <button name="action_rfc_wizard" string="Return For Correction" invisible="not approval_next_line_ids" class="oe_highlight oe_inline" type="object"/>
+                            <button name="action_rmi_wizard" string="Request More Information" invisible="not approval_next_line_ids" class="oe_highlight oe_inline" type="object"/>
+                            <button name="action_forward_wizard" string="Forward" invisible="not approval_next_line_ids" class="oe_highlight oe_inline" type="object"/>
                             
-        
                             <div class="oe_button_box" name="button_box">
                                 <field name="approval_template_id" invisible="1"/>
-                                <button name="action_open_approvals" type="object"
-                                    class="oe_stat_button" icon="fa-lock"
-                                    invisible="not approval_template_id"
-                                    help="Approval Status: click to open list of approvals.">
+                                <button name="action_open_approvals" type="object" class="oe_stat_button" icon="fa-lock" invisible="not approval_template_id" help="Approval Status: click to open list of approvals.">
                                     <div class="o_form_field o_stat_info">
                                         <span class="o_stat_text">
                                             <field name="approvals_done"/>
@@ -201,7 +211,6 @@ class Workflow(models.Model):
                                         </span>
                                     </div>
                                 </button>
-                               
                             </div>
                         </xpath>
                          %s
@@ -328,7 +337,7 @@ class WorkflowStep(models.Model):
     type_user_ids = fields.Many2many('res.users', 'condition_users_rel', string='Users')
     type_group_ids = fields.Many2many('res.groups', 'condition_type_group_rel', string='Roles')
     type_hierarchy_level = fields.Integer(default=1)
-    filter_group_id = fields.Many2one('ir.model.filter', string='Filter')
+    filter_group_id = fields.Many2one('ir.model.access', string='Filter')
     waiting_template_id = fields.Many2one("mail.template", string='Waiting Approval Template',
                                          default= lambda self: self.env.ref('base_workflow_wf.mail_template_workflow_approval_line_waiting').id,  domain="[('model', '=', 'workflow.approval.line')]")
     notify_type = fields.Selection([('group', 'Role'), ('user', 'User'), ('hierarchy', 'Hierarchy'),
@@ -337,7 +346,7 @@ class WorkflowStep(models.Model):
     notify_user_ids = fields.Many2many('res.users', 'notify_users_rel', string='Notify Users')
     notify_group_ids = fields.Many2many('res.groups', 'condition_notify_group_rel', string='Notify Roles')
     notify_hierarchy_level = fields.Integer(default=1)
-    notify_filter_group_id = fields.Many2one('ir.model.filter', string='Notify Filter')
+    notify_filter_group_id = fields.Many2one('ir.model.access', string='Notify Filter')
     notify_template_id = fields.Many2one("mail.template", string='Notify Template',
                                          domain="[('model', '=', 'workflow.approval.line')]")
     done_template_id = fields.Many2one("mail.template", string='Done Approval template',

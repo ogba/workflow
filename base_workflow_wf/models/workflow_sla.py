@@ -54,6 +54,6 @@ class SLAProperty(models.Model):
                                     ('escalate_group', 'Escalate to Group'),
                                     ('escalate_filter', 'Escalate to User Filter')], default='skip', required=True)
     sla_id = fields.Many2one('workflow.sla', string='SLA')
-    filter_group_id = fields.Many2one('ir.model.filter', string='Domain Filter')
+    filter_group_id = fields.Many2one('ir.model.access', string='Domain Filter')
     group_id = fields.Many2one('res.groups', string='group to take action')
     hierarchy_level = fields.Integer(default=1)
