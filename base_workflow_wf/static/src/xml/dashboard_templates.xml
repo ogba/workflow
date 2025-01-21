@@ -93,7 +93,7 @@
                                     <th>Description</th>
                                     <th>Request By</th>
                                     <th>Start Date</th>
-                                    <th>Approve / Reject</th>
+                                    <th>Show Item</th>
                                 </tr>
                             </thead>
                             <tbody>
