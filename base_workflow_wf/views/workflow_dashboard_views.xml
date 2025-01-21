@@ -6,6 +6,6 @@
         <field name="tag">workflow_dashboard</field>
     </record>
     <menuitem name="My Approval" id="workflow_dashboard_menu_custom"
-              web_icon="base_workflow,static/description/icon.png"
+              web_icon="base_workflow_wf,static/description/icon.png"
               sequence="0" action="action_all_dashboard"/>
 </odoo>

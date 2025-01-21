@@ -22,39 +22,41 @@
                         <group string="Approval Users">
                             <field name="type"/>
                             <field name="type_user_ids" widget="many2many_tags"
-                                   options="{'no_open': True, 'no_create': True}"
-                                   invisible="type != 'user'"
-                                   required="type == 'user'"/>
+                                options="{'no_open': True, 'no_create': True}"
+                                attrs="{'invisible': [('type', '!=', 'user')], 'required': [('type', '=', 'user')]}"/>
                             <field name="type_group_ids" widget="many2many_tags"
-                                   options="{'no_open': True, 'no_create': True}"
-                                   invisible="type != 'group'"
-                                   required="type == 'group'"/>
+                                options="{'no_open': True, 'no_create': True}"
+                                attrs="{'invisible': [('type', '!=', 'group')], 'required': [('type', '=', 'group')]}"/>
                             <field name="type_hierarchy_level"
-                                   invisible="type != 'hierarchy'"/>
+                                attrs="{'invisible': [('type', '!=', 'hierarchy')]}"/>
+                            
+
                             <field name="filter_group_id"
-                                   invisible="type != 'filter'"
-                                   domain="[('model_name', '=', model_name)]"/>
+                                attrs="{'invisible': [('type', '!=', 'filter')]}"/>
                             <field name="waiting_template_id"  options="{'no_open': True, 'no_create': True}"/>
+
                         </group>
                         <group string="Notify Users">
                             <field name="notify_type"/>
                             <field name="notify_user_ids"
-                                   options="{'no_open': True, 'no_create': True}"
-                                   widget="many2many_tags"
-                                   invisible="notify_type != 'user'"
-                                   required="notify_type == 'user'"/>
+                                options="{'no_open': True, 'no_create': True}"
+                                widget="many2many_tags"
+                                attrs="{'invisible': [('notify_type', '!=', 'user')], 'required': [('notify_type', '=', 'user')]}"/>
                             <field name="notify_group_ids"
-                                   options="{'no_open': True, 'no_create': True}"
-                                   widget="many2many_tags"
-                                   invisible="notify_type != 'group'"
-                                   required="notify_type == 'group'"/>
+                                options="{'no_open': True, 'no_create': True}"
+                                widget="many2many_tags"
+                                attrs="{'invisible': [('notify_type', '!=', 'group')], 'required': [('notify_type', '=', 'group')]}"/>
+
                             <field name="notify_hierarchy_level"
-                                   invisible="notify_type != 'hierarchy'"/>
+                                attrs="{'invisible': [('notify_type', '!=', 'hierarchy')]}"/>
+
                             <field name="notify_filter_group_id"
-                                   invisible="notify_type != 'filter'"
-                                   domain="[('model_name', '=', model_name)]"/>
-                            <field name="notify_template_id" invisible="not notify_type"
-                                   options="{'no_open': True, 'no_create': True}"/>
+                                attrs="{'invisible': [('notify_type', '!=', 'filter')]}"/>
+
+                            <field name="notify_template_id"
+                                attrs="{'invisible': [('notify_type', '=', False)]}"
+                                options="{'no_open': True, 'no_create': True}"/>
+
                         </group>
                         <group>
                             <field name="done_template_id" options="{'no_open': True, 'no_create': True}"/>
@@ -63,7 +65,8 @@
                                    options="{'no_open': True, 'no_create': True}"/>
 <!--                            <field name="required_field_message"/>-->
                             <field name="required_attachment"/>
-                            <field name="required_attachment_message" required="required_attachment == True"/>
+                            <field name="required_attachment_message"
+                                attrs="{'required': [('required_attachment', '=', True)]}"/>
                             <field name="sla_id"/>
                         </group>
                     </group>
@@ -92,7 +95,12 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="create_inherited_view" type="object" string="Set to Active"  invisible="workflow_state == 'active'"/>
+                    <button name="create_inherited_view" type="object" string="Set to Active"
+                            attrs="{'invisible': [('workflow_state', '=', 'active')]}"/>
+                    <button name="deactivate_workflow" type="object" string="Deactivate" class="btn btn-danger"
+                            attrs="{'invisible': [('workflow_state', '!=', 'active')]}"/>
+
+
                     <field name="workflow_state" widget="statusbar"/>
 
                 </header>
@@ -112,26 +120,33 @@
                         <group>
                             <field name="workflow_type" class="o_light_label" widget="radio"
                                    options="{'horizontal': true}"/>
-                            <field name="workflow_notify_type" invisible="workflow_type != 'notify'"
-                                   required="workflow_type == 'notify'"/>
+                            <field name="workflow_notify_type"
+                                attrs="{'invisible': [('workflow_type', '!=', 'notify')],
+                                        'required': [('workflow_type', '=', 'notify')]}"/>
+
                             <field name="notify_user_ids"
-                                   options="{'no_open': True, 'no_create': True}"
-                                   widget="many2many_tags"
-                                   invisible="workflow_notify_type != 'user'"
-                                   required="workflow_notify_type == 'user'"/>
+                                options="{'no_open': True, 'no_create': True}"
+                                widget="many2many_tags"
+                                attrs="{'invisible': [('workflow_notify_type', '!=', 'user')],
+                                        'required': [('workflow_notify_type', '=', 'user')]}"/>
                             <field name="notify_group_ids"
-                                   options="{'no_open': True, 'no_create': True}"
-                                   widget="many2many_tags"
-                                   invisible="workflow_notify_type != 'group'"
-                                   required="workflow_notify_type == 'group'"/>
+                                options="{'no_open': True, 'no_create': True}"
+                                widget="many2many_tags"
+                                attrs="{'invisible': [('workflow_notify_type', '!=', 'group')],
+                                        'required': [('workflow_notify_type', '=', 'group')]}"/>
+
                             <field name="notify_hierarchy_level"
-                                   invisible="workflow_notify_type != 'hierarchy'"/>
+                                attrs="{'invisible': [('workflow_notify_type', '!=', 'hierarchy')]}"/>
+
                             <field name="notify_filter_group_id"
-                                   invisible="workflow_notify_type != 'filter'"
-                                   required="workflow_notify_type == 'filter'"
-                                   domain="[('model_name', '=', res_model)]"/>
-                            <field name="notify_template_id" invisible="workflow_type != 'notify'"
-                                   required="workflow_type == 'notify'" options="{'no_open': True, 'no_create': True}"/>
+                                attrs="{'invisible': [('workflow_notify_type', '!=', 'filter')],
+                                        'required': [('workflow_notify_type', '=', 'filter')]}"/>
+
+                            <field name="notify_template_id"
+                                attrs="{'invisible': [('workflow_type', '!=', 'notify')],
+                                        'required': [('workflow_type', '=', 'notify')]}"
+                                options="{'no_open': True, 'no_create': True}"/>
+
                             <field name="active" invisible="1"/>
                             <field name='company_id' groups="base.group_multi_company"
                                    options="{'no_open': True, 'no_create': True}"/>
@@ -140,16 +155,44 @@
 
                     <notebook>
                         <page string="View Configuration">
-                             <group>
+                            <group col="2">
+                             <group col="2">
                                  <field name="view_to_inherit_id" required="1"/>
-                                 <field name="inherited_view_id" invisible="1"/>
-                                 <field name="action_on_submit_ids" widget="many2many_tags" domain="[('id', 'in', action_ids)]" options="{'no_create': True}"/>
+                                 <field name="inherited_view_id" readonly="1"/>
+                            </group>
+                            <group col="2">
+                                 <field name="action_to_hide_ids" widget="many2many_tags" domain="[('id', 'in', action_ids)]" options="{'no_create': True}"/>
+                                 <field name="action_on_submit_name" domain="[('id', 'in', action_ids)]" options="{'no_create': True}"/>
                                  <field name="approve_method_name" domain="[('id', 'in', action_ids)]" options="{'no_create': True}"/>
                                  <field name="reject_method_name" domain="[('id', 'in', action_ids)]" options="{'no_create': True}"/>
                                  <field name="redraft_method_name" domain="[('id', 'in', action_ids)]" options="{'no_create': True}"/>
                             </group>
+                            </group>
+                            <div class="alert alert-info" style="margin-bottom: 20px;">
+                                <h4>Steps to Configure a Workflow</h4>
+                                <ul>
+                                    <li>
+                                        <strong>Step 1:</strong> Select the form view for model you want to configure a workflow for.
+                                    </li>
+                                    <li>
+                                        <strong>Step 1:</strong> Select the model you want to configure a workflow for.
+                                    </li>
+                                    <li>
+                                        <strong>Step 2:</strong> Replace the existing buttons in the original model with workflow-specific buttons (e.g., "Approve" and "Refuse").
+                                    </li>
+                                    <li>
+                                        <strong>Step 3:</strong> Set up and configure the workflow steps as needed.
+                                    </li>
+                                    <li>
+                                        <strong>Step 4:</strong> Activate the workflow to enable it.
+                                    </li>
+                                    <li>
+                                        <strong>Step 5:</strong> Once the workflow is activated, the original model's view will automatically reflect the workflow buttons (e.g., "Approve," "Refuse," or "Redraft") based on the workflow configuration.
+                                    </li>
+                                </ul>
+                            </div>
                         </page>
-                        <page string="Conditions" invisible="workflow_type != 'approval'">
+                        <page string="Conditions" attrs="{'invisible': [('workflow_type', '!=', 'approval')]}">
                             <field name="condition_ids" mode="tree" context="{'default_workflow_id': id}">
                                 <form string="Conditions">
                                     <sheet>
@@ -202,7 +245,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Steps" invisible="workflow_type != 'approval'">
+                        <page string="Steps" attrs="{'invisible': [('workflow_type', '!=', 'approval')]}">
                             <field name="step_ids" readonly="1" force_save="1">
                                 <tree>
                                     <field name='sequence' widget="handle"/>
@@ -234,6 +277,7 @@
                 <field name="name"/>
                 <field name="model_id"/>
                 <field name='company_id' groups="base.group_multi_company"/>
+                <field name='workflow_state'/>
             </tree>
         </field>
     </record>

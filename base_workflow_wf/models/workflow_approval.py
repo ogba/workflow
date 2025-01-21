@@ -160,7 +160,7 @@ class WorkflowApproval(models.AbstractModel):
                                 continue
                         self.action_approval_create(line)
                         #check if any method on submission
-                        for line in template.action_on_submit_ids:
+                        for line in template.action_on_submit_name:
                             record.call_function(record,record,line.name)
 
                         self.write({'approval_status': 'pending'})
@@ -220,7 +220,7 @@ class WorkflowApproval(models.AbstractModel):
         return arch, view
 
     def action_open_approvals(self):
-        print('----------- in open approval ----')
+        
         """Open approval lines of the current record."""
         self.ensure_one()
         return {
@@ -953,7 +953,11 @@ class WorkflowApprovalLine(models.Model):
             # only approval at the last stage will deem the overall approval
             # for the request as approved
             if self.check_last_stage(line):
+                #last step
+                #cal approve function
+                record.call_function(record, record, self.workflow_id.approve_method_name.name)
                 record.action_approval_approve()
+
             line.action_send_mail()
 
     def action_approve_multi(self):

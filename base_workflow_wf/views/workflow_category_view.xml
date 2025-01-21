@@ -11,9 +11,9 @@
                         <h1>
                             <field name="name"/>
                             <div>
-                                <field name="font_aws_icon"  placeholder="fa-money "  invisible="icon_type != 'font_aws'"/>
+                                <field name="font_aws_icon" placeholder="fa-money" attrs="{'invisible': [('icon_type', '!=', 'font_aws')]}"/>
 
-                                <field name="card_icon" string="Icon" widget="image" invisible="icon_type != 'upload'"/>
+                                <field name="card_icon" string="Icon" widget="image" attrs="{'invisible': [('icon_type', '!=', 'upload')]}"/>
                             </div>
 
                         </h1>

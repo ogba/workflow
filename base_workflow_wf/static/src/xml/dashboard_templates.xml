@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<templates id="template" xml:space="preserve">
+<templates id="WFDashboard" xml:space="preserve">
     <!-- This is a comment describing the workflow dashboard section -->
     <t t-name="WFDashboard">
         <div class="oh_dashboards"
@@ -66,8 +66,8 @@
                     <div class="dashboard-card card-shadow unassigned_leads"
                          t-on-click="(e) => this.all_pending_request(e)">
                         <div
-                                class="dashboard-card__icon-container bg-mauve-light d-flex justify-content-center align-items-center">
-                            <i class="fa fa-user-times text-mauve"/>
+                                class="dashboard-card__icon-container  d-flex justify-content-center align-items-center">
+                            <img t-att-src="'base_workflow_wf/static/src/img/pendding.png'" style="height: inherit;"/>
                         </div>
                         <div class="dashboard-card__details">
                             <h3>
@@ -93,7 +93,7 @@
                                     <th>Description</th>
                                     <th>Request By</th>
                                     <th>Start Date</th>
-                                    <th>Approve / Reject</th>
+                                    <th>Show Item</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -43,12 +43,10 @@
                                             <field name='sequence' placeholder="Sequence"/>
                                             <group>
                                                 <field name="action_type"/>
-                                                <field name="filter_group_id" invisible="action_type != 'escalate_filter'"
-                                                       required="action_type == 'escalate_filter'"/>
-                                                <field name="group_id" invisible="action_type != 'escalate_group'"
-                                                       required="action_type == 'escalate_group'"/>
-                                                <field name="hierarchy_level" invisible="action_type != 'escalate_hrc'"
-                                                       required="action_type == 'escalate_hrc'"/>
+                                                <field name="filter_group_id" attrs="{'invisible': [('action_type', '!=', 'escalate_filter')], 'required': [('action_type', '=', 'escalate_filter')]}"/>
+                                                <field name="group_id" attrs="{'invisible': [('action_type', '!=', 'escalate_group')], 'required': [('action_type', '=', 'escalate_group')]}"/>
+                                                <field name="hierarchy_level" attrs="{'invisible': [('action_type', '!=', 'escalate_hrc')], 'required': [('action_type', '=', 'escalate_hrc')]}"/>
+
                                             </group>
                                         </group>
                                     </sheet>

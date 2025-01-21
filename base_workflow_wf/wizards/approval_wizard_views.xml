@@ -13,11 +13,11 @@
                         <field name="reference" force_save="1" invisible="1"/>
                         <field name="status" force_save="1" invisible="1"/>
                         <field name="required_approval" force_save="1" invisible="1"/>
-                        <field name="approval_line_id" options="{'no_open': True, 'no_create': True}"
-                               invisible="not required_approval" required="required_approval"
-                               domain="[('res_model', '=', model_name), ('res_id', '=', res_id),('status', '=', 'approved')]"/>
-                        <field name="user_ids" widget="many2many_tags" invisible="status not in ('rmi','forward')"
-                               options="{'no_open': True, 'no_create': True}" required="status in ('rmi','forward')"/>
+                        <field name="approval_line_id" options="{'no_open': True, 'no_create': True}" invisible="1" 
+                            domain="[('res_model', '=', model_name), ('res_id', '=', res_id), ('status', '=', 'approved')]"/>
+                        <field name="user_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}" 
+                            attrs="{'required': [('status', 'in', ['rmi', 'forward'])]}"/>
+
                         <field name="reason" required="1"/>
                     </group>
                     <group>

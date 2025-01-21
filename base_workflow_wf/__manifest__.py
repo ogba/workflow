@@ -18,6 +18,7 @@
         'data/ir_sequence.xml',
         'data/mail_template.xml',
         'data/ir_cron.xml',
+        'data/workflow_data.xml',
         'wizards/approval_wizard_views.xml',
         'wizards/forward_wizard_views.xml',
         'views/workflow_views.xml',
