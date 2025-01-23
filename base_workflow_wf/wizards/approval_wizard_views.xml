@@ -16,7 +16,8 @@
                         <field name="approval_line_id" options="{'no_open': True, 'no_create': True}" invisible="1" 
                             domain="[('res_model', '=', model_name), ('res_id', '=', res_id), ('status', '=', 'approved')]"/>
                         <field name="user_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}" 
-                            attrs="{'required': [('status', 'in', ['rmi', 'forward'])]}"/>
+                            attrs="{'required': [('status', 'in', ['rmi', 'forward'])], 
+                                    'invisible': [('status', 'not in', ['rmi', 'forward'])]}"/>
 
                         <field name="reason" required="1"/>
                     </group>

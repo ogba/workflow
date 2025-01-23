@@ -193,24 +193,24 @@ class Workflow(models.Model):
                         <xpath expr="//header" position="inside">
                             <field name="approval_status" invisible="1"/>
                             <button name="action_submit" type="object" string="Submit" class="oe_highlight" attrs="{'invisible': [('approval_status', '!=', 'draft')]}"/>
-                            <field name="approval_next_line_ids" attrs="{'invisible': [(1, '=', 1)]}"/>
-                            <button name="action_approval_wizard" string="Approve" class="btn btn-success" attrs="{'invisible': [('approval_next_line_ids', '=', False)]}" type="object"/>
-                            <button name="action_reject_wizard" string="Reject" class="btn btn-danger" attrs="{'invisible': [('approval_next_line_ids', '=', False)]}" type="object"/>
-                            <button name="action_rfc_wizard" string="Return For Correction" class="oe_highlight oe_inline" attrs="{'invisible': [('approval_next_line_ids', '=', False)]}" type="object"/>
-                            <button name="action_rmi_wizard" string="Request More Info" class="oe_highlight oe_inline" attrs="{'invisible': [('approval_next_line_ids', '=', False)]}" type="object"/>
-                            <button name="action_forward_wizard" string="Forward" class="oe_highlight oe_inline" attrs="{'invisible': [('approval_next_line_ids', '=', False)]}" type="object"/>
+                            <field name="approval_next_line_ids" invisible="1"/>
+                            <button name="action_approval_wizard" string="Approve" class="btn btn-success" attrs="{'invisible': [('approval_next_line_ids', '=', [])]}" type="object"/>
+                            <button name="action_reject_wizard" string="Reject" class="btn btn-danger" attrs="{'invisible': [('approval_next_line_ids', '=', [])]}" type="object"/>
+                            <button name="action_rfc_wizard" string="Return For Correction" class="oe_highlight oe_inline" attrs="{'invisible': [('approval_next_line_ids', '=', [])]}" type="object"/>
+                            <button name="action_rmi_wizard" string="Request More Info" class="oe_highlight oe_inline" attrs="{'invisible': [('approval_next_line_ids', '=', [])]}" type="object"/>
+                            <button name="action_forward_wizard" string="Forward" class="oe_highlight oe_inline" attrs="{'invisible': [('approval_next_line_ids', '=', [])]}" type="object"/>
 
                             
                             <div class="o-dropdown dropdown d-inline-block o-dropdown--no-caret">
                                 <field name="approval_template_id" invisible="1"/>
                                     <button name="action_open_approvals" type="object" class="oe_stat_button" icon="fa-lock" attrs="{'invisible': [('approval_template_id', '=', False)]}" help="Approval Status: click to open list of approvals.">
-                                    <div class="o_form_field o_stat_info">
+                                    
                                         <span class="o_stat_text">
                                             <field name="approvals_done"/>
                                             <span>/</span>
                                             <field name="approvals_count"/>
                                         </span>
-                                    </div>
+                                   
                                 </button>
                             </div>
                         </xpath>
