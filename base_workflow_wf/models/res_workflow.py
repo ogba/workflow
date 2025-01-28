@@ -203,7 +203,7 @@ class Workflow(models.Model):
                             
                             <div class="o-dropdown dropdown d-inline-block o-dropdown--no-caret">
                                 <field name="approval_template_id" invisible="1"/>
-                                    <button name="action_open_approvals" type="object" class="oe_stat_button" icon="fa-lock" attrs="{'invisible': [('approval_template_id', '=', False)]}" help="Approval Status: click to open list of approvals.">
+                                    <button name="action_open_approvals" type="object" class="btn btn-outline-primary" icon="fa-lock" attrs="{'invisible': [('approval_template_id', '=', False)]}" help="Approval Status: click to open list of approvals.">
                                     
                                         <span class="o_stat_text">
                                             <field name="approvals_done"/>

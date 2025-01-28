@@ -424,7 +424,15 @@ class WorkflowApproval(models.AbstractModel):
         ctx.update(mail_signature="IT Department")
         ctx.update(mail_cc='')
         eligible_users = line.get_eligible_users()
-        mail_to = ','.join(eligible_users.mapped('email')) if eligible_users else False
+        try:
+            # Filter out False or None values before joining
+            email_list = eligible_users.mapped('email')
+            mail_to = ','.join([email for email in email_list if email]) if email_list else False
+
+            if not mail_to:
+                raise ValueError("Please ensure that all eligible users have their email addresses set.")
+        except ValueError as e:
+            raise UserError(_("Error: %s") % str(e))
         # Don't send notifications to no-users!!!
         if not mail_to:
             return False
@@ -742,8 +750,9 @@ class WorkflowApprovalLine(models.Model):
         result = []
         record = self.env[self.res_model].browse(self.res_id)
         users = self.get_step_users()
+        users = users.ids if users else []
         delegates = self.env['workflow.delegate'].sudo().search(
-            [('user_id', 'in', users.ids), ('date_from', '<=', fields.Date.today()),
+            [('user_id', 'in', users), ('date_from', '<=', fields.Date.today()),
              ('date_to', '>=', fields.Date.today()), ('company_id', '=', record.company_id.id)])
         if delegates:
             result = delegates.mapped('replace_user_id')
@@ -1137,14 +1146,12 @@ class WorkflowApprovalLine(models.Model):
     # dashboad code #
 
     @api.model
-    def get_workflow_approval_line_table(self, kwargs):
+    def get_workflow_approval_line_table(self):
         user = self.env.user
         top_workflow_to_approve = []
         # TO_DO : Must make query
-        data = self.env['workflow.approval.line'].sudo().search(
-            [('approval_start_time', '!=', False), ('status', '=', 'pending')], limit=8,
-            order='approval_start_time desc').filtered(
-            lambda step: user.id in step.eligible_user_ids.ids)
+        data = self.env['workflow.approval.line'].search([]).filtered(
+                lambda r: r.can_approve)
         if data:
             top_workflow_to_approve = [
                 [rec.workflow_id.name, rec.res_id_record_name, rec.approval_start_time, rec.create_uid.name, rec.res_id,
@@ -1155,7 +1162,7 @@ class WorkflowApprovalLine(models.Model):
             return {'top_workflow_to_approve': top_workflow_to_approve}
 
     @api.model
-    def get_wf_category(self, kwargs):
+    def get_wf_category(self):
 
         # TO_DO : Must make query
         data = self.env['workflow.category'].search([])
@@ -1179,9 +1186,9 @@ class WorkflowApprovalLine(models.Model):
     @api.model
     def open_approval_lines_view(self, category_id):
         data = self.env['workflow.approval.line'].search([]).filtered(
-            lambda r: r.can_approve and r.category_id.id == category_id['ev'])
+            lambda r: r.can_approve and r.category_id.id == category_id)
         # Define the domain with the provided category_id
-        domain = [('id', 'in', data.ids)]
+        domain = [('id', 'in', data.ids),('status','=','pending')]
 
         # Return an action that opens the tree view of workflow.approval.line
         # filtered by the specified domain
@@ -1199,7 +1206,7 @@ class WorkflowApprovalLine(models.Model):
         return domain
 
     @api.model
-    def get_count_all_wf_request(self, kwargs):
+    def get_count_all_wf_request(self):
         data = self.env['workflow.approval.line'].search([]).filtered(lambda r: r.can_approve and r.status == 'pending')
         return {'count_all_wf_request': len(data)}
 
@@ -1235,7 +1242,7 @@ class WorkflowApprovalLine(models.Model):
         return [approved_count, pending_count, late_count]
 
     @api.model
-    def get_workflow_approval_pie_chart(self, kwargs):
+    def get_workflow_approval_pie_chart(self):
         count = self._compute_workflow_dashboard_count()
         number_in_pie = [count, ['Done', 'Pending', 'Late'], ["#47B39C", "#FFC154", "#EC6B56"]]
         return number_in_pie

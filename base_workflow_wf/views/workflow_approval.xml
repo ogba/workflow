@@ -18,13 +18,13 @@
                                 attrs="{'invisible': [('can_approve', '=', False)]}"
                                 class="btn btn-danger" type="object"/>
 
-                        <div class="oe_button_box" name="button_box">
-                            <button name="open_request" type="object" class="oe_link" icon="fa-file-text-o">
-                                <div class="o_field_widget o_stat_info">
-                                    <span class="o_stat_text">Open Document</span>
-                                </div>
-                            </button>
-                        </div>
+                       
+                        <button name="open_request" type="object" class="oe_link" icon="fa-file-text-o">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Open Document</span>
+                            </div>
+                        </button>
+                        
                         <field name="status" widget="statusbar"
                                class="oe_inline oe_right"/>
                     </header>
@@ -92,7 +92,9 @@
                             icon="fa-times-circle"
                             attrs="{'invisible': [('can_approve', '=', False)]}"/>
 
-                    <button type="object" name="open_request"  class="btn fa fa-folder-open-o"
+                    <button type="object" name="open_request"  class="btn btn-outline-primary"
+                            string="Open"
+                            icon="fa-folder-open-o"
                             title="View Request"/>
                 </tree>
             </field>
@@ -121,15 +123,18 @@
                     <button name="action_approve" string="Approve"
                             type="object"
                             class="btn btn-success"
-                            icon="fa fa-check"
+                            icon="fa-check"
                             attrs="{'invisible': [('can_approve', '=', False)]}"/>
 
                     <button name="action_reject" string="Reject"
                             type="object"
                             class="btn btn-danger"
-                            icon="fa fa-times-circle"
+                            icon="fa-times-circle"
                             attrs="{'invisible': [('can_approve', '=', False)]}"/>
-                    <button type="object" name="open_request"  class="btn fa fa-folder-open-o"
+
+                    <button type="object" name="open_request"  class="btn btn-outline-primary"
+                            string="Open"
+                            icon="fa-folder-open-o"
                             title="View Request"/>
                 </tree>
             </field>

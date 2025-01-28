@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<templates id="WFDashboard" xml:space="preserve">
+<templates id="template" xml:space="preserve">
     <!-- This is a comment describing the workflow dashboard section -->
     <t t-name="WFDashboard">
-        <div class="oh_dashboards"
-             style="margin-top: 20px; overflow-y: scroll;vertical-align: middle;overflow-x: clip;max-height: -webkit-fill-available;">
-            <div class="container-fluid my-5 o_hr_dashboard">
-                <t t-call="LoginUser"/>
-                <t t-call="Managercrm"/>
-                <t t-call="Admincrm"/>
-            </div>
+         <div class="oh_dashboards">
+            <div class="container-fluid my-5 o_hr_dashboard"/>
         </div>
     </t>
     <!-- This is a comment describing the LoginUser section -->
@@ -33,11 +28,11 @@
                  id="main_section_manager">
 
             <div class="crm_dash_cards row">
-                 <t t-foreach="card_wf_category" t-as="card" t-key="card">
+                 <t t-foreach="widget.card_wf_category" t-as="card" t-key="card">
 
                         <div class="col-sm-12 col-md-3">
                             <div class="dashboard-card card-shadow my_lead"
-                             t-on-click="(e) => this.my_lead(card[2])">
+                                    t-att-data-id="card[2]">
                             <div class="dashboard-card__icon-container bg-mauve-light d-flex justify-content-center align-items-center" t-if="card[3] != 'upload'">
                                 <i class="fa fa-users text-mauve" t-if="card[3] == 'default'"/>
                                 <i t-att-class="'fa ' + card[4] + ' text-mauve'" t-if="card[3] == 'font_aws'"/>
@@ -63,8 +58,7 @@
                         </div>
                  </t>
                 <div class="col-sm-12 col-md-3">
-                    <div class="dashboard-card card-shadow unassigned_leads"
-                         t-on-click="(e) => this.all_pending_request(e)">
+                    <div class="dashboard-card card-shadow all_pending_request">
                         <div
                                 class="dashboard-card__icon-container  d-flex justify-content-center align-items-center">
                             <img t-att-src="'base_workflow_wf/static/src/img/pendding.png'" style="height: inherit;"/>
@@ -72,10 +66,10 @@
                         <div class="dashboard-card__details">
                             <h3>
                                 <span>
-                                    <t t-esc="get_count_all_wf_request"/>
+                                    <t t-esc="widget.get_count_all_wf_request"/>
                                 </span>
                             </h3>
-                            <p>Pending Request</p>
+                            <p>All Pending Request</p>
                         </div>
                     </div>
                 </div>
@@ -97,9 +91,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-foreach="top_workflow_to_approve"
+                                <t t-foreach="widget.top_workflow_to_approve"
                                    t-as="activity" t-key="activity">
-                                    <tr t-on-click="(e) => this.my_approval_list(activity)">
+                                    <tr class="chart-container my_approval_list" t-att-data-id="activity[4]">
                                         <td>
                                             <t t-esc="activity[0]" />
                                         </td>
@@ -113,7 +107,7 @@
                                             <t t-esc="activity[2]"  widget="remaining_days"/>
                                         </td>
                                         <td>
-                                            <button  title="View Request"  class="btn fa fa-folder-open-o"/>
+                                            <button  title="View Request"  class="btn fa fa-folder-open-o my_approval_list" t-att-data-id="activity[4]"/>
                                         </td>
                                     </tr>
                                 </t>
@@ -123,7 +117,7 @@
                 </div>
                 <div class="col-sm-6 col-md-4">
                     <div class="chart-container card-shadow">
-                        <h3>Delayed / On time </h3>
+                        <h3>Pending / Done / Delay </h3>
                         <hr/>
                         <div class="graph_canvas">
                             <canvas class="workflow_pie_chart" width="200"
