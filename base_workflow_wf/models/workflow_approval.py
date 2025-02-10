@@ -744,30 +744,19 @@ class WorkflowApprovalLine(models.Model):
         for record in self:
             record.delegated_user_ids = record.get_delegated_users()
 
-def get_delegated_users(self):
-    """Get delegated users to approve/reject the current stage."""
-    self.ensure_one()
-    result = []
-    record = self.env[self.res_model].browse(self.res_id)
-    users = self.get_step_users()
-
-    # Ensure `users` is a recordset before calling `.ids`
-    if isinstance(users, list):
-        user_ids = users  # It's already a list, no need for .ids
-    else:
-        user_ids = users.ids  # Convert recordset to list of IDs
-
-    delegates = self.env['workflow.delegate'].sudo().search([
-        ('user_id', 'in', user_ids),
-        ('date_from', '<=', fields.Date.today()),
-        ('date_to', '>=', fields.Date.today()),
-        ('company_id', '=', record.company_id.id)
-    ])
-
-    if delegates:
-        result = delegates.mapped('replace_user_id')
-
-    return result
+    def get_delegated_users(self):
+        """Get delegated users to approve/reject the current stage."""
+        self.ensure_one()
+        result = []
+        record = self.env[self.res_model].browse(self.res_id)
+        users = self.get_step_users()
+        users = users.ids if users else []
+        delegates = self.env['workflow.delegate'].sudo().search(
+            [('user_id', 'in', users), ('date_from', '<=', fields.Date.today()),
+             ('date_to', '>=', fields.Date.today()), ('company_id', '=', record.company_id.id)])
+        if delegates:
+            result = delegates.mapped('replace_user_id')
+        return result
 
     @api.depends('name','status')
     def _compute_record_name(self):
