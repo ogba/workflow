@@ -213,7 +213,7 @@ export class WFDashboard extends Component {
         jsonrpc('/web/dataset/call_kw/workflow.approval.line/get_lead_month_pie', {
             model: "workflow.approval.line",
             method: "get_workflow_approval_pie_chart",
-            args: [{}],
+            args: [],
             kwargs: {},
         }).then(function(arrays) {
             var data = {

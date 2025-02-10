@@ -99,7 +99,7 @@ class CRMLead(models.Model):
         return [approved_count, pending_count, late_count]
 
     @api.model
-    def get_workflow_approval_pie_chart(self, kwargs):
+    def get_workflow_approval_pie_chart(self):
         count = self._compute_workflow_dashboard_count()
         number_in_pie = [count, ['Done', 'Pending', 'Late'], ["#47B39C", "#FFC154", "#EC6B56"]]
         return number_in_pie
