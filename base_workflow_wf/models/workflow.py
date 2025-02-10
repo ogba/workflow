@@ -16,7 +16,7 @@ class CRMLead(models.Model):
     _inherit = 'workflow.approval.line'
 
     @api.model
-    def get_workflow_approval_line_table(self, kwargs):
+    def get_workflow_approval_line_table(self):
         user = self.env.user
         top_workflow_to_approve = []
         # TO_DO : Must make query
