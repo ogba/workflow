@@ -23,7 +23,7 @@ export class WFDashboard extends Component {
         var def_workflow_table = jsonrpc('/web/dataset/call_kw/workflow.approval.line/get_workflow_approval_line_table', {
                 model: "workflow.approval.line",
                 method: "get_workflow_approval_line_table",
-                args: [{}],
+                args: [],
                 kwargs: {},
             })
             .then(function(res) {
