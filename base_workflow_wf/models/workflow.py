@@ -54,15 +54,7 @@ class CRMLead(models.Model):
 
         return len(data)
 
-    @api.model
-    def open_approval_lines_view(self, category_id):
-        data = self.env['workflow.approval.line'].search([]).filtered(lambda r: r.can_approve and r.category_id.id == category_id['ev'])
-        # Define the domain with the provided category_id
-        domain = [('id', 'in', data.ids)]
-
-        # Return an action that opens the tree view of workflow.approval.line
-        # filtered by the specified domain
-        return domain
+   
 
     @api.model
     def open_all_approval_lines_view(self):
@@ -74,10 +66,7 @@ class CRMLead(models.Model):
         # Return an action that opens the tree view of workflow.approval.line
         # filtered by the specified domain
         return domain
-    @api.model
-    def get_count_all_wf_request(self, kwargs):
-        data = self.env['workflow.approval.line'].search([]).filtered(lambda r: r.can_approve and r.status == 'pending')
-        return {'count_all_wf_request': len(data)}
+    
     @api.model
     def get_approval_count(self,state= False):
         """Unassigned Leads Count Card"""
