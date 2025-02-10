@@ -35,7 +35,7 @@ export class WFDashboard extends Component {
         var def_top_category = jsonrpc('/web/dataset/call_kw/workflow.approval.line/get_wf_category', {
                 model: "workflow.approval.line",
                 method: "get_wf_category",
-                args: [{}],
+                args: [],
                 kwargs: {},
             })
             .then(function(res) {
@@ -47,7 +47,7 @@ export class WFDashboard extends Component {
         var def_count_wf_request = jsonrpc('/web/dataset/call_kw/workflow.approval.line/get_count_all_wf_request', {
                 model: "workflow.approval.line",
                 method: "get_count_all_wf_request",
-                args: [{}],
+                args: [],
                 kwargs: {},
             })
             .then(function(res) {

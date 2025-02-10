@@ -33,7 +33,7 @@ class CRMLead(models.Model):
 
 
     @api.model
-    def get_wf_category(self, kwargs):
+    def get_wf_category(self):
 
         # TO_DO : Must make query
         data = self.env['workflow.category'].search([])
