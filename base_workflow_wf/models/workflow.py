@@ -16,7 +16,7 @@ class CRMLead(models.Model):
     _inherit = 'workflow.approval.line'
 
     @api.model
-    def get_workflow_approval_line_table(self, kwargs):
+    def get_workflow_approval_line_table(self):
         user = self.env.user
         top_workflow_to_approve = []
         # TO_DO : Must make query
@@ -24,7 +24,7 @@ class CRMLead(models.Model):
             lambda step: user.id in step.eligible_user_ids.ids)
         if data:
             top_workflow_to_approve = [
-                [rec.workflow_id.name, rec.res_id_record_name, rec.approval_start_time, rec.create_uid.name,rec.res_id,rec.res_model_id.model,rec.res_model_id.name]
+                [rec.workflow_id.name, rec.res_id_record_name, rec.approval_start_time, rec.create_uid.name,rec.id,rec.res_model_id.model,rec.res_model_id.name]
                 for rec in data]
             return {'top_workflow_to_approve': top_workflow_to_approve}
         else:
@@ -33,7 +33,7 @@ class CRMLead(models.Model):
 
 
     @api.model
-    def get_wf_category(self, kwargs):
+    def get_wf_category(self):
 
         # TO_DO : Must make query
         data = self.env['workflow.category'].search([])
@@ -99,7 +99,7 @@ class CRMLead(models.Model):
         return [approved_count, pending_count, late_count]
 
     @api.model
-    def get_workflow_approval_pie_chart(self, kwargs):
+    def get_workflow_approval_pie_chart(self):
         count = self._compute_workflow_dashboard_count()
         number_in_pie = [count, ['Done', 'Pending', 'Late'], ["#47B39C", "#FFC154", "#EC6B56"]]
         return number_in_pie

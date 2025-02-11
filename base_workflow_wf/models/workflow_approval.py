@@ -194,17 +194,22 @@ class WorkflowApproval(models.AbstractModel):
             if template:
                 record.approval_template_id = template.id
                 for line in template.condition_step_ids:
+                    
                     app_line = self.env['workflow.approval.line'] \
                         .create({
                         'res_model': record._name,
                         'res_id': record.id,
                         'step_line_id': line.id,
                     })
+                    app_line.get_eligible_users()
                     app_lines.append(app_line)
                 # send the first notification after creation
                 if app_lines:
+                    
                     app_lines[0].action_send_mail()
             return app_lines
+
+
 
     @api.model
     def _get_view(self, view_id=None, view_type='form', **options):
@@ -424,15 +429,18 @@ class WorkflowApproval(models.AbstractModel):
         ctx.update(mail_signature="IT Department")
         ctx.update(mail_cc='')
         eligible_users = line.get_eligible_users()
-        try:
-            # Filter out False or None values before joining
-            email_list = eligible_users.mapped('email')
-            mail_to = ','.join([email for email in email_list if email]) if email_list else False
+        if eligible_users:
+            try:
+                # Filter out False or None values before joining
+                email_list = eligible_users.mapped('email')
+                mail_to = ','.join([email for email in email_list if email]) if email_list else False
 
-            if not mail_to:
-                raise ValueError("Please ensure that all eligible users have their email addresses set.")
-        except ValueError as e:
-            raise UserError(_("Error: %s") % str(e))
+                if not mail_to:
+                    raise ValueError("Please ensure that all eligible users have their email addresses set.")
+            except ValueError as e:
+                raise UserError(_("Error: %s") % str(e))
+        else:
+            raise UserError("Please ensure the workflow has been configured correctly in conditoin.")
         # Don't send notifications to no-users!!!
         if not mail_to:
             return False
@@ -516,22 +524,41 @@ class WorkflowApproval(models.AbstractModel):
         """Get workflow user to Notification them."""
         self.ensure_one()
         result = []
+
         if workflow.workflow_type == 'notify':
-            if workflow.workflow_notify_type == 'user' and workflow.notify_user_ids:
+            if workflow.workflow_notify_type == 'user':
+                if not workflow.notify_user_ids:
+                    raise UserError(_("No users selected for notification."))
                 result = workflow.notify_user_ids
-            elif workflow.workflow_notify_type == 'group' and workflow.notify_group_ids:
+
+            elif workflow.workflow_notify_type == 'group':
+                if not workflow.notify_group_ids:
+                    raise UserError(_("No groups selected for notification."))
                 result = workflow.notify_group_ids.mapped('users')
+
             elif workflow.workflow_notify_type == 'hierarchy':
                 record = self.env[self._name].browse(self.id)
                 user_data = record.get_approval_current_user_data()
+                if not user_data:
+                    raise UserError(_("No user data found for hierarchy notification."))
                 result = record.get_user_hierarchy(workflow.notify_hierarchy_level, user_data)
+
             elif workflow.workflow_notify_type == 'department':
                 record = self.env[self._name].browse(self.id)
                 user_data = record.get_approval_current_user_data()
-                if user_data.department_id.manager_id.user_id:
-                    result.append(user_data.department_id.manager_id.user_id)
+                if not user_data:
+                    raise UserError(_("No user data found for department notification."))
+                if not user_data.department_id:
+                    raise UserError(_("No department assigned to the user."))
+                if not user_data.department_id.manager_id or not user_data.department_id.manager_id.user_id:
+                    raise UserError(_("No manager assigned to the department."))
+                result.append(user_data.department_id.manager_id.user_id)
+
             elif workflow.workflow_notify_type == 'filter':
+                if not workflow.notify_filter_group_id:
+                    raise UserError(_("No filter group selected for notification."))
                 result = workflow.notify_filter_group_id.get_filter_result()
+
         return result
 
     def action_create_notify_send_mail(self, template_id):
@@ -652,10 +679,6 @@ class WorkflowApproval(models.AbstractModel):
 
 
 
-################################################################# Triger action part ##########################
-
-
-################################################################# End Triger Action ###########################
 
 class WorkflowApprovalLine(models.Model):
     """Approval Line Model.
@@ -722,7 +745,7 @@ class WorkflowApprovalLine(models.Model):
     forward_user_ids = fields.Many2many('res.users', 'approval_forward_users_rel', string="Forward Users")
     rmi_user_ids = fields.Many2many('res.users', 'approval_rmi_users_rel', string='Request More Information Users')
     delegated_user_ids = fields.Many2many('res.users', 'rel_workflow_delegated_user', string='Delegated Users',
-                                          compute='_compute_delegated_user_ids')
+                                          compute='_compute_delegated_user_ids',store=True)
     comment = fields.Char(string='Comments')
 
 
@@ -750,7 +773,7 @@ class WorkflowApprovalLine(models.Model):
         result = []
         record = self.env[self.res_model].browse(self.res_id)
         users = self.get_step_users()
-        users = users.ids if users else []
+        users = users.ids
         delegates = self.env['workflow.delegate'].sudo().search(
             [('user_id', 'in', users), ('date_from', '<=', fields.Date.today()),
              ('date_to', '>=', fields.Date.today()), ('company_id', '=', record.company_id.id)])
@@ -814,24 +837,45 @@ class WorkflowApprovalLine(models.Model):
         self.ensure_one()
         temp_line = self.step_line_id
         result = []
-        if temp_line.type == 'user' and temp_line.type_user_ids:
-            result = temp_line.type_user_ids
-        elif temp_line.type == 'group' and temp_line.type_group_ids:
-            result = temp_line.type_group_ids.mapped('users')
+
+        if temp_line.type == 'user':
+            if temp_line.type_user_ids:
+                result = temp_line.type_user_ids
+               
+            else:
+                raise UserError(_("No users are assigned in the 'User' step. Please check the configuration."))
+
+        elif temp_line.type == 'group':
+            if temp_line.type_group_ids:
+                result = temp_line.type_group_ids.mapped('users')
+                
+            if not result:
+                raise UserError(_("No users found in the 'Group' step. Ensure the selected groups contain users."))
+
         elif temp_line.type == 'hierarchy':
             record = self.env[self.res_model].browse(self.res_id)
             user_data = record.get_approval_current_user_data()
             for level in range(temp_line.type_hierarchy_level):
                 user_data = self.get_manager_user(user_data.employee_id)
+                if not user_data:
+                    raise UserError(_("No managers found in the 'Hierarchy' step. Please verify the employee hierarchy."))
                 if user_data:
                     result.append(user_data)
+            
+
         elif temp_line.type == 'department':
             record = self.env[self.res_model].browse(self.res_id)
             user_data = record.get_approval_current_user_data()
             if user_data.department_id.manager_id.user_id:
-                result.append(user_data.department_id.manager_id.user_id)
+                result = user_data.department_id.manager_id.user_id
+            if not result:
+                raise UserError(_("No department manager found in the 'Department' step. Please check department assignments."))
+
         elif temp_line.type == 'filter':
             result = temp_line.filter_group_id.get_filter_result()
+            if not result:
+                raise UserError(_("No users match the criteria in the 'Filter' step. Adjust the filter settings."))
+        
         return result
 
     def get_notify_users(self):
@@ -1154,7 +1198,7 @@ class WorkflowApprovalLine(models.Model):
                 lambda r: r.can_approve)
         if data:
             top_workflow_to_approve = [
-                [rec.workflow_id.name, rec.res_id_record_name, rec.approval_start_time, rec.create_uid.name, rec.res_id,
+                [rec.workflow_id.name, rec.res_id_record_name, rec.approval_start_time, rec.create_uid.name, rec.id,
                  rec.res_model_id.model, rec.res_model_id.name]
                 for rec in data]
             return {'top_workflow_to_approve': top_workflow_to_approve}

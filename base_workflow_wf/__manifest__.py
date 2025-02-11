@@ -11,7 +11,7 @@
     'company': 'Aztek computers',
     'maintainer': 'Aztek computers',
     'website': "https://www.aztekcomputers.com",
-    'depends': ['base', 'mail', 'hr','account'],
+    'depends': ['base', 'mail', 'hr'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

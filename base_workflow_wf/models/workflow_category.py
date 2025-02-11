@@ -1,14 +1,4 @@
-from odoo import models, tools, fields, api, _
-from odoo import SUPERUSER_ID
-from odoo.osv import expression
-from odoo.tools.safe_eval import safe_eval, test_python_expr
-from odoo.exceptions import ValidationError, UserError, AccessError
-from datetime import datetime, date, time, timedelta
-from lxml import etree
-import random
-import string
-import logging
-
+from odoo import models, fields, api, _
 
 class WorkflowCategory(models.Model):
     _name = 'workflow.category'
@@ -35,16 +25,23 @@ class WorkflowCategory(models.Model):
     _sql_constraints = [
         ('uniq_name', 'unique(company_id, name)', _("category name must be unique."))]
 
+    @api.depends('child_ids')
     def _compute_dashboard_count(self):
         for category in self:
-            approvals = self.env['workflow.approval.line'].search(
-                [('category_id', '=', category.id)])
-            category.pending_count = len(approvals.filtered(lambda r: r.can_approve and r.status == 'pending'))
+            # Search for approval lines in the current category and its children
+            approvals = self.env['workflow.approval.line'].search([
+                ('category_id', 'child_of', category.id),
+                ('status', '=', 'pending')
+            ])
+            # Filter approvals where the current user can approve
+            category.pending_count = len(approvals.filtered(lambda r: r.can_approve))
 
     def show_pending_approvals(self):
         self.ensure_one()
-        approvals = self.env['workflow.approval.line'].search(
-            [('category_id', 'in', self.ids), ('status', '=', 'pending')]).filtered(lambda r: r.can_approve)
+        approvals = self.env['workflow.approval.line'].search([
+            ('category_id', 'child_of', self.id),
+            ('status', '=', 'pending')
+        ]).filtered(lambda r: r.can_approve)
         return {
             'name': _('Pending Approval'),
             'type': 'ir.actions.act_window',
