@@ -67,7 +67,7 @@ class Workflow(models.Model):
                                        default=True)
     color = fields.Integer("Color Index", default=0)
     view_to_inherit_id = fields.Many2one('ir.ui.view',domain="[('model','=',res_model),('type','=','form')]",
-                                         string='View to add Inherit',)
+                                         string='form view to inherit to add workflow functionality',)
     inherited_view_id = fields.Many2one('ir.ui.view', string='New workflow view',store=True)
     approval_count = fields.Integer()
     pending_count = fields.Integer(compute='_compute_dashboard_count')
@@ -80,7 +80,9 @@ class Workflow(models.Model):
         ('uniq_name', 'unique(company_id, name)', _("Workflow name must be unique."))]
 
 
-
+    @api.onchange('view_to_inherit_id')
+    def _onchange_view_to_inherit_id(self):
+        pass
 
     def create(self, vals):
         record = super(Workflow, self).create(vals)
@@ -101,37 +103,37 @@ class Workflow(models.Model):
             rec.rejected_count = len(approvals.filtered(lambda r: r.user_id.id == user.id and r.status == 'rejected'))
 
 
-    @api.onchange('model_id','view_to_inherit_id')
+    @api.onchange('model_id', 'view_to_inherit_id')
     def _onchange_ir_model(self):
-        # insert workflow.state in state_ids
+        
         if self.model_id:
-
-            cmd = [(5,)]
+            cmd = [(5,)]  # Clear existing records
+            
             for el in self.model_id.view_ids.filtered(lambda r: r.type == 'form' and r.mode == 'primary' and r.id != self.inherited_view_id.id):
                 arch = etree.XML(el.arch_db)
                 buttons = arch.xpath("//form/header/button")
                 for element in buttons:
-                    record = (0, 0,
-                              {
-                                  'name': element.get('name'),
-                                  'type': element.get('type'),
-                                  'description': element.get('string')
-                              })
+                    record = (0, 0, {
+                        'name': element.get('name'),
+                        'type': element.get('type'),
+                        'description': element.get('string')
+                    })
                     if record not in cmd:
                         cmd.append(record)
+            
             for view in self.model_id.view_ids.filtered(lambda r: r.type == 'form' and r.mode == 'extension' and r.id != self.inherited_view_id.id):
                 arch = etree.XML(view.arch_db)
                 buttons = arch.xpath("//button")
                 for element in buttons:
                     if element.get('name') and element.get('type'):
-                        record = (0, 0,
-                                  {
-                                      'name': element.get('name'),
-                                      'description': element.get('string')
-                                  })
+                        record = (0, 0, {
+                            'name': element.get('name'),
+                            'description': element.get('string')
+                        })
                         if record not in cmd:
                             cmd.append(record)
-            self.update({'action_ids': cmd})
+            
+            self.action_ids = cmd
 
 
     def xpath_button_hide(self,button_names):
@@ -299,7 +301,14 @@ class Workflow(models.Model):
         for rec in self:
             if rec.approval_count > 0.0:
                 raise UserError(_("You can't delete workflow that has approvals!"))
-        return super(Workflow, self).unlink()
+            # Check if inherited_view_id exists and delete it
+            if rec.inherited_view_id:
+                rec.inherited_view_id.unlink()
+
+        try:
+            return super(Workflow, self).unlink()
+        except:
+            raise UserError(_("You cannot delete this workflow because it is still referenced by approval lines. Please archive it instead."))
 
 
 class WorkflowCondition(models.Model):
@@ -410,3 +419,28 @@ class WorkflowMethodActions(models.Model):
             record.name_description = f"{record.name} / {record.description}"
 
     name_description = fields.Char(string='Name / Description', compute='_compute_name_description', store=True)
+
+
+
+
+class BaseModel(models.AbstractModel):
+    _inherit = 'base'
+
+    def unlink(self):
+        # Search for workflow.approval.line records that reference the records being deleted
+        for record in self:
+            # Get the model name and record ID
+            res_model = record._name
+            res_id = record.id
+
+            # Search for related workflow.approval.line records
+            approval_lines = self.env['workflow.approval.line'].search([
+                ('res_model', '=', res_model),
+                ('res_id', '=', res_id),
+            ])
+
+            # Delete the related approval lines
+            approval_lines.unlink()
+
+        # Call the original unlink method to delete the records
+        return super(BaseModel, self).unlink()
