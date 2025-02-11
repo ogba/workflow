@@ -1198,7 +1198,7 @@ class WorkflowApprovalLine(models.Model):
                 lambda r: r.can_approve)
         if data:
             top_workflow_to_approve = [
-                [rec.workflow_id.name, rec.res_id_record_name, rec.approval_start_time, rec.create_uid.name, rec.res_id,
+                [rec.workflow_id.name, rec.res_id_record_name, rec.approval_start_time, rec.create_uid.name, rec.id,
                  rec.res_model_id.model, rec.res_model_id.name]
                 for rec in data]
             return {'top_workflow_to_approve': top_workflow_to_approve}
