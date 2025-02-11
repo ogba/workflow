@@ -65,7 +65,7 @@
             <field name="model">workflow.approval.line</field>
             <!-- <field name="priority">1</field> -->
             <field name="arch" type="xml">
-                <tree create="false" edit="false" delete="false">
+                <tree create="false" edit="false" delete="true">
                     <field name="sequence"/>
                     <field name="name"/>
                     <field name="res_id_record_name"/>
