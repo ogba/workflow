@@ -30,12 +30,12 @@
                     <notebook>
                         <page string="Lines">
                             <field name="sla_property_ids">
-                                <tree>
+                                <list>
                                     <field name='sequence' widget="handle"/>
                                     <field name="action_type"/>
                                     <field name="sla_id"
                                            column_invisible="True"/>
-                                </tree>
+                                </list>
                                 <form>
                                     <sheet>
                                         <group>
@@ -69,18 +69,18 @@
         <field name="name">workflow.sla.tree</field>
         <field name="model">workflow.sla</field>
         <field name="arch" type="xml">
-            <tree string="SLA">
+            <list string="SLA">
                 <field name="name" string="Reference"/>
                 <field name='period_type'/>
                 <field name='company_id' groups="base.group_multi_company"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="workflow_sla_action" model="ir.actions.act_window">
         <field name="name">Workflow SLA</field>
         <field name="res_model">workflow.sla</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem name="Workflow SLA"

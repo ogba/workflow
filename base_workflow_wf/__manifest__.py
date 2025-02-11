@@ -32,22 +32,22 @@
         'views/workflow_request_view.xml',
     ],
 
-    'assets': {
-            'web.assets_backend': [
-                'base_workflow_wf/static/src/css/dashboard.css',
-                'base_workflow_wf/static/src/css/style.scss',
-                'base_workflow_wf/static/src/css/material-gauge.css',
-                'base_workflow_wf/static/src/js/workflow_dashboard.js',
-                'base_workflow_wf/static/src/js/lib/highcharts.js',
-                'base_workflow_wf/static/src/js/lib/Chart.bundle.js',
-                'base_workflow_wf/static/src/js/lib/funnel.js',
-                'base_workflow_wf/static/src/js/lib/d3.min.js',
-                'base_workflow_wf/static/src/js/lib/material-gauge.js',
-                'base_workflow_wf/static/src/js/lib/columnHeatmap.min.js',
-                'base_workflow_wf/static/src/js/lib/columnHeatmap.js',
-                'base_workflow_wf/static/src/xml/dashboard_templates.xml',
-            ],
-        },
+    # 'assets': {
+    #         'web.assets_backend': [
+    #             'base_workflow_wf/static/src/css/dashboard.css',
+    #             'base_workflow_wf/static/src/css/style.scss',
+    #             'base_workflow_wf/static/src/css/material-gauge.css',
+    #             'base_workflow_wf/static/src/js/workflow_dashboard.js',
+    #             'base_workflow_wf/static/src/js/lib/highcharts.js',
+    #             'base_workflow_wf/static/src/js/lib/Chart.bundle.js',
+    #             'base_workflow_wf/static/src/js/lib/funnel.js',
+    #             'base_workflow_wf/static/src/js/lib/d3.min.js',
+    #             'base_workflow_wf/static/src/js/lib/material-gauge.js',
+    #             'base_workflow_wf/static/src/js/lib/columnHeatmap.min.js',
+    #             'base_workflow_wf/static/src/js/lib/columnHeatmap.js',
+    #             'base_workflow_wf/static/src/xml/dashboard_templates.xml',
+    #         ],
+    #     },
 
     'images': ['static/description/banner.png'],
     'license': 'OPL-1',

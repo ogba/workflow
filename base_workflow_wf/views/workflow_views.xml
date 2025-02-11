@@ -78,7 +78,7 @@
                     <notebook>
                         <page string="Step Actions">
                             <field name="method_action_ids">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name='sequence' widget="handle"/>
                                     <field name="name" placeholder="write the function name only Ex : action_post"/>
                                     <field name="parameter" placeholder="EX : ('name',4)"/>
@@ -86,7 +86,7 @@
                                     <field name="description"/>
                                     <field name="step_id"
                                            column_invisible="True"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -192,7 +192,7 @@
                             </div>
                         </page>
                         <page string="Conditions" invisible="workflow_type != 'approval'">
-                            <field name="condition_ids" mode="tree" context="{'default_workflow_id': id}">
+                            <field name="condition_ids" mode="list" context="{'default_workflow_id': id}">
                                 <form string="Conditions">
                                     <sheet>
                                         <div class="oe_title">
@@ -206,12 +206,12 @@
                                         <notebook>
                                             <page string="Path">
                                                 <field name="condition_step_ids">
-                                                    <tree>
+                                                    <list>
                                                         <field name='sequence' widget="handle"/>
                                                         <field name='name'/>
                                                         <field name='type'/>
                                                         <field name='condition_id' column_invisible="True"/>
-                                                    </tree>
+                                                    </list>
 
                                                 </field>
                                             </page>
@@ -228,31 +228,31 @@
                                         </notebook>
                                     </sheet>
                                 </form>
-                                <tree>
+                                <list>
                                     <field name='sequence' widget="handle"/>
                                     <field name="name"/>
                                     <field name="workflow_id" column_invisible="True"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Actions" invisible="1">
                             <field name="action_ids"  context="{'default_workflow_id':id}">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name='name'/>
                                     <field name='description'/>
                                     <field name="action_type"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Steps" invisible="workflow_type != 'approval'">
                             <field name="step_ids" readonly="1" force_save="1">
-                                <tree>
+                                <list>
                                     <field name='sequence' widget="handle"/>
                                     <field name="condition_id"/>
                                     <field name="name"/>
                                     <field name="type"/>
                                     <field name="workflow_id" column_invisible="True"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Note">
@@ -272,12 +272,12 @@
         <field name="name">res.workflow.tree</field>
         <field name="model">res.workflow</field>
         <field name="arch" type="xml">
-            <tree string="Workflows">
+            <list string="Workflows">
                 <field name="name"/>
                 <field name="model_id"/>
                 <field name='company_id' groups="base.group_multi_company"/>
                 <field name='workflow_state'/>
-            </tree>
+            </list>
         </field>
     </record>
     <record id="res_workflow_view_search" model="ir.ui.view">
@@ -296,7 +296,7 @@
     <record id="workflow_action" model="ir.actions.act_window">
         <field name="name">Workflow</field>
         <field name="res_model">res.workflow</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">list,kanban,form</field>
     </record>
 
     <menuitem name="Workflow Engine"

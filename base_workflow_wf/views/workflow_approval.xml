@@ -65,7 +65,7 @@
             <field name="model">workflow.approval.line</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree create="false" edit="false" delete="true">
+                <list create="false" edit="false" delete="true">
                     <field name="sequence"/>
                     <field name="name"/>
                     <field name="res_id_record_name"/>
@@ -90,7 +90,7 @@
                              type="object"/>
                     <button type="object" name="open_request"  class="btn fa fa-folder-open-o"
                             title="View Request"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -99,7 +99,7 @@
             <field name="model">workflow.approval.line</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree create="false" edit="false" delete="false">
+                <list create="false" edit="false" delete="false">
                     <field name="sequence"/>
                     <field name="name"/>
                     <field name="res_id_record_name"/>
@@ -124,7 +124,7 @@
                              type="object"/>
                     <button type="object" name="open_request"  class="btn fa fa-folder-open-o"
                             title="View Request"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -132,7 +132,7 @@
         <record id="workflow_approval_action" model="ir.actions.act_window">
             <field name="name">Workflow Approvals</field>
             <field name="res_model">workflow.approval.line</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="context">{'group_by': ['workflow_id', 'res_id_record_name']}</field>
             <field name="view_id" ref="workflow_approval_line_view_tree_grouped"/>
         </record>
