@@ -24,7 +24,7 @@ class CRMLead(models.Model):
             lambda step: user.id in step.eligible_user_ids.ids)
         if data:
             top_workflow_to_approve = [
-                [rec.workflow_id.name, rec.res_id_record_name, rec.approval_start_time, rec.create_uid.name,rec.res_id,rec.res_model_id.model,rec.res_model_id.name]
+                [rec.workflow_id.name, rec.res_id_record_name, rec.approval_start_time, rec.create_uid.name,rec.id,rec.res_model_id.model,rec.res_model_id.name]
                 for rec in data]
             return {'top_workflow_to_approve': top_workflow_to_approve}
         else:
