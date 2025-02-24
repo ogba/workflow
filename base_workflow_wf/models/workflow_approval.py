@@ -772,13 +772,24 @@ class WorkflowApprovalLine(models.Model):
         self.ensure_one()
         result = []
         record = self.env[self.res_model].browse(self.res_id)
+
         users = self.get_step_users()
-        users = users.ids
+        
+        if not users:
+            raise UserError(_("No users found for this step. Please check the workflow configuration."))
+
+        if isinstance(users, list):  # Ensure users is a recordset
+            users = self.env['res.users'].browse(users)
+
         delegates = self.env['workflow.delegate'].sudo().search(
-            [('user_id', 'in', users), ('date_from', '<=', fields.Date.today()),
-             ('date_to', '>=', fields.Date.today()), ('company_id', '=', record.company_id.id)])
-        if delegates:
-            result = delegates.mapped('replace_user_id')
+            [('user_id', 'in', users.ids), ('date_from', '<=', fields.Date.today()),
+            ('date_to', '>=', fields.Date.today()), ('company_id', '=', record.company_id.id)]
+        )
+
+        if not delegates:
+            raise UserError(_("No delegated users found for this step."))
+
+        result = delegates.mapped('replace_user_id')
         return result
 
     @api.depends('name','status')
