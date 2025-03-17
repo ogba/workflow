@@ -84,6 +84,8 @@ class Workflow(models.Model):
     def _onchange_view_to_inherit_id(self):
         pass
 
+
+    @api.model    
     def create(self, vals):
         record = super(Workflow, self).create(vals)
         record.create_inherited_view()
@@ -288,6 +290,7 @@ class Workflow(models.Model):
             self.notify_group_ids = False
             self.notify_filter_group_id = False
 
+    
     def write(self, vals):
         """Override to prevent overriding workflow_type."""
         if self.workflow_state == 'active' and any(field in vals for field in vals):
@@ -298,6 +301,7 @@ class Workflow(models.Model):
                 raise UserError(_("You can't change workflow type of approvals."))
         return super(Workflow, self).write(vals)
 
+    
     def unlink(self):
         for rec in self:
             if rec.approval_count > 0.0:

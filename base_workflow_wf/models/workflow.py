@@ -12,7 +12,7 @@ class ResWorkflowInherit(models.Model):
     font_aws_icon = fields.Char(string="Font awsome icon",help="Icon name from font awsome EX : fa-id-card ")
     color = fields.Integer(string='Color',
                            help="The color selected here will be used in every screen with the time off type.")
-class CRMLead(models.Model):
+class workflowApprovallineInhetitDashboard(models.Model):
     _inherit = 'workflow.approval.line'
 
     @api.model

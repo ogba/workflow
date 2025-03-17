@@ -52,7 +52,7 @@ class WorkflowApproval(models.AbstractModel):
     approval_line_ids = fields.One2many('workflow.approval.line',
                                         compute='_compute_approval_line_ids')
     approval_next_line_ids = fields.One2many('workflow.approval.line',
-                                             compute='_compute_approval_line_ids')
+                                             compute='_compute_approval_line_ids',ondelete='cascade')
 
     def redraft_workflow_record(self):
         # remove wf approval line step and start from beginning
@@ -690,7 +690,7 @@ class WorkflowApprovalLine(models.Model):
 
     res_model = fields.Char("Model Name", required=True)
     res_model_id = fields.Many2one('ir.model', "Model",
-                                   compute='_compute_model_id', store=True)
+                                   compute='_compute_model_id', store=True ,ondelete='cascade')
     res_id = fields.Integer("Resource ID", required=True)
     res_id_record_name = fields.Char("Record Name", compute='_compute_record_name',store=True)
 
@@ -749,6 +749,12 @@ class WorkflowApprovalLine(models.Model):
     comment = fields.Char(string='Comments')
 
 
+
+    @api.model
+    def unlink(self):
+        # Custom logic to delete related records
+        self.search([]).unlink()
+        return super(WorkflowApprovalLine, self).unlink()
 
     def open_request(self):
         self.ensure_one()

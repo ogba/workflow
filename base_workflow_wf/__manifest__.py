@@ -31,7 +31,8 @@
         'views/workflow_approval.xml',
         'views/workflow_request_view.xml',
     ],
-
+    
+    
     'assets': {
             'web.assets_backend': [
                 'base_workflow_wf/static/src/css/dashboard.css',
