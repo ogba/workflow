@@ -1,16 +1,67 @@
 {
-    'name': "odoo workflow engine  approval SLA  Dynamic approvals employee Delegation ",
-    'version': '17.0',
+    'name': "Dynamic Workflow Engine | Approval & Automation",
+    'version': '17.0.1.0.0',
     'sequence': 1,
-    'summary': 'workflow , workflow process , automation , base approve workflow mixin , workflow approval process ,odoo workflow engine , workflow approval process , workflow Dynamic , multi-level approval , process in odoo delegate Delegation of Approvals ,  SLA , workflow state , Workflow process ,  process Notifier , Email notifications , Dynamic Flexible Workflow , Approval Process , Sequential Approvals , Process flow , advanced statusbar',
-    'description': """workflow engine to automate all odoo process flow without code need , just do configuration
-    you can manage workflow  approvals  Delegation of Approvals  SLA  Email notifications Dynamic Flexible Workflow  Approval Process Sequential Approvals and many other condition
+    'category': 'Productivity/Workflow',
+    'summary': """
+        Advanced workflow automation with multi-level approvals, SLA tracking,
+        delegation management, and email notifications - No coding required!
+    """,
+    'description': """
+Dynamic Workflow Engine - Complete Approval & Process Automation
+================================================================
+
+Transform your Odoo operations with our powerful no-code workflow engine.
+Automate complex business processes, approvals, and notifications without writing a single line of code.
+
+Key Features
+------------
+★ **Dynamic Workflow Builder** - Create custom workflows with drag-and-drop simplicity
+★ **Multi-Level Approvals** - Sequential and parallel approval chains
+★ **SLA Management** - Track deadlines and escalate automatically
+★ **Delegation System** - Delegate approvals during absences
+★ **Email Notifications** - Automated alerts at every workflow stage
+★ **Advanced Dashboard** - Real-time workflow analytics and KPIs
+★ **Flexible Conditions** - Rule-based routing and decision logic
+★ **Process Tracking** - Complete audit trail and status monitoring
+
+Use Cases
+---------
+• Purchase Request Approvals
+• Leave & Expense Management
+• Document Review Processes
+• Sales Order Validation
+• HR Onboarding Workflows
+• Custom Business Processes
+
+Benefits
+--------
+✓ No Coding Required - 100% Configuration Based
+✓ Reduce Approval Delays
+✓ Ensure Compliance & Accountability
+✓ Improve Process Visibility
+✓ Scale Business Operations
+
+Technical Highlights
+--------------------
+• Compatible with any Odoo model
+• RESTful API ready
+• Multi-company support
+• Full audit logging
+• Odoo 17.0 optimized
+
+Support & Documentation
+-----------------------
+📧 Contact: ogba.awed@gmail.com
+📖 Full documentation included
+🔄 Regular updates & improvements
     """,
 
-    'author': 'Aztek computers',
-    'company': 'Aztek computers',
-    'maintainer': 'Aztek computers',
+    'author': 'Aztek Computers',
+    'company': 'Aztek Computers',
+    'maintainer': 'Aztek Computers',
     'website': "https://www.aztekcomputers.com",
+    'support': 'ogba.awed@gmail.com',
     'depends': ['base', 'mail', 'hr'],
     'data': [
         'security/security.xml',
