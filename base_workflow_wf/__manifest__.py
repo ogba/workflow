@@ -1,15 +1,67 @@
 {
-    'name': "odoo workflow engine  approval SLA  Dynamic approvals employee Delegation ",
-    'version': '17.0',
+    'name': "Workflow Engine - Dynamic Approval Management",
+    'version': '17.0.1.0.0',
     'sequence': 1,
-    'summary': 'workflow , workflow process , automation , base approve workflow mixin , workflow approval process ,odoo workflow engine , workflow approval process , workflow Dynamic , multi-level approval , process in odoo delegate Delegation of Approvals ,  SLA , workflow state , Workflow process ,  process Notifier , Email notifications , Dynamic Flexible Workflow , Approval Process , Sequential Approvals , Process flow , advanced statusbar',
-    'description': """workflow engine to automate all odoo process flow without code need , just do configuration
-    you can manage workflow  approvals  Delegation of Approvals  SLA  Email notifications Dynamic Flexible Workflow  Approval Process Sequential Approvals and many other condition
+    'category': 'Productivity/Documents',
+    'summary': """
+        Complete Workflow & Approval Management System | Multi-Level Approvals |
+        SLA Tracking | User Delegation | Dynamic Process Automation |
+        Works with Any Odoo Model | No Coding Required
     """,
+    'description': """
+Workflow Engine - Complete Approval Management for Odoo 17
+===========================================================
 
-    'author': 'Aztek computers',
-    'company': 'Aztek computers',
-    'maintainer': 'Aztek computers',
+MAIN FEATURES:
+--------------
+* Dynamic Workflow Engine - Create workflows for any Odoo model
+* Multi-Level Approval Process - Configure complex approval hierarchies
+* User Delegation - Delegate approvals when unavailable
+* SLA Management - Set time limits and escalation rules
+* Email Notifications - Automatic alerts for pending approvals
+* Custom Conditions - Define approval rules without coding
+* Approval Dashboard - Track all pending and completed approvals
+* Attachment Validation - Require documents before approval
+* Bulk Approval - Approve multiple requests at once
+* Forward & Return - Route requests for corrections
+
+KEYWORDS:
+---------
+workflow, approval, approval workflow, multi-level approval, approval process,
+workflow engine, approval management, document approval, purchase approval,
+expense approval, leave approval, hr approval, sales approval, invoice approval,
+manager approval, approval chain, approval hierarchy, approval routing,
+SLA, delegation, process automation, workflow automation, business process,
+notification, email notification, approval notification, dynamic workflow,
+sequential approval, parallel approval, conditional approval, approval rules,
+workflow mixin, approval mixin, statusbar, state management, process flow,
+workflow state, approval state, reject, return, forward, escalation,
+approval dashboard, workflow dashboard, approval widget, workflow widget,
+no code workflow, configurable workflow, flexible workflow, custom workflow
+
+USE CASES:
+----------
+* Purchase Order Approvals
+* Sales Order Approvals
+* Invoice Approvals
+* Expense Approvals
+* Leave Request Approvals
+* Employee Document Approvals
+* Contract Approvals
+* Project Approvals
+* Custom Document Approvals
+* Any Odoo Model Approvals
+
+COMPATIBLE WITH:
+----------------
+* Odoo Community Edition
+* Odoo Enterprise Edition
+* Odoo.sh
+
+    """,
+    'author': 'Aztek Computers',
+    'company': 'Aztek Computers',
+    'maintainer': 'Aztek Computers',
     'website': "https://www.aztekcomputers.com",
     'depends': ['base', 'mail', 'hr'],
     'data': [
