@@ -4,725 +4,1593 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Odoo App 3 Index</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet">
+    <title>Odoo Workflow Engine - Enterprise Approval Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #714B67;
+            --primary-rgb: 113, 75, 103;
+            --secondary: #017E84;
+            --secondary-rgb: 1, 126, 132;
+            --accent: #875A7B;
+            --dark: #0f0f1a;
+            --dark-2: #1a1a2e;
+            --dark-3: #252540;
+            --light: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #714B67 0%, #875A7B 50%, #017E84 100%);
+            --gradient-dark: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
+            --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-glow: 0 0 60px rgba(113, 75, 103, 0.3);
+            --shadow-glow-lg: 0 0 100px rgba(113, 75, 103, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--gray-600);
+            line-height: 1.7;
+            overflow-x: hidden;
+            background: var(--white);
+        }
+
+        .container-xl {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ==================== HEADER ==================== */
+        .header {
+            background: var(--white);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 48px;
+            width: auto;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .version-badge {
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge-item {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .badge-community {
+            background: linear-gradient(135deg, #017E84 0%, #019ca3 100%);
+        }
+        .badge-enterprise {
+            background: linear-gradient(135deg, #714B67 0%, #8b5a7d 100%);
+        }
+        .badge-odoo-sh {
+            background: linear-gradient(135deg, #7C7BAD 0%, #9594c4 100%);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            background: var(--gradient-dark);
+            padding: 80px 0 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(113, 75, 103, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(1, 126, 132, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 30% at 20% 80%, rgba(135, 90, 123, 0.15) 0%, transparent 50%);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 580px;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 100px;
+            margin-bottom: 28px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-label-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-label-icon i {
+            font-size: 10px;
+            color: var(--white);
+        }
+
+        .hero-label span {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--gray-300);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 24px;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: var(--gray-400);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            padding-top: 40px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .hero-stat {
+            text-align: left;
+        }
+
+        .hero-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .hero-stat-value span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-2xl), var(--shadow-glow-lg);
+        }
+
+        .hero-image-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .hero-image-wrapper img {
+            width: 100%;
+            display: block;
+            border-radius: 20px;
+        }
+
+        .hero-floating-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .hero-floating-card.card-1 {
+            bottom: -30px;
+            left: -40px;
+        }
+
+        .hero-floating-card.card-2 {
+            top: 40px;
+            right: -30px;
+        }
+
+        .floating-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.2rem;
+        }
+
+        .floating-content h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 2px;
+        }
+
+        .floating-content p {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            margin: 0;
+        }
+
+        /* ==================== TRUSTED BY SECTION ==================== */
+        .trusted-section {
+            background: var(--gray-100);
+            padding: 40px 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .trusted-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .trusted-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .trusted-features {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .trusted-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray-600);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .trusted-feature i {
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ==================== FEATURES SECTION ==================== */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-dark {
+            background: var(--dark);
+            position: relative;
+        }
+
+        .section-gray {
+            background: var(--gray-100);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 70px;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(113, 75, 103, 0.1) 0%, rgba(1, 126, 132, 0.1) 100%);
+            padding: 8px 18px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+        }
+
+        .section-label i {
+            color: var(--primary);
+            font-size: 0.85rem;
+        }
+
+        .section-label span {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 18px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .section-dark .section-title {
+            color: var(--white);
+        }
+
+        .section-subtitle {
+            font-size: 1.15rem;
+            color: var(--gray-500);
+            line-height: 1.8;
+        }
+
+        /* Feature Cards Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 36px 28px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--gray-200);
+            text-align: center;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl), 0 0 40px rgba(113, 75, 103, 0.1);
+            border-color: transparent;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon-wrapper {
+            width: 72px;
+            height: 72px;
+            background: var(--gradient-primary);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 22px;
+            box-shadow: 0 12px 30px rgba(113, 75, 103, 0.3);
+            position: relative;
+        }
+
+        .feature-icon-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 22px;
+            background: var(--gradient-primary);
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .feature-icon-wrapper img {
+            width: 32px;
+            height: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .feature-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* ==================== CAPABILITIES SECTION ==================== */
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .capability-card {
+            background: var(--white);
+            padding: 40px 28px;
+            text-align: center;
+            border: 1px solid var(--gray-100);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .capability-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(113, 75, 103, 0.02) 0%, rgba(1, 126, 132, 0.02) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .capability-card:hover::before {
+            opacity: 1;
+        }
+
+        .capability-card:hover {
+            z-index: 1;
+        }
+
+        .capability-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(113, 75, 103, 0.1) 0%, rgba(1, 126, 132, 0.1) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            transition: all 0.3s ease;
+        }
+
+        .capability-card:hover .capability-icon {
+            background: var(--gradient-primary);
+            box-shadow: 0 12px 30px rgba(113, 75, 103, 0.3);
+            transform: scale(1.1);
+        }
+
+        .capability-icon i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: color 0.3s ease;
+        }
+
+        .capability-card:hover .capability-icon i {
+            color: var(--white);
+        }
+
+        .capability-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .capability-card p {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ==================== SCREENSHOTS SECTION ==================== */
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .screenshot-card {
+            background: var(--white);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s ease;
+            border: 1px solid var(--gray-200);
+        }
+
+        .screenshot-card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-6px);
+        }
+
+        .screenshot-card.full-width {
+            grid-column: span 2;
+        }
+
+        .screenshot-image {
+            position: relative;
+            background: linear-gradient(180deg, var(--gray-100) 0%, var(--gray-200) 100%);
+            padding: 24px;
+        }
+
+        .screenshot-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.4s ease;
+        }
+
+        .screenshot-card:hover .screenshot-image img {
+            transform: scale(1.02);
+        }
+
+        .screenshot-badge {
+            position: absolute;
+            top: 36px;
+            left: 36px;
+            background: var(--gradient-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .screenshot-content {
+            padding: 28px 32px;
+        }
+
+        .screenshot-content h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .screenshot-content p {
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        /* ==================== BENEFITS SECTION ==================== */
+        .benefits-section {
+            background: var(--gradient-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefits-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 10% 90%, rgba(113, 75, 103, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 40% at 90% 20%, rgba(1, 126, 132, 0.15) 0%, transparent 50%);
+        }
+
+        .benefits-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .benefits-section .section-label {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+        }
+
+        .benefits-section .section-label i,
+        .benefits-section .section-label span {
+            color: var(--gray-300);
+        }
+
+        .benefits-section .section-subtitle {
+            color: var(--gray-400);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .benefit-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 36px 28px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .benefit-icon {
+            width: 72px;
+            height: 72px;
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 15px 40px rgba(113, 75, 103, 0.4);
+        }
+
+        .benefit-icon i {
+            font-size: 1.75rem;
+            color: var(--white);
+        }
+
+        .benefit-card h4 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .benefit-card p {
+            font-size: 0.95rem;
+            color: var(--gray-400);
+            margin: 0;
+        }
+
+        /* ==================== CTA SECTION ==================== */
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, rgba(113, 75, 103, 0.05) 0%, rgba(1, 126, 132, 0.05) 100%);
+        }
+
+        .cta-card {
+            background: var(--white);
+            border-radius: 32px;
+            padding: 60px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(113, 75, 103, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-icon {
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-icon img {
+            width: 100px;
+            height: auto;
+        }
+
+        .cta-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h3 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .cta-content > p {
+            font-size: 1.05rem;
+            color: var(--gray-500);
+            margin-bottom: 24px;
+        }
+
+        .contact-grid {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--gray-100);
+            padding: 16px 24px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: var(--gradient-primary);
+            box-shadow: 0 10px 30px rgba(113, 75, 103, 0.3);
+        }
+
+        .contact-item:hover .contact-icon,
+        .contact-item:hover span {
+            color: var(--white);
+        }
+
+        .contact-icon {
+            font-size: 1.25rem;
+            color: var(--primary);
+            transition: color 0.3s ease;
+        }
+
+        .contact-item span {
+            font-weight: 600;
+            color: var(--dark);
+            transition: color 0.3s ease;
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: var(--dark);
+            padding: 50px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-logo {
+            height: 40px;
+            opacity: 0.9;
+        }
+
+        .footer-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--gray-600);
+        }
+
+        .footer-text {
+            color: var(--gray-400);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .footer-badges {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: var(--gray-300);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1200px) {
+            .features-grid,
+            .capabilities-grid,
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-grid {
+                gap: 50px;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-floating-card {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .screenshot-card.full-width {
+                grid-column: span 1;
+            }
+
+            .cta-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 40px;
+            }
+
+            .contact-grid {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-right {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 60px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-stats {
+                gap: 32px;
+                flex-wrap: wrap;
+            }
+
+            .section {
+                padding: 70px 0;
+            }
+
+            .features-grid,
+            .capabilities-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-brand {
+                flex-direction: column;
+            }
+
+            .footer-divider {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .badges {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .cta-card {
+                padding: 30px 24px;
+            }
+
+            .contact-grid {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .contact-item {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<section>
-    <div class="container"
-         style="font-family: 'Inter', sans-serif !important;background-color: #fff !important;">
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between flex-wrap align-items-sm-center"
-                 style="border-bottom:1px solid rgba(0, 0, 0, 0.22)">
-                <div class="my-3">
-                    <img src="assets/misc/Logo.png"
-                         style="width:auto !important; height:40px !important">
-                </div>
-                <div class="my-3 d-flex align-items-center">
-                    <div class="text-center"
-                         style="background-color:#017E84 !important;font-size: 0.8rem !important; color:#fff !important; font-weight:500 !important; padding:4px !important; margin:0 3px !important; border-radius:50px !important; min-width: 120px !important;">
-                        Community
-                    </div>
-                    <div class="text-center"
-                         style="background-color:#875A7B !important; color:#fff !important;font-size: 0.8rem !important; font-weight:500 !important; padding:4px !important; margin:0 3px !important; border-radius:50px !important;min-width: 120px !important;">
-                        Enterprise
-                    </div>
-                    <div class="text-center"
-                         style="background-color:#7C7BAD !important; color:#fff !important;font-size: 0.8rem !important; font-weight:500 !important; padding:4px !important; margin:0 3px !important; border-radius:50px !important; min-width: 120px !important;">
-                        Odoo.sh
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12 text-center d-flex align-items-center flex-column"
-                 style="margin: 80px 0px !important;">
-                <h1 style="font-size: 2.8rem;font-weight: 700; color:
-                    #1A202C;">
-                   Full Odoo workflow engine</h1>
-                <p class="my-3 mb-4"
-                   style="max-width: 80%; font-weight: 400 !important; line-height: 32px; color: #718096;">
-                    Full workflow engine to manage all process flow in Odoo for any models
-                </p>
-                <div style="width: 80%; margin-top: 3rem;">
-                    <img src="assets/screenshots/laptop_workflow.png"
-                         class="img-responsive" width="100%" height="auto">
-                </div>
-            </div>
-        </div>
-
-        <div class="container mt-5">
-            <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center mt-4">
-                <p class="m-0"
-                   style="font-weight: 600; font-size: 24px; color:#000 !important">
-                   Features</p>
-
-            </div>
-        </div>
-        <div class="container my-5">
-            <div class="row py-3">
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center;  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative;border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67 ; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/cogs.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">
-                            Fully dynamic workflow
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative;border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/wrench.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">
-                            No customization need 
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center;  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative; border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67 ; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/training.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">
-                            Powerful dashboard 
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative; border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67 ; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/user.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">
-                            User delegation
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center;  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative; border-radius: 4px;">
-
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/email.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">
-                            Email Notification
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center;  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative;border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67 ; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/email_t.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">Custom Email Template</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center;  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative;border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67 ; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/notification.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">SLA Alerts and Actions</p>
-                    </div>
-                </div>
-
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;position: relative;border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67 ; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/multi_path.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">
-                            Multi approve level</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center;  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative;border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/license.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">Attachment Validation</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center;  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative;border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67 ; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/puzzle.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">Action on Steps</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;position: relative;border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67 ; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/consultation.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">
-                            Comment on Steps</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 px-4 py-4">
-                    <div
-                            style="background-color: #fff; padding: 25px; text-align: center;  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; position: relative;border-radius: 4px;">
-                        <div style="position: absolute; top: 0%; left: 50%; transform: translate(-50%, -50%);">
-                            <div style="background-color:#714b67; border-radius: 50%; padding: 15px;    width: 68px;
-                                    height: 68px; display: inline-block; box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);">
-                                <img src="assets/icons/update.png"
-                                     alt="service-icon" width="38px"
-                                     height="auto">
-                            </div>
-                        </div>
-                        <p style="margin-top: 20px; font-weight: bold;">Return and forward</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-       
-        <div class="container rounded">
-            <div class="container mt-5">
-                <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center mt-5">
-                    <p class="m-0"
-                       style="font-weight: 600; font-size: 24px; color:#000 !important">
-                        Screenshot</p>
-                </div>
-            </div>
-            <div class="tab-content"
-                 style="background-color: rgba(121, 113, 119, 0.04);">
-                <div id="tab1" class="tab-pane fade in active show">
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px; background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/1.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h4 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                    Detailed dashboard for your own approval list</h4>
-                                <p class="m-0" style="color:#718096">
-                                    A responsive dashboard allowing users to track tasks and pending items in any workflow process, with features including task management,task status tracking, notifications
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px;  background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/2.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h4 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                    Admin dashboard to manage all workflow activity</h4>
-                                <p class="m-0" style="color:#718096">
-                                   From the admin dashboard for workflow, you can manage all processes, create new workflows for any module, make delegations for any users, and even forward the pending steps of the workflow to another user.
-
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px;  background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/3.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h4 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                Open any document details
-                                </h4>
-                                <p class="m-0" style="color:#718096">
-                                    Easy access to workflow document that need action
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px;  background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/4.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h4 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                    Customise your custom dashboard</h4>
-                                <p class="m-0" style="color:#718096">
-                                    you can customize end users dashboard by category EX: Human resource , Finance , Sales  ...etc
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px;  background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/10.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h4 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                    full configure  Email Notification for every step in workflow</h4>
-                                <p class="m-0" style="color:#718096">
-                                    Add email notification for every step in workflow and , email reminder , Esclation
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px;  background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/5.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h4 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                    Delegation</h4>
-                                <p class="m-0" style="color:#718096">
-                                    Easily, you can make delegations to another user.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px;  background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/6.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h4 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                    Workflow Widget</h4>
-                                <p class="m-0" style="color:#718096">
-                                    workflow widget to easily view the approval status in the docments
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px;  background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/7.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h4 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                   User can approve his all open request at one time</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px;  background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/8.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h4 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                    User can approve , reject , return for correction , also can add any comment on his approval EX : Approved go forward </h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 py-2"
-                         style="padding: 1rem 4rem !important;">
-                        <div
-                                style="border: 1px solid #d8d6d6; border-radius: 4px;  background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="row justify-content-center p-3 w-100 m-0">
-                                <img src="assets/screenshots/9.png"
-                                     class="img-responsive" width="100%"
-                                     height="auto">
-                            </div>
-                            <div class="px-3">
-                                <h2 class="mt-2"
-                                    style=" font-weight:600 !important; color:#282F33 !important; font-size:1.0rem !important">
-                                    In any Process user can attach file with his approval to appear to other users in approval cycle </h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="tab2" class="tab-pane fade">
-                    <div class="col-mg-12" style="padding: 1rem 4rem;">
-                        <ul style="list-style: none; padding: 1rem 0;font-weight: 500;">
-                            <li class="py-3"
-                                style="font-weight: 500;background-color: #fff; border-radius: 4px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                                    <span style="margin-right: 12px;"><img
-                                            src="assets/misc/star (1) 2.svg"
-                                            alt=""
-                                            width="16px"></span>Activity
-                                monitoring.
-                            </li>
-                            <li class="py-3"
-                                style="font-weight: 500;background-color: #fff; border-radius: 4px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                                    <span style="margin-right: 12px;"><img
-                                            src="assets/misc/star (1) 2.svg"
-                                            alt=""
-                                            width="16px"></span>Year to
-                                Date
-                                bar graphTarget Field in User Settings.
-                            </li>
-                            <li class="py-3"
-                                style="font-weight: 500;background-color: #fff; border-radius: 4px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                                    <span style="margin-right: 12px;"><img
-                                            src="assets/misc/star (1) 2.svg"
-                                            alt=""
-                                            width="16px"></span>Top deals
-                                and
-                                Monthly revenue goals.
-                            </li>
-                            <li class="py-3"
-                                style="font-weight: 500;background-color: #fff; border-radius: 4px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                                    <span style="margin-right: 12px;"><img
-                                            src="assets/misc/star (1) 2.svg"
-                                            alt=""
-                                            width="16px"></span>The users
-                                will
-                                have different authorization based on
-                                the employment level.
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-                <div id="tab3" class="tab-pane fade">
-                    <div class="col-mg-12 active" style="padding: 1rem 4rem;">
-                        <div class="py-3"
-                             style="font-weight: 500;background-color: #fff; border-radius: 4px; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div class="d-flex mb-3"
-                                 style="font-size: 0.8rem; font-weight: 500;"><span>Version
-                                        17.0.1.0.0</span><span
-                                    class="px-2">|</span><span
-                                    style="color: #714B67;font-weight: 600;">Released on:28th Dec 2023</span>
-                            </div>
-                            <p class="m-0"
-                               style=" color:#718096!important; font-size:1rem !important;line-height: 28px;">
-                                Initial Commit for workflow dashboard.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="container mt-5">
-            <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center mt-4">
-                <p class="m-0"
-                   style="font-weight: 600; font-size: 24px; color:#000 !important">
-                    Features
-                   </p>
-
-            </div>
-        </div>
+    <!-- Header -->
+    <header class="header">
         <div class="container">
-            <div class="row my-5 py-4">
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-sitemap" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Organization Structure</p>
-                        <p>Allow you to align workflows with your organizational structure, defining workflows for departments, teams, or projects, and assigning roles or users based on responsibilities. This streamlines processes, improves collaboration, and ensures efficient task completion across your organization.</p>
-                    </div>
+            <div class="header-content">
+                <div class="logo">
+                    <img src="assets/misc/Logo.png" alt="Logo">
                 </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-user-o" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">By Role or specific user</p>
-                        <p>Role-based assignment allows you to assign specific roles or users or groups to each workflow step, ensuring tailored workflows, enhanced collaboration, accountability, and efficiency within your team.</p>
+                <div class="header-right">
+                    <div class="version-badge">
+                        <i class="fas fa-code-branch"></i> Version 17.0
                     </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-building-o" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">By Department Manager</p>
-
-                        <p>Based on Requester department manager you can configure the flow ,  even the department manager can delegate another employee to do his approval on his behalf , also you can configure it by manager level
-                            EX : level 1 mean his direct manager ,          level 2 mean the manager of employee manager</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-check-square-o" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Fields validation</p>
-                        <p>The Fields validation feature in our Workflow Engine allows you to configure whether a field is required or not based on the current workflow status. This enables you to enforce data integrity and ensure that all necessary information is collected at each step. By dynamically adjusting field requirements, will improve data quality</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-file-code-o" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Call function in step</p>
-                        <p>Allow automation of complex tasks and enforcement of business rules by executing custom Python functions before or after specific workflow steps.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-paperclip" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Attachment validation</p>
-                        <p>Configure your process flow based on organization structure</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-code" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Write your Own Condition</p>
-                        <p>through  expression customize your condition based on your need from UI , and no code need it </p>
-                    </div>
-                </div>
-                 <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-envelope-o " style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Emails and Notification</p>
-                        <p>Any action need to approve or notify emails and notification will send to the users</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-clock-o" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">SLA Support</p>
-                        <p>SLA management feature lets you set time constraints and monitor workflow progress, ensuring timely task completion and compliance with service level agreements.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-code-fork" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Multi Path Support</p>
-                        <p> supports multi-path workflows based on conditions like price, department, or priority, enabling efficient automation of complex processes.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-bar-chart" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Customizable Dashboard</p>
-                        <p>you can customize your company approval dashboard</p>
-                    </div>
-                </div>
-                 <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-newspaper-o" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Admin Dashboard</p>
-                        <p>The Admin Dashboard offers centralized management of workflow processes and settings. Administrators can create, edit, and monitor workflows, assign roles, configure validation rules, and define SLAs. This ensures efficient process management, collaboration, and adherence to organizational standards.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-child" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">User Delegation</p>
-                        <p>User delegation lets you transfer task ownership to others when you're unavailable, ensuring uninterrupted workflow progress and seamless collaboration within your team.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-share" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Forward Request</p>
-                        <p>The workflow engine allows users to forward approval requests to alternative reviewers. This forwarding functionality enables flexible, collaborative approvals and helps ensure timely progression through the workflow.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-question" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Request more Info</p>
-                        <p>The workflow engine enables users to request additional details from previous approval steps. This allows documents to be sent back for supplementary information, facilitating an iterative review process before progressing through the full workflow.</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <div class="d-flex flex-column h-100 justify-content-center align-items-center"
-                         style="border-right: 1px solid rgb(209, 209, 209); border-bottom: 1px solid  rgb(209, 209, 209); padding: 30px; box-shadow: 6px 0 10px rgba(228, 227, 227, 0.373);">
-                        <i class="fa fa-undo" style="font-size:42px;color: #714B67;"></i>
-
-                        <p style="color: #714B67;font-weight: 600; margin-top: 10px;
-                           font-size: 1.2rem; margin-bottom: 2px;">Return for Correction</p>
-                        <p>The workflow engine supports the ability to return documents to prior approval steps when corrections are needed. This rollback functionality enables an iterative review process, allowing documents to be sent back for updates before progressing through the full workflow</p>
+                    <div class="badges">
+                        <span class="badge-item badge-community">Community</span>
+                        <span class="badge-item badge-enterprise">Enterprise</span>
+                        <span class="badge-item badge-odoo-sh">Odoo.sh</span>
                     </div>
                 </div>
             </div>
         </div>
+    </header>
 
-        <div class="container my-5">
-
-
-                        <div class="d-flex align-items-center">
-                            <img src="assets/misc/support (1) 1.svg" alt=""
-                                 width="60px" style="margin-right: 12px;">
-                            <div style="padding: 0px 8px;">
-                                    <span
-                                            style="color: #714B67;font-size: 24px;font-weight: 600;padding-bottom: 1rem;">Need
-                                        Help?</span>
-                                <p class="m-0" style="color:#718096;">Don't hesitate to Contact with us</p>
-                                <div style="font-weight: 400;"><span><img
-                                        src="assets/misc/email.svg"
-                                        alt=""
-                                        width="18px"
-                                        style="filter: invert(1);margin-right: 0.8rem;"></span>info_ksa@aztekcomputers.com
-                                </div>
-                                <div style="font-weight: 400;"><span><img
-                                        src="assets/misc/whatsapp.svg"
-                                        alt=""
-                                        width="18px"
-                                        style="filter: invert(1);margin-right: 0.8rem;"></span>+966509134503
-                                </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-wrapper">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <div class="hero-label">
+                            <div class="hero-label-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <span>Enterprise-Grade Workflow Solution</span>
+                        </div>
+                        <h1>Full Odoo<br><span class="gradient-text">Workflow Engine</span></h1>
+                        <p class="hero-description">
+                            A complete, dynamic workflow engine to manage all approval processes in Odoo.
+                            Works with any model, requires zero coding, and streamlines your entire organization.
+                        </p>
+                        <div class="hero-stats">
+                            <div class="hero-stat">
+                                <div class="hero-stat-value"><span>16+</span></div>
+                                <div class="hero-stat-label">Key Features</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-value"><span>100%</span></div>
+                                <div class="hero-stat-label">Configurable</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-value"><span>0</span></div>
+                                <div class="hero-stat-label">Code Required</div>
                             </div>
                         </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="hero-image-wrapper">
+                            <img src="assets/screenshots/laptop_workflow.png" alt="Workflow Dashboard">
+                        </div>
+                        <div class="hero-floating-card card-1">
+                            <div class="floating-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="floating-content">
+                                <h4>Quick Approval</h4>
+                                <p>One-click actions</p>
+                            </div>
+                        </div>
+                        <div class="hero-floating-card card-2">
+                            <div class="floating-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="floating-content">
+                                <h4>Real-time Tracking</h4>
+                                <p>Monitor all processes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </section>
+
+    <!-- Trusted By -->
+    <section class="trusted-section">
+        <div class="container">
+            <div class="trusted-content">
+                <div class="trusted-label">Why Choose Us</div>
+                <div class="trusted-features">
+                    <div class="trusted-feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Enterprise Security</span>
+                    </div>
+                    <div class="trusted-feature">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Seamless Integration</span>
+                    </div>
+                    <div class="trusted-feature">
+                        <i class="fas fa-headset"></i>
+                        <span>Premium Support</span>
+                    </div>
+                    <div class="trusted-feature">
+                        <i class="fas fa-rocket"></i>
+                        <span>Fast Implementation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features Section -->
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">
+                    <i class="fas fa-cubes"></i>
+                    <span>Core Features</span>
+                </div>
+                <h2 class="section-title">Everything You Need for Workflow Management</h2>
+                <p class="section-subtitle">Powerful, flexible features designed to simplify even the most complex approval processes across your organization.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/cogs.png" alt="Dynamic Workflow">
+                    </div>
+                    <h3>Fully Dynamic Workflow</h3>
+                    <p>Create flexible workflows that adapt to your unique business needs</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/wrench.png" alt="No Customization">
+                    </div>
+                    <h3>Zero Coding Required</h3>
+                    <p>Ready to use out of the box with intuitive configuration</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/training.png" alt="Dashboard">
+                    </div>
+                    <h3>Powerful Dashboard</h3>
+                    <p>Comprehensive overview of all workflow activities at a glance</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/user.png" alt="Delegation">
+                    </div>
+                    <h3>User Delegation</h3>
+                    <p>Transfer approvals seamlessly when team members are unavailable</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/email.png" alt="Email Notification">
+                    </div>
+                    <h3>Smart Notifications</h3>
+                    <p>Automated email alerts for pending approvals and actions</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/email_t.png" alt="Email Template">
+                    </div>
+                    <h3>Custom Templates</h3>
+                    <p>Personalize notification emails to match your brand identity</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/notification.png" alt="SLA">
+                    </div>
+                    <h3>SLA Management</h3>
+                    <p>Monitor and enforce service level agreements automatically</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/multi_path.png" alt="Multi Level">
+                    </div>
+                    <h3>Multi-Level Approvals</h3>
+                    <p>Configure complex multi-tier approval hierarchies with ease</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/license.png" alt="Attachment">
+                    </div>
+                    <h3>Document Validation</h3>
+                    <p>Ensure required documents are attached before approval</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/puzzle.png" alt="Actions">
+                    </div>
+                    <h3>Step Actions</h3>
+                    <p>Execute custom actions at each workflow stage automatically</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/consultation.png" alt="Comments">
+                    </div>
+                    <h3>Approval Comments</h3>
+                    <p>Add notes and feedback throughout the approval process</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <img src="assets/icons/update.png" alt="Return Forward">
+                    </div>
+                    <h3>Flexible Routing</h3>
+                    <p>Return, forward, and escalate requests as needed</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="section benefits-section">
+        <div class="container">
+            <div class="benefits-wrapper">
+                <div class="section-header">
+                    <div class="section-label">
+                        <i class="fas fa-star"></i>
+                        <span>Key Benefits</span>
+                    </div>
+                    <h2 class="section-title">Why Businesses Choose Our Workflow Engine</h2>
+                    <p class="section-subtitle">Transform your approval processes and boost organizational efficiency with our enterprise-grade solution.</p>
+                </div>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>10x Faster</h4>
+                        <p>Approval Processing</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h4>100%</h4>
+                        <p>Process Visibility</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h4>Any Model</h4>
+                        <p>Full Compatibility</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4>24/7</h4>
+                        <p>SLA Monitoring</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">
+                    <i class="fas fa-desktop"></i>
+                    <span>Product Tour</span>
+                </div>
+                <h2 class="section-title">See the Workflow Engine in Action</h2>
+                <p class="section-subtitle">Explore our intuitive interface and discover how easy it is to manage complex approval workflows.</p>
+            </div>
+            <div class="screenshots-grid">
+                <div class="screenshot-card">
+                    <div class="screenshot-image">
+                        <span class="screenshot-badge">Dashboard</span>
+                        <img src="assets/screenshots/1.png" alt="User Dashboard">
+                    </div>
+                    <div class="screenshot-content">
+                        <h4>Personal Approval Dashboard</h4>
+                        <p>Track all your pending tasks, approvals, and workflow items in one responsive, intuitive dashboard with real-time notifications.</p>
+                    </div>
+                </div>
+                <div class="screenshot-card">
+                    <div class="screenshot-image">
+                        <span class="screenshot-badge">Admin</span>
+                        <img src="assets/screenshots/2.png" alt="Admin Dashboard">
+                    </div>
+                    <div class="screenshot-content">
+                        <h4>Admin Control Center</h4>
+                        <p>Manage all processes, create workflows for any module, handle delegations, and monitor organization-wide workflow activity.</p>
+                    </div>
+                </div>
+                <div class="screenshot-card">
+                    <div class="screenshot-image">
+                        <span class="screenshot-badge">Quick Access</span>
+                        <img src="assets/screenshots/3.png" alt="Document Details">
+                    </div>
+                    <div class="screenshot-content">
+                        <h4>One-Click Document Access</h4>
+                        <p>Navigate directly to any document requiring your action with a single click for maximum efficiency.</p>
+                    </div>
+                </div>
+                <div class="screenshot-card">
+                    <div class="screenshot-image">
+                        <span class="screenshot-badge">Customizable</span>
+                        <img src="assets/screenshots/4.png" alt="Custom Dashboard">
+                    </div>
+                    <div class="screenshot-content">
+                        <h4>Category-Based Dashboards</h4>
+                        <p>Organize workflows by department - HR, Finance, Sales, and more - for a tailored user experience.</p>
+                    </div>
+                </div>
+                <div class="screenshot-card">
+                    <div class="screenshot-image">
+                        <span class="screenshot-badge">Delegation</span>
+                        <img src="assets/screenshots/5.png" alt="Delegation">
+                    </div>
+                    <div class="screenshot-content">
+                        <h4>Seamless Delegation</h4>
+                        <p>Delegate your approval responsibilities to trusted colleagues when you're unavailable or on leave.</p>
+                    </div>
+                </div>
+                <div class="screenshot-card">
+                    <div class="screenshot-image">
+                        <span class="screenshot-badge">Widget</span>
+                        <img src="assets/screenshots/6.png" alt="Workflow Widget">
+                    </div>
+                    <div class="screenshot-content">
+                        <h4>Visual Status Widget</h4>
+                        <p>See approval status at a glance with our embedded workflow widget on any document.</p>
+                    </div>
+                </div>
+                <div class="screenshot-card">
+                    <div class="screenshot-image">
+                        <span class="screenshot-badge">Bulk Actions</span>
+                        <img src="assets/screenshots/7.png" alt="Bulk Approval">
+                    </div>
+                    <div class="screenshot-content">
+                        <h4>Bulk Approval Processing</h4>
+                        <p>Approve multiple requests at once to save time and increase productivity.</p>
+                    </div>
+                </div>
+                <div class="screenshot-card">
+                    <div class="screenshot-image">
+                        <span class="screenshot-badge">Actions</span>
+                        <img src="assets/screenshots/8.png" alt="Approval Actions">
+                    </div>
+                    <div class="screenshot-content">
+                        <h4>Complete Action Set</h4>
+                        <p>Approve, reject, return for correction, or add detailed comments on any approval request.</p>
+                    </div>
+                </div>
+                <div class="screenshot-card full-width">
+                    <div class="screenshot-image">
+                        <span class="screenshot-badge">Attachments</span>
+                        <img src="assets/screenshots/9.png" alt="Attachments">
+                    </div>
+                    <div class="screenshot-content">
+                        <h4>Document Attachment Support</h4>
+                        <p>Attach supporting documents to your approvals that remain visible throughout the entire approval cycle for complete transparency.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Capabilities Section -->
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">
+                    <i class="fas fa-cog"></i>
+                    <span>Advanced Capabilities</span>
+                </div>
+                <h2 class="section-title">Enterprise Features for Complex Workflows</h2>
+                <p class="section-subtitle">Built to handle the most demanding business requirements with powerful, flexible configuration options.</p>
+            </div>
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-sitemap"></i>
+                    </div>
+                    <h4>Organization Structure</h4>
+                    <p>Align workflows with your org structure, departments, teams, and projects.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-user-tag"></i>
+                    </div>
+                    <h4>Role-Based Assignment</h4>
+                    <p>Assign roles, users, or groups to each workflow step for precise control.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4>Manager Hierarchy</h4>
+                    <p>Configure flows based on department managers with multi-level support.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h4>Field Validation</h4>
+                    <p>Make fields required based on current workflow status dynamically.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h4>Custom Functions</h4>
+                    <p>Execute Python functions before or after specific workflow steps.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h4>Attachment Rules</h4>
+                    <p>Require specific documents before allowing workflow progression.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-filter"></i>
+                    </div>
+                    <h4>Custom Conditions</h4>
+                    <p>Write expressions to control workflow behavior without coding.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h4>Smart Notifications</h4>
+                    <p>Automatic alerts via email and in-app notifications.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <h4>SLA Enforcement</h4>
+                    <p>Set time constraints and escalation rules for compliance.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <h4>Multi-Path Routing</h4>
+                    <p>Create conditional paths based on amount, priority, or custom rules.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h4>Custom Dashboards</h4>
+                    <p>Personalize dashboards for different user groups and roles.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h4>Admin Controls</h4>
+                    <p>Centralized management of all workflow processes and settings.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-people-arrows"></i>
+                    </div>
+                    <h4>Delegation System</h4>
+                    <p>Transfer responsibilities with full audit trail and control.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h4>Forward Requests</h4>
+                    <p>Route approvals to alternative reviewers when needed.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h4>Request Information</h4>
+                    <p>Ask for additional details from previous approval steps.</p>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">
+                        <i class="fas fa-undo-alt"></i>
+                    </div>
+                    <h4>Return for Revision</h4>
+                    <p>Send documents back for corrections before continuing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-icon">
+                    <img src="assets/misc/support (1) 1.svg" alt="Support">
+                </div>
+                <div class="cta-content">
+                    <h3>Ready to Transform Your Workflows?</h3>
+                    <p>Our expert team is here to help you implement and customize the perfect workflow solution for your organization.</p>
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope contact-icon"></i>
+                            <span>ogba.awed@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-whatsapp contact-icon"></i>
+                            <span>+966 509 134 503</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="assets/misc/Logo.png" alt="Logo" class="footer-logo">
+                    <div class="footer-divider"></div>
+                    <span class="footer-text">Odoo Workflow Engine - Enterprise Approval Management</span>
+                </div>
+                <div class="footer-badges">
+                    <div class="footer-badge">
+                        <i class="fas fa-code-branch"></i> v17.0
+                    </div>
+                    <div class="footer-badge">
+                        <i class="fas fa-check-circle"></i> Production Ready
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
