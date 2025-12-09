@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Workflow Engine | Approval & Automation</title>
+    <title>Dynamic Workflow Engine</title>
     <style>
         * {
             margin: 0;
@@ -11,174 +11,177 @@
             box-sizing: border-box;
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             color: #475569;
-            line-height: 1.7;
-            background: #ffffff;
-        }
-        .container {
-            max-width: 1200px;
+            line-height: 1.6;
+            font-size: 14px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
         }
 
         /* Header */
         .header {
-            background: #ffffff;
-            padding: 20px 0;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 15px 0;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
         }
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
         }
         .logo img {
-            height: 50px;
+            height: 40px;
         }
         .badges {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            gap: 6px;
         }
         .badge {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: 700;
-            color: #ffffff;
+            color: #fff;
             text-transform: uppercase;
         }
         .badge-community { background: #017E84; }
         .badge-enterprise { background: #714B67; }
         .badge-sh { background: #7C7BAD; }
 
-        /* Hero Section */
+        /* Hero */
         .hero {
             background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
-            padding: 80px 0;
+            padding: 40px 25px;
             text-align: center;
+            border-radius: 12px;
+            margin-bottom: 25px;
         }
         .hero h1 {
-            font-size: 42px;
+            font-size: 28px;
             font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 20px;
-            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 12px;
+            line-height: 1.3;
         }
         .hero h1 span {
             color: #875A7B;
         }
         .hero p {
-            font-size: 18px;
+            font-size: 14px;
             color: #94a3b8;
-            max-width: 700px;
-            margin: 0 auto 40px;
+            max-width: 600px;
+            margin: 0 auto 25px;
         }
         .hero-image {
-            max-width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            margin-top: 40px;
+            border-radius: 8px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            margin-top: 20px;
         }
         .hero-stats {
             display: flex;
             justify-content: center;
-            gap: 60px;
-            margin-top: 50px;
+            gap: 40px;
+            margin-top: 30px;
             flex-wrap: wrap;
         }
-        .hero-stat {
-            text-align: center;
-        }
         .hero-stat-value {
-            font-size: 36px;
+            font-size: 26px;
             font-weight: 800;
             color: #875A7B;
         }
         .hero-stat-label {
-            font-size: 14px;
+            font-size: 12px;
             color: #64748b;
-            margin-top: 5px;
         }
 
         /* Trust Bar */
         .trust-bar {
             background: #f1f5f9;
-            padding: 30px 0;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
         }
         .trust-items {
             display: flex;
             justify-content: center;
-            gap: 50px;
+            gap: 25px;
             flex-wrap: wrap;
         }
         .trust-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #475569;
+            gap: 8px;
+            font-size: 13px;
             font-weight: 600;
+            color: #475569;
         }
         .trust-icon {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             background: #017E84;
             border-radius: 50%;
+            color: white;
+            font-size: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 12px;
         }
 
-        /* Section Styles */
+        /* Sections */
         .section {
-            padding: 80px 0;
+            margin-bottom: 30px;
         }
         .section-gray {
             background: #f8fafc;
+            padding: 25px;
+            border-radius: 10px;
         }
         .section-dark {
             background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+            padding: 25px;
+            border-radius: 10px;
         }
         .section-header {
             text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px;
+            margin-bottom: 25px;
         }
         .section-label {
             display: inline-block;
-            background: linear-gradient(135deg, rgba(113,75,103,0.1) 0%, rgba(1,126,132,0.1) 100%);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 13px;
+            background: rgba(113,75,103,0.1);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 11px;
             font-weight: 700;
             color: #714B67;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-        .section-title {
-            font-size: 36px;
-            font-weight: 800;
-            color: #0f172a;
-            margin-bottom: 15px;
-            line-height: 1.2;
-        }
-        .section-dark .section-title {
-            color: #ffffff;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
         }
         .section-dark .section-label {
             background: rgba(255,255,255,0.1);
             color: #cbd5e1;
         }
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .section-dark .section-title {
+            color: #fff;
+        }
         .section-subtitle {
-            font-size: 17px;
+            font-size: 13px;
             color: #64748b;
+            max-width: 550px;
+            margin: 0 auto;
         }
         .section-dark .section-subtitle {
             color: #94a3b8;
@@ -187,298 +190,283 @@
         /* Features Grid */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
         }
         .feature-card {
-            background: #ffffff;
+            background: #fff;
             border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 32px 24px;
+            border-radius: 10px;
+            padding: 20px 15px;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         .feature-icon {
-            width: 70px;
-            height: 70px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #714B67 0%, #017E84 100%);
-            border-radius: 16px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            box-shadow: 0 10px 30px rgba(113,75,103,0.3);
+            margin: 0 auto 12px;
         }
         .feature-icon img {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             filter: brightness(0) invert(1);
         }
         .feature-card h3 {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
         .feature-card p {
-            font-size: 14px;
+            font-size: 12px;
             color: #64748b;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         /* Benefits Grid */
         .benefits-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
         .benefit-card {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 36px 24px;
+            border-radius: 10px;
+            padding: 20px 10px;
             text-align: center;
         }
         .benefit-icon {
-            width: 70px;
-            height: 70px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #714B67 0%, #875A7B 100%);
-            border-radius: 16px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            box-shadow: 0 15px 40px rgba(113,75,103,0.4);
-            font-size: 28px;
-            color: #ffffff;
+            margin: 0 auto 12px;
+            font-size: 22px;
+            color: #fff;
         }
         .benefit-card h4 {
-            font-size: 28px;
+            font-size: 20px;
             font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 8px;
+            color: #fff;
+            margin-bottom: 4px;
         }
         .benefit-card p {
-            font-size: 15px;
+            font-size: 11px;
             color: #94a3b8;
         }
 
         /* Screenshots */
         .screenshots-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
         .screenshot-card {
-            background: #ffffff;
+            background: #fff;
             border: 1px solid #e2e8f0;
-            border-radius: 16px;
+            border-radius: 10px;
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .screenshot-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         .screenshot-card.full-width {
             grid-column: 1 / -1;
         }
         .screenshot-image {
             background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
-            padding: 20px;
+            padding: 12px;
             position: relative;
         }
         .screenshot-image img {
             width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 6px;
         }
         .screenshot-badge {
             position: absolute;
-            top: 32px;
-            left: 32px;
+            top: 20px;
+            left: 20px;
             background: linear-gradient(135deg, #714B67 0%, #875A7B 100%);
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
             font-weight: 700;
-            color: #ffffff;
+            color: #fff;
             text-transform: uppercase;
         }
         .screenshot-content {
-            padding: 24px;
+            padding: 15px;
         }
         .screenshot-content h4 {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
         .screenshot-content p {
-            font-size: 14px;
+            font-size: 12px;
             color: #64748b;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        /* Capabilities Grid */
+        /* Capabilities */
         .capabilities-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 0;
-            background: #ffffff;
-            border-radius: 16px;
+            background: #fff;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
         }
         .capability-card {
-            padding: 32px 24px;
+            padding: 18px 12px;
             text-align: center;
             border: 1px solid #f1f5f9;
-            transition: background 0.3s;
-        }
-        .capability-card:hover {
-            background: #fafafa;
         }
         .capability-icon {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, rgba(113,75,103,0.1) 0%, rgba(1,126,132,0.1) 100%);
-            border-radius: 14px;
+            width: 40px;
+            height: 40px;
+            background: rgba(113,75,103,0.1);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 22px;
+            margin: 0 auto 10px;
+            font-size: 18px;
             color: #714B67;
         }
         .capability-card h4 {
-            font-size: 15px;
+            font-size: 12px;
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
         .capability-card p {
-            font-size: 13px;
+            font-size: 11px;
             color: #64748b;
-            line-height: 1.6;
+            line-height: 1.4;
         }
 
-        /* CTA Section */
+        /* CTA */
         .cta-section {
-            padding: 60px 0;
-            background: linear-gradient(135deg, rgba(113,75,103,0.05) 0%, rgba(1,126,132,0.05) 100%);
+            background: rgba(113,75,103,0.05);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
         .cta-card {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 50px;
             display: flex;
             align-items: center;
-            gap: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            gap: 25px;
             flex-wrap: wrap;
         }
         .cta-icon img {
-            width: 80px;
+            width: 60px;
         }
         .cta-content {
             flex: 1;
-            min-width: 280px;
+            min-width: 250px;
         }
         .cta-content h3 {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 800;
             color: #0f172a;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
         .cta-content > p {
-            font-size: 16px;
+            font-size: 13px;
             color: #64748b;
-            margin-bottom: 24px;
+            margin-bottom: 15px;
         }
         .contact-grid {
             display: flex;
-            gap: 20px;
+            gap: 12px;
             flex-wrap: wrap;
         }
         .contact-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             background: #f1f5f9;
-            padding: 14px 24px;
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-        .contact-item:hover {
-            background: linear-gradient(135deg, #714B67 0%, #875A7B 100%);
-            color: #ffffff;
-        }
-        .contact-icon {
-            font-size: 20px;
-            color: #714B67;
-        }
-        .contact-item:hover .contact-icon {
-            color: #ffffff;
-        }
-        .contact-item span {
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 13px;
             font-weight: 600;
             color: #0f172a;
         }
-        .contact-item:hover span {
-            color: #ffffff;
+        .contact-icon {
+            color: #714B67;
         }
 
         /* Footer */
         .footer {
             background: #0f172a;
-            padding: 40px 0;
+            padding: 20px;
+            border-radius: 10px;
         }
         .footer-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
         }
         .footer-brand {
             display: flex;
             align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            gap: 15px;
         }
         .footer-logo {
-            height: 36px;
+            height: 30px;
         }
         .footer-text {
             color: #94a3b8;
-            font-size: 14px;
+            font-size: 12px;
         }
         .footer-badges {
             display: flex;
-            gap: 12px;
+            gap: 8px;
         }
         .footer-badge {
             background: rgba(255,255,255,0.1);
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 5px;
             color: #cbd5e1;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .hero-stats { gap: 30px; }
-            .section-title { font-size: 28px; }
-            .cta-card { padding: 30px; text-align: center; }
-            .contact-grid { justify-content: center; }
-            .footer-content { justify-content: center; text-align: center; }
+        @media (max-width: 700px) {
+            .features-grid,
+            .capabilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+            .screenshot-card.full-width {
+                grid-column: auto;
+            }
+        }
+        @media (max-width: 500px) {
+            .features-grid,
+            .benefits-grid,
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
@@ -486,412 +474,396 @@
 
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <img src="assets/misc/Logo.png" alt="Aztek Computers">
-                </div>
-                <div class="badges">
-                    <span class="badge badge-community">Community</span>
-                    <span class="badge badge-enterprise">Enterprise</span>
-                    <span class="badge badge-sh">Odoo.sh</span>
-                </div>
+        <div class="header-content">
+            <div class="logo">
+                <img src="assets/misc/Logo.png" alt="Aztek Computers">
+            </div>
+            <div class="badges">
+                <span class="badge badge-community">Community</span>
+                <span class="badge badge-enterprise">Enterprise</span>
+                <span class="badge badge-sh">Odoo.sh</span>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section class="hero">
-        <div class="container">
-            <h1>Dynamic <span>Workflow Engine</span><br>Approval & Automation</h1>
-            <p>A complete, no-code workflow engine to manage all approval processes in Odoo. Works with any model, requires zero coding, and streamlines your entire organization.</p>
-            <img src="assets/screenshots/laptop_workflow.png" alt="Workflow Dashboard" class="hero-image">
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="hero-stat-value">16+</div>
-                    <div class="hero-stat-label">Key Features</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">100%</div>
-                    <div class="hero-stat-label">Configurable</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">0</div>
-                    <div class="hero-stat-label">Code Required</div>
-                </div>
+        <h1>Dynamic <span>Workflow Engine</span><br>Approval & Automation</h1>
+        <p>Complete no-code workflow engine to manage all approval processes in Odoo. Works with any model, zero coding required.</p>
+        <img src="assets/screenshots/laptop_workflow.png" alt="Workflow Dashboard" class="hero-image">
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">16+</div>
+                <div class="hero-stat-label">Key Features</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">100%</div>
+                <div class="hero-stat-label">Configurable</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">0</div>
+                <div class="hero-stat-label">Code Required</div>
             </div>
         </div>
     </section>
 
     <!-- Trust Bar -->
     <section class="trust-bar">
-        <div class="container">
-            <div class="trust-items">
-                <div class="trust-item">
-                    <div class="trust-icon">&#10003;</div>
-                    <span>Enterprise Security</span>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-icon">&#10003;</div>
-                    <span>Seamless Integration</span>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-icon">&#10003;</div>
-                    <span>Premium Support</span>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-icon">&#10003;</div>
-                    <span>Fast Implementation</span>
-                </div>
+        <div class="trust-items">
+            <div class="trust-item">
+                <div class="trust-icon">&#10003;</div>
+                <span>Enterprise Security</span>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">&#10003;</div>
+                <span>Seamless Integration</span>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">&#10003;</div>
+                <span>Premium Support</span>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">&#10003;</div>
+                <span>Fast Setup</span>
             </div>
         </div>
     </section>
 
-    <!-- Core Features Section -->
+    <!-- Core Features -->
     <section class="section section-gray">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-label">Core Features</div>
-                <h2 class="section-title">Everything You Need for Workflow Management</h2>
-                <p class="section-subtitle">Powerful, flexible features designed to simplify even the most complex approval processes across your organization.</p>
+        <div class="section-header">
+            <div class="section-label">Core Features</div>
+            <h2 class="section-title">Everything You Need for Workflow Management</h2>
+            <p class="section-subtitle">Powerful features to simplify complex approval processes across your organization.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/cogs.png" alt="Workflow">
+                </div>
+                <h3>Dynamic Workflow</h3>
+                <p>Flexible workflows for your business needs</p>
             </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/cogs.png" alt="Dynamic Workflow">
-                    </div>
-                    <h3>Fully Dynamic Workflow</h3>
-                    <p>Create flexible workflows that adapt to your unique business needs</p>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/wrench.png" alt="No Code">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/wrench.png" alt="No Customization">
-                    </div>
-                    <h3>Zero Coding Required</h3>
-                    <p>Ready to use out of the box with intuitive configuration</p>
+                <h3>Zero Coding</h3>
+                <p>Ready to use with intuitive configuration</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/training.png" alt="Dashboard">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/training.png" alt="Dashboard">
-                    </div>
-                    <h3>Powerful Dashboard</h3>
-                    <p>Comprehensive overview of all workflow activities at a glance</p>
+                <h3>Powerful Dashboard</h3>
+                <p>Overview of all workflow activities</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/user.png" alt="Delegation">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/user.png" alt="Delegation">
-                    </div>
-                    <h3>User Delegation</h3>
-                    <p>Transfer approvals seamlessly when team members are unavailable</p>
+                <h3>User Delegation</h3>
+                <p>Transfer approvals when unavailable</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/email.png" alt="Notifications">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/email.png" alt="Email Notification">
-                    </div>
-                    <h3>Smart Notifications</h3>
-                    <p>Automated email alerts for pending approvals and actions</p>
+                <h3>Smart Notifications</h3>
+                <p>Automated email alerts for approvals</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/email_t.png" alt="Templates">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/email_t.png" alt="Email Template">
-                    </div>
-                    <h3>Custom Templates</h3>
-                    <p>Personalize notification emails to match your brand identity</p>
+                <h3>Custom Templates</h3>
+                <p>Personalize notification emails</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/notification.png" alt="SLA">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/notification.png" alt="SLA">
-                    </div>
-                    <h3>SLA Management</h3>
-                    <p>Monitor and enforce service level agreements automatically</p>
+                <h3>SLA Management</h3>
+                <p>Monitor service level agreements</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/multi_path.png" alt="Multi Level">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/multi_path.png" alt="Multi Level">
-                    </div>
-                    <h3>Multi-Level Approvals</h3>
-                    <p>Configure complex multi-tier approval hierarchies with ease</p>
+                <h3>Multi-Level Approvals</h3>
+                <p>Complex approval hierarchies</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/license.png" alt="Docs">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/license.png" alt="Attachment">
-                    </div>
-                    <h3>Document Validation</h3>
-                    <p>Ensure required documents are attached before approval</p>
+                <h3>Document Validation</h3>
+                <p>Required attachments before approval</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/puzzle.png" alt="Actions">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/puzzle.png" alt="Actions">
-                    </div>
-                    <h3>Step Actions</h3>
-                    <p>Execute custom actions at each workflow stage automatically</p>
+                <h3>Step Actions</h3>
+                <p>Custom actions at each stage</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/consultation.png" alt="Comments">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/consultation.png" alt="Comments">
-                    </div>
-                    <h3>Approval Comments</h3>
-                    <p>Add notes and feedback throughout the approval process</p>
+                <h3>Approval Comments</h3>
+                <p>Notes throughout the process</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="assets/icons/update.png" alt="Routing">
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/icons/update.png" alt="Return Forward">
-                    </div>
-                    <h3>Flexible Routing</h3>
-                    <p>Return, forward, and escalate requests as needed</p>
-                </div>
+                <h3>Flexible Routing</h3>
+                <p>Return, forward, escalate requests</p>
             </div>
         </div>
     </section>
 
-    <!-- Benefits Section -->
+    <!-- Benefits -->
     <section class="section section-dark">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-label">Key Benefits</div>
-                <h2 class="section-title">Why Businesses Choose Our Workflow Engine</h2>
-                <p class="section-subtitle">Transform your approval processes and boost organizational efficiency with our enterprise-grade solution.</p>
+        <div class="section-header">
+            <div class="section-label">Key Benefits</div>
+            <h2 class="section-title">Why Choose Our Workflow Engine</h2>
+            <p class="section-subtitle">Transform your approval processes with enterprise-grade solution.</p>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">&#9889;</div>
+                <h4>10x Faster</h4>
+                <p>Approval Processing</p>
             </div>
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="benefit-icon">&#9889;</div>
-                    <h4>10x Faster</h4>
-                    <p>Approval Processing</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">&#128065;</div>
-                    <h4>100%</h4>
-                    <p>Process Visibility</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">&#9881;</div>
-                    <h4>Any Model</h4>
-                    <p>Full Compatibility</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">&#128337;</div>
-                    <h4>24/7</h4>
-                    <p>SLA Monitoring</p>
-                </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">&#128065;</div>
+                <h4>100%</h4>
+                <p>Process Visibility</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">&#9881;</div>
+                <h4>Any Model</h4>
+                <p>Full Compatibility</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">&#128337;</div>
+                <h4>24/7</h4>
+                <p>SLA Monitoring</p>
             </div>
         </div>
     </section>
 
-    <!-- Screenshots Section -->
+    <!-- Screenshots -->
     <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-label">Product Tour</div>
-                <h2 class="section-title">See the Workflow Engine in Action</h2>
-                <p class="section-subtitle">Explore our intuitive interface and discover how easy it is to manage complex approval workflows.</p>
+        <div class="section-header">
+            <div class="section-label">Product Tour</div>
+            <h2 class="section-title">See the Workflow Engine in Action</h2>
+            <p class="section-subtitle">Explore our intuitive interface for managing approval workflows.</p>
+        </div>
+        <div class="screenshots-grid">
+            <div class="screenshot-card">
+                <div class="screenshot-image">
+                    <span class="screenshot-badge">Dashboard</span>
+                    <img src="assets/screenshots/1.png" alt="Dashboard">
+                </div>
+                <div class="screenshot-content">
+                    <h4>Personal Approval Dashboard</h4>
+                    <p>Track pending tasks and workflow items in one place.</p>
+                </div>
             </div>
-            <div class="screenshots-grid">
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Dashboard</span>
-                        <img src="assets/screenshots/1.png" alt="User Dashboard">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Personal Approval Dashboard</h4>
-                        <p>Track all your pending tasks, approvals, and workflow items in one responsive, intuitive dashboard.</p>
-                    </div>
+            <div class="screenshot-card">
+                <div class="screenshot-image">
+                    <span class="screenshot-badge">Admin</span>
+                    <img src="assets/screenshots/2.png" alt="Admin">
                 </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Admin</span>
-                        <img src="assets/screenshots/2.png" alt="Admin Dashboard">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Admin Control Center</h4>
-                        <p>Manage all processes, create workflows for any module, and monitor organization-wide activity.</p>
-                    </div>
+                <div class="screenshot-content">
+                    <h4>Admin Control Center</h4>
+                    <p>Manage processes and monitor organization activity.</p>
                 </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Quick Access</span>
-                        <img src="assets/screenshots/3.png" alt="Document Details">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>One-Click Document Access</h4>
-                        <p>Navigate directly to any document requiring your action with a single click.</p>
-                    </div>
+            </div>
+            <div class="screenshot-card">
+                <div class="screenshot-image">
+                    <span class="screenshot-badge">Quick Access</span>
+                    <img src="assets/screenshots/3.png" alt="Documents">
                 </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Customizable</span>
-                        <img src="assets/screenshots/4.png" alt="Custom Dashboard">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Category-Based Dashboards</h4>
-                        <p>Organize workflows by department - HR, Finance, Sales, and more.</p>
-                    </div>
+                <div class="screenshot-content">
+                    <h4>One-Click Document Access</h4>
+                    <p>Navigate directly to documents requiring action.</p>
                 </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Delegation</span>
-                        <img src="assets/screenshots/5.png" alt="Delegation">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Seamless Delegation</h4>
-                        <p>Delegate your approval responsibilities to trusted colleagues when unavailable.</p>
-                    </div>
+            </div>
+            <div class="screenshot-card">
+                <div class="screenshot-image">
+                    <span class="screenshot-badge">Categories</span>
+                    <img src="assets/screenshots/4.png" alt="Categories">
                 </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Widget</span>
-                        <img src="assets/screenshots/6.png" alt="Workflow Widget">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Visual Status Widget</h4>
-                        <p>See approval status at a glance with our embedded workflow widget.</p>
-                    </div>
+                <div class="screenshot-content">
+                    <h4>Category-Based Dashboards</h4>
+                    <p>Organize by department - HR, Finance, Sales.</p>
                 </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Bulk Actions</span>
-                        <img src="assets/screenshots/7.png" alt="Bulk Approval">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Bulk Approval Processing</h4>
-                        <p>Approve multiple requests at once to save time and increase productivity.</p>
-                    </div>
+            </div>
+            <div class="screenshot-card">
+                <div class="screenshot-image">
+                    <span class="screenshot-badge">Delegation</span>
+                    <img src="assets/screenshots/5.png" alt="Delegation">
                 </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Actions</span>
-                        <img src="assets/screenshots/8.png" alt="Approval Actions">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Complete Action Set</h4>
-                        <p>Approve, reject, return for correction, or add detailed comments on any request.</p>
-                    </div>
+                <div class="screenshot-content">
+                    <h4>Seamless Delegation</h4>
+                    <p>Delegate approvals to colleagues when unavailable.</p>
                 </div>
-                <div class="screenshot-card full-width">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Attachments</span>
-                        <img src="assets/screenshots/9.png" alt="Attachments">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Document Attachment Support</h4>
-                        <p>Attach supporting documents to your approvals that remain visible throughout the entire approval cycle for complete transparency.</p>
-                    </div>
+            </div>
+            <div class="screenshot-card">
+                <div class="screenshot-image">
+                    <span class="screenshot-badge">Widget</span>
+                    <img src="assets/screenshots/6.png" alt="Widget">
+                </div>
+                <div class="screenshot-content">
+                    <h4>Visual Status Widget</h4>
+                    <p>See approval status with embedded widget.</p>
+                </div>
+            </div>
+            <div class="screenshot-card">
+                <div class="screenshot-image">
+                    <span class="screenshot-badge">Bulk</span>
+                    <img src="assets/screenshots/7.png" alt="Bulk">
+                </div>
+                <div class="screenshot-content">
+                    <h4>Bulk Approval Processing</h4>
+                    <p>Approve multiple requests at once.</p>
+                </div>
+            </div>
+            <div class="screenshot-card">
+                <div class="screenshot-image">
+                    <span class="screenshot-badge">Actions</span>
+                    <img src="assets/screenshots/8.png" alt="Actions">
+                </div>
+                <div class="screenshot-content">
+                    <h4>Complete Action Set</h4>
+                    <p>Approve, reject, return, or add comments.</p>
+                </div>
+            </div>
+            <div class="screenshot-card full-width">
+                <div class="screenshot-image">
+                    <span class="screenshot-badge">Attachments</span>
+                    <img src="assets/screenshots/9.png" alt="Attachments">
+                </div>
+                <div class="screenshot-content">
+                    <h4>Document Attachment Support</h4>
+                    <p>Attach supporting documents visible throughout the approval cycle.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Advanced Capabilities Section -->
+    <!-- Advanced Capabilities -->
     <section class="section section-gray">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-label">Advanced Capabilities</div>
-                <h2 class="section-title">Enterprise Features for Complex Workflows</h2>
-                <p class="section-subtitle">Built to handle the most demanding business requirements with powerful, flexible configuration options.</p>
+        <div class="section-header">
+            <div class="section-label">Advanced Capabilities</div>
+            <h2 class="section-title">Enterprise Features</h2>
+            <p class="section-subtitle">Powerful configuration options for demanding requirements.</p>
+        </div>
+        <div class="capabilities-grid">
+            <div class="capability-card">
+                <div class="capability-icon">&#128101;</div>
+                <h4>Org Structure</h4>
+                <p>Align with departments & teams</p>
             </div>
-            <div class="capabilities-grid">
-                <div class="capability-card">
-                    <div class="capability-icon">&#128101;</div>
-                    <h4>Organization Structure</h4>
-                    <p>Align workflows with your org structure, departments, teams, and projects.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128100;</div>
-                    <h4>Role-Based Assignment</h4>
-                    <p>Assign roles, users, or groups to each workflow step for precise control.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128188;</div>
-                    <h4>Manager Hierarchy</h4>
-                    <p>Configure flows based on department managers with multi-level support.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#9989;</div>
-                    <h4>Field Validation</h4>
-                    <p>Make fields required based on current workflow status dynamically.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128187;</div>
-                    <h4>Custom Functions</h4>
-                    <p>Execute Python functions before or after specific workflow steps.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128206;</div>
-                    <h4>Attachment Rules</h4>
-                    <p>Require specific documents before allowing workflow progression.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128295;</div>
-                    <h4>Custom Conditions</h4>
-                    <p>Write expressions to control workflow behavior without coding.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128276;</div>
-                    <h4>Smart Notifications</h4>
-                    <p>Automatic alerts via email and in-app notifications.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#9201;</div>
-                    <h4>SLA Enforcement</h4>
-                    <p>Set time constraints and escalation rules for compliance.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128256;</div>
-                    <h4>Multi-Path Routing</h4>
-                    <p>Create conditional paths based on amount, priority, or custom rules.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#127912;</div>
-                    <h4>Custom Dashboards</h4>
-                    <p>Personalize dashboards for different user groups and roles.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128737;</div>
-                    <h4>Admin Controls</h4>
-                    <p>Centralized management of all workflow processes and settings.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128101;</div>
-                    <h4>Delegation System</h4>
-                    <p>Transfer responsibilities with full audit trail and control.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#10145;</div>
-                    <h4>Forward Requests</h4>
-                    <p>Route approvals to alternative reviewers when needed.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#128172;</div>
-                    <h4>Request Information</h4>
-                    <p>Ask for additional details from previous approval steps.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">&#8634;</div>
-                    <h4>Return for Revision</h4>
-                    <p>Send documents back for corrections before continuing.</p>
-                </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128100;</div>
+                <h4>Role-Based</h4>
+                <p>Assign users or groups</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128188;</div>
+                <h4>Manager Hierarchy</h4>
+                <p>Multi-level manager flows</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#9989;</div>
+                <h4>Field Validation</h4>
+                <p>Dynamic required fields</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128187;</div>
+                <h4>Custom Functions</h4>
+                <p>Execute Python code</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128206;</div>
+                <h4>Attachment Rules</h4>
+                <p>Require documents</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128295;</div>
+                <h4>Conditions</h4>
+                <p>Expression-based control</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128276;</div>
+                <h4>Notifications</h4>
+                <p>Email & in-app alerts</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#9201;</div>
+                <h4>SLA Enforcement</h4>
+                <p>Time constraints & escalation</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128256;</div>
+                <h4>Multi-Path</h4>
+                <p>Conditional routing</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#127912;</div>
+                <h4>Dashboards</h4>
+                <p>Role-based views</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128737;</div>
+                <h4>Admin Controls</h4>
+                <p>Centralized management</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128101;</div>
+                <h4>Delegation</h4>
+                <p>Full audit trail</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#10145;</div>
+                <h4>Forward</h4>
+                <p>Route to others</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#128172;</div>
+                <h4>Request Info</h4>
+                <p>Ask for details</p>
+            </div>
+            <div class="capability-card">
+                <div class="capability-icon">&#8634;</div>
+                <h4>Return</h4>
+                <p>Send back for revision</p>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- CTA -->
     <section class="cta-section">
-        <div class="container">
-            <div class="cta-card">
-                <div class="cta-icon">
-                    <img src="assets/misc/support (1) 1.svg" alt="Support">
-                </div>
-                <div class="cta-content">
-                    <h3>Ready to Transform Your Workflows?</h3>
-                    <p>Our expert team is here to help you implement and customize the perfect workflow solution for your organization.</p>
-                    <div class="contact-grid">
-                        <div class="contact-item">
-                            <span class="contact-icon">&#9993;</span>
-                            <span>ogba.awed@gmail.com</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">&#128241;</span>
-                            <span>+966 509 134 503</span>
-                        </div>
+        <div class="cta-card">
+            <div class="cta-icon">
+                <img src="assets/misc/support (1) 1.svg" alt="Support">
+            </div>
+            <div class="cta-content">
+                <h3>Ready to Transform Your Workflows?</h3>
+                <p>Our team is here to help implement the perfect solution for your organization.</p>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <span class="contact-icon">&#9993;</span>
+                        <span>ogba.awed@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">&#128241;</span>
+                        <span>+966 509 134 503</span>
                     </div>
                 </div>
             </div>
@@ -900,16 +872,14 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <img src="assets/misc/Logo.png" alt="Logo" class="footer-logo">
-                    <span class="footer-text">Dynamic Workflow Engine - Enterprise Approval Management</span>
-                </div>
-                <div class="footer-badges">
-                    <div class="footer-badge">v17.0</div>
-                    <div class="footer-badge">Production Ready</div>
-                </div>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/misc/Logo.png" alt="Logo" class="footer-logo">
+                <span class="footer-text">Dynamic Workflow Engine</span>
+            </div>
+            <div class="footer-badges">
+                <div class="footer-badge">v17.0</div>
+                <div class="footer-badge">Production Ready</div>
             </div>
         </div>
     </footer>
