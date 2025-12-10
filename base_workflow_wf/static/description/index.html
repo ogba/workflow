@@ -1,888 +1,333 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Workflow Engine</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            color: #475569;
-            line-height: 1.6;
-            font-size: 14px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-        }
+<div style="font-family: Arial, sans-serif; color: #333; max-width: 900px;">
 
-        /* Header */
-        .header {
-            padding: 15px 0;
-            border-bottom: 2px solid #e2e8f0;
-            margin-bottom: 20px;
-        }
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .logo img {
-            height: 40px;
-        }
-        .badges {
-            display: flex;
-            gap: 6px;
-        }
-        .badge {
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-        }
-        .badge-community { background: #017E84; }
-        .badge-enterprise { background: #714B67; }
-        .badge-sh { background: #7C7BAD; }
+    <!-- Hero Banner -->
+    <div style="background: linear-gradient(135deg, #714B67, #875A7B); padding: 30px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+        <h1 style="color: #fff; font-size: 24px; margin: 0 0 10px 0;">Dynamic Workflow Engine</h1>
+        <p style="color: #e0d0dc; font-size: 14px; margin: 0 0 20px 0;">Complete no-code workflow & approval automation for Odoo</p>
+        <img src="assets/screenshots/laptop_workflow.png" style="max-width: 100%; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);"/>
+    </div>
 
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
-            padding: 40px 25px;
-            text-align: center;
-            border-radius: 12px;
-            margin-bottom: 25px;
-        }
-        .hero h1 {
-            font-size: 28px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 12px;
-            line-height: 1.3;
-        }
-        .hero h1 span {
-            color: #875A7B;
-        }
-        .hero p {
-            font-size: 14px;
-            color: #94a3b8;
-            max-width: 600px;
-            margin: 0 auto 25px;
-        }
-        .hero-image {
-            border-radius: 8px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            margin-top: 20px;
-        }
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-        .hero-stat-value {
-            font-size: 26px;
-            font-weight: 800;
-            color: #875A7B;
-        }
-        .hero-stat-label {
-            font-size: 12px;
-            color: #64748b;
-        }
+    <!-- Stats Bar -->
+    <table style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
+        <tr>
+            <td style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                <div style="font-size: 22px; font-weight: bold; color: #714B67;">16+</div>
+                <div style="font-size: 11px; color: #666;">Features</div>
+            </td>
+            <td style="width: 10px;"></td>
+            <td style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                <div style="font-size: 22px; font-weight: bold; color: #714B67;">100%</div>
+                <div style="font-size: 11px; color: #666;">Configurable</div>
+            </td>
+            <td style="width: 10px;"></td>
+            <td style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                <div style="font-size: 22px; font-weight: bold; color: #714B67;">0</div>
+                <div style="font-size: 11px; color: #666;">Code Required</div>
+            </td>
+            <td style="width: 10px;"></td>
+            <td style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                <div style="font-size: 22px; font-weight: bold; color: #017E84;">Any</div>
+                <div style="font-size: 11px; color: #666;">Odoo Model</div>
+            </td>
+        </tr>
+    </table>
 
-        /* Trust Bar */
-        .trust-bar {
-            background: #f1f5f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-        }
-        .trust-items {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-        .trust-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #475569;
-        }
-        .trust-icon {
-            width: 20px;
-            height: 20px;
-            background: #017E84;
-            border-radius: 50%;
-            color: white;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    <!-- Badges -->
+    <div style="text-align: center; margin-bottom: 25px;">
+        <span style="display: inline-block; background: #017E84; color: #fff; padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: bold; margin: 3px;">COMMUNITY</span>
+        <span style="display: inline-block; background: #714B67; color: #fff; padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: bold; margin: 3px;">ENTERPRISE</span>
+        <span style="display: inline-block; background: #7C7BAD; color: #fff; padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: bold; margin: 3px;">ODOO.SH</span>
+    </div>
 
-        /* Sections */
-        .section {
-            margin-bottom: 30px;
-        }
-        .section-gray {
-            background: #f8fafc;
-            padding: 25px;
-            border-radius: 10px;
-        }
-        .section-dark {
-            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
-            padding: 25px;
-            border-radius: 10px;
-        }
-        .section-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .section-label {
-            display: inline-block;
-            background: rgba(113,75,103,0.1);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #714B67;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-        .section-dark .section-label {
-            background: rgba(255,255,255,0.1);
-            color: #cbd5e1;
-        }
-        .section-title {
-            font-size: 22px;
-            font-weight: 800;
-            color: #0f172a;
-            margin-bottom: 8px;
-        }
-        .section-dark .section-title {
-            color: #fff;
-        }
-        .section-subtitle {
-            font-size: 13px;
-            color: #64748b;
-            max-width: 550px;
-            margin: 0 auto;
-        }
-        .section-dark .section-subtitle {
-            color: #94a3b8;
-        }
+    <!-- Core Features Section -->
+    <h2 style="color: #714B67; font-size: 18px; border-bottom: 2px solid #714B67; padding-bottom: 8px; margin: 25px 0 15px 0;">Core Features</h2>
 
-        /* Features Grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-        .feature-card {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 20px 15px;
-            text-align: center;
-        }
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #714B67 0%, #017E84 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-        }
-        .feature-icon img {
-            width: 24px;
-            height: 24px;
-            filter: brightness(0) invert(1);
-        }
-        .feature-card h3 {
-            font-size: 13px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 6px;
-        }
-        .feature-card p {
-            font-size: 12px;
-            color: #64748b;
-            line-height: 1.5;
-        }
-
-        /* Benefits Grid */
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-        .benefit-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 20px 10px;
-            text-align: center;
-        }
-        .benefit-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #714B67 0%, #875A7B 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 22px;
-            color: #fff;
-        }
-        .benefit-card h4 {
-            font-size: 20px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-        .benefit-card p {
-            font-size: 11px;
-            color: #94a3b8;
-        }
-
-        /* Screenshots */
-        .screenshots-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        .screenshot-card {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .screenshot-card.full-width {
-            grid-column: 1 / -1;
-        }
-        .screenshot-image {
-            background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
-            padding: 12px;
-            position: relative;
-        }
-        .screenshot-image img {
-            width: 100%;
-            border-radius: 6px;
-        }
-        .screenshot-badge {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: linear-gradient(135deg, #714B67 0%, #875A7B 100%);
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-        }
-        .screenshot-content {
-            padding: 15px;
-        }
-        .screenshot-content h4 {
-            font-size: 14px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 5px;
-        }
-        .screenshot-content p {
-            font-size: 12px;
-            color: #64748b;
-            line-height: 1.5;
-        }
-
-        /* Capabilities */
-        .capabilities-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
-        }
-        .capability-card {
-            padding: 18px 12px;
-            text-align: center;
-            border: 1px solid #f1f5f9;
-        }
-        .capability-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(113,75,103,0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-            font-size: 18px;
-            color: #714B67;
-        }
-        .capability-card h4 {
-            font-size: 12px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 5px;
-        }
-        .capability-card p {
-            font-size: 11px;
-            color: #64748b;
-            line-height: 1.4;
-        }
-
-        /* CTA */
-        .cta-section {
-            background: rgba(113,75,103,0.05);
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .cta-card {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-        .cta-icon img {
-            width: 60px;
-        }
-        .cta-content {
-            flex: 1;
-            min-width: 250px;
-        }
-        .cta-content h3 {
-            font-size: 18px;
-            font-weight: 800;
-            color: #0f172a;
-            margin-bottom: 6px;
-        }
-        .cta-content > p {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 15px;
-        }
-        .contact-grid {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #f1f5f9;
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #0f172a;
-        }
-        .contact-icon {
-            color: #714B67;
-        }
-
-        /* Footer */
-        .footer {
-            background: #0f172a;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .footer-logo {
-            height: 30px;
-        }
-        .footer-text {
-            color: #94a3b8;
-            font-size: 12px;
-        }
-        .footer-badges {
-            display: flex;
-            gap: 8px;
-        }
-        .footer-badge {
-            background: rgba(255,255,255,0.1);
-            padding: 6px 12px;
-            border-radius: 5px;
-            color: #cbd5e1;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        /* Responsive */
-        @media (max-width: 700px) {
-            .features-grid,
-            .capabilities-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .benefits-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .screenshots-grid {
-                grid-template-columns: 1fr;
-            }
-            .screenshot-card.full-width {
-                grid-column: auto;
-            }
-        }
-        @media (max-width: 500px) {
-            .features-grid,
-            .benefits-grid,
-            .capabilities-grid {
-                grid-template-columns: 1fr;
-            }
-            .hero h1 {
-                font-size: 24px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <img src="assets/misc/Logo.png" alt="Aztek Computers">
-            </div>
-            <div class="badges">
-                <span class="badge badge-community">Community</span>
-                <span class="badge badge-enterprise">Enterprise</span>
-                <span class="badge badge-sh">Odoo.sh</span>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero -->
-    <section class="hero">
-        <h1>Dynamic <span>Workflow Engine</span><br>Approval & Automation</h1>
-        <p>Complete no-code workflow engine to manage all approval processes in Odoo. Works with any model, zero coding required.</p>
-        <img src="assets/screenshots/laptop_workflow.png" alt="Workflow Dashboard" class="hero-image">
-        <div class="hero-stats">
-            <div class="hero-stat">
-                <div class="hero-stat-value">16+</div>
-                <div class="hero-stat-label">Key Features</div>
-            </div>
-            <div class="hero-stat">
-                <div class="hero-stat-value">100%</div>
-                <div class="hero-stat-label">Configurable</div>
-            </div>
-            <div class="hero-stat">
-                <div class="hero-stat-value">0</div>
-                <div class="hero-stat-label">Code Required</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Trust Bar -->
-    <section class="trust-bar">
-        <div class="trust-items">
-            <div class="trust-item">
-                <div class="trust-icon">&#10003;</div>
-                <span>Enterprise Security</span>
-            </div>
-            <div class="trust-item">
-                <div class="trust-icon">&#10003;</div>
-                <span>Seamless Integration</span>
-            </div>
-            <div class="trust-item">
-                <div class="trust-icon">&#10003;</div>
-                <span>Premium Support</span>
-            </div>
-            <div class="trust-item">
-                <div class="trust-icon">&#10003;</div>
-                <span>Fast Setup</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Core Features -->
-    <section class="section section-gray">
-        <div class="section-header">
-            <div class="section-label">Core Features</div>
-            <h2 class="section-title">Everything You Need for Workflow Management</h2>
-            <p class="section-subtitle">Powerful features to simplify complex approval processes across your organization.</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/cogs.png" alt="Workflow">
-                </div>
-                <h3>Dynamic Workflow</h3>
-                <p>Flexible workflows for your business needs</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/wrench.png" alt="No Code">
-                </div>
-                <h3>Zero Coding</h3>
-                <p>Ready to use with intuitive configuration</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/training.png" alt="Dashboard">
-                </div>
-                <h3>Powerful Dashboard</h3>
-                <p>Overview of all workflow activities</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/user.png" alt="Delegation">
-                </div>
-                <h3>User Delegation</h3>
-                <p>Transfer approvals when unavailable</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/email.png" alt="Notifications">
-                </div>
-                <h3>Smart Notifications</h3>
-                <p>Automated email alerts for approvals</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/email_t.png" alt="Templates">
-                </div>
-                <h3>Custom Templates</h3>
-                <p>Personalize notification emails</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/notification.png" alt="SLA">
-                </div>
-                <h3>SLA Management</h3>
-                <p>Monitor service level agreements</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/multi_path.png" alt="Multi Level">
-                </div>
-                <h3>Multi-Level Approvals</h3>
-                <p>Complex approval hierarchies</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/license.png" alt="Docs">
-                </div>
-                <h3>Document Validation</h3>
-                <p>Required attachments before approval</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/puzzle.png" alt="Actions">
-                </div>
-                <h3>Step Actions</h3>
-                <p>Custom actions at each stage</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/consultation.png" alt="Comments">
-                </div>
-                <h3>Approval Comments</h3>
-                <p>Notes throughout the process</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="assets/icons/update.png" alt="Routing">
-                </div>
-                <h3>Flexible Routing</h3>
-                <p>Return, forward, escalate requests</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Benefits -->
-    <section class="section section-dark">
-        <div class="section-header">
-            <div class="section-label">Key Benefits</div>
-            <h2 class="section-title">Why Choose Our Workflow Engine</h2>
-            <p class="section-subtitle">Transform your approval processes with enterprise-grade solution.</p>
-        </div>
-        <div class="benefits-grid">
-            <div class="benefit-card">
-                <div class="benefit-icon">&#9889;</div>
-                <h4>10x Faster</h4>
-                <p>Approval Processing</p>
-            </div>
-            <div class="benefit-card">
-                <div class="benefit-icon">&#128065;</div>
-                <h4>100%</h4>
-                <p>Process Visibility</p>
-            </div>
-            <div class="benefit-card">
-                <div class="benefit-icon">&#9881;</div>
-                <h4>Any Model</h4>
-                <p>Full Compatibility</p>
-            </div>
-            <div class="benefit-card">
-                <div class="benefit-icon">&#128337;</div>
-                <h4>24/7</h4>
-                <p>SLA Monitoring</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Screenshots -->
-    <section class="section">
-        <div class="section-header">
-            <div class="section-label">Product Tour</div>
-            <h2 class="section-title">See the Workflow Engine in Action</h2>
-            <p class="section-subtitle">Explore our intuitive interface for managing approval workflows.</p>
-        </div>
-        <div class="screenshots-grid">
-            <div class="screenshot-card">
-                <div class="screenshot-image">
-                    <span class="screenshot-badge">Dashboard</span>
-                    <img src="assets/screenshots/1.png" alt="Dashboard">
-                </div>
-                <div class="screenshot-content">
-                    <h4>Personal Approval Dashboard</h4>
-                    <p>Track pending tasks and workflow items in one place.</p>
-                </div>
-            </div>
-            <div class="screenshot-card">
-                <div class="screenshot-image">
-                    <span class="screenshot-badge">Admin</span>
-                    <img src="assets/screenshots/2.png" alt="Admin">
-                </div>
-                <div class="screenshot-content">
-                    <h4>Admin Control Center</h4>
-                    <p>Manage processes and monitor organization activity.</p>
-                </div>
-            </div>
-            <div class="screenshot-card">
-                <div class="screenshot-image">
-                    <span class="screenshot-badge">Quick Access</span>
-                    <img src="assets/screenshots/3.png" alt="Documents">
-                </div>
-                <div class="screenshot-content">
-                    <h4>One-Click Document Access</h4>
-                    <p>Navigate directly to documents requiring action.</p>
-                </div>
-            </div>
-            <div class="screenshot-card">
-                <div class="screenshot-image">
-                    <span class="screenshot-badge">Categories</span>
-                    <img src="assets/screenshots/4.png" alt="Categories">
-                </div>
-                <div class="screenshot-content">
-                    <h4>Category-Based Dashboards</h4>
-                    <p>Organize by department - HR, Finance, Sales.</p>
-                </div>
-            </div>
-            <div class="screenshot-card">
-                <div class="screenshot-image">
-                    <span class="screenshot-badge">Delegation</span>
-                    <img src="assets/screenshots/5.png" alt="Delegation">
-                </div>
-                <div class="screenshot-content">
-                    <h4>Seamless Delegation</h4>
-                    <p>Delegate approvals to colleagues when unavailable.</p>
-                </div>
-            </div>
-            <div class="screenshot-card">
-                <div class="screenshot-image">
-                    <span class="screenshot-badge">Widget</span>
-                    <img src="assets/screenshots/6.png" alt="Widget">
-                </div>
-                <div class="screenshot-content">
-                    <h4>Visual Status Widget</h4>
-                    <p>See approval status with embedded widget.</p>
-                </div>
-            </div>
-            <div class="screenshot-card">
-                <div class="screenshot-image">
-                    <span class="screenshot-badge">Bulk</span>
-                    <img src="assets/screenshots/7.png" alt="Bulk">
-                </div>
-                <div class="screenshot-content">
-                    <h4>Bulk Approval Processing</h4>
-                    <p>Approve multiple requests at once.</p>
-                </div>
-            </div>
-            <div class="screenshot-card">
-                <div class="screenshot-image">
-                    <span class="screenshot-badge">Actions</span>
-                    <img src="assets/screenshots/8.png" alt="Actions">
-                </div>
-                <div class="screenshot-content">
-                    <h4>Complete Action Set</h4>
-                    <p>Approve, reject, return, or add comments.</p>
-                </div>
-            </div>
-            <div class="screenshot-card full-width">
-                <div class="screenshot-image">
-                    <span class="screenshot-badge">Attachments</span>
-                    <img src="assets/screenshots/9.png" alt="Attachments">
-                </div>
-                <div class="screenshot-content">
-                    <h4>Document Attachment Support</h4>
-                    <p>Attach supporting documents visible throughout the approval cycle.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Advanced Capabilities -->
-    <section class="section section-gray">
-        <div class="section-header">
-            <div class="section-label">Advanced Capabilities</div>
-            <h2 class="section-title">Enterprise Features</h2>
-            <p class="section-subtitle">Powerful configuration options for demanding requirements.</p>
-        </div>
-        <div class="capabilities-grid">
-            <div class="capability-card">
-                <div class="capability-icon">&#128101;</div>
-                <h4>Org Structure</h4>
-                <p>Align with departments & teams</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128100;</div>
-                <h4>Role-Based</h4>
-                <p>Assign users or groups</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128188;</div>
-                <h4>Manager Hierarchy</h4>
-                <p>Multi-level manager flows</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#9989;</div>
-                <h4>Field Validation</h4>
-                <p>Dynamic required fields</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128187;</div>
-                <h4>Custom Functions</h4>
-                <p>Execute Python code</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128206;</div>
-                <h4>Attachment Rules</h4>
-                <p>Require documents</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128295;</div>
-                <h4>Conditions</h4>
-                <p>Expression-based control</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128276;</div>
-                <h4>Notifications</h4>
-                <p>Email & in-app alerts</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#9201;</div>
-                <h4>SLA Enforcement</h4>
-                <p>Time constraints & escalation</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128256;</div>
-                <h4>Multi-Path</h4>
-                <p>Conditional routing</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#127912;</div>
-                <h4>Dashboards</h4>
-                <p>Role-based views</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128737;</div>
-                <h4>Admin Controls</h4>
-                <p>Centralized management</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128101;</div>
-                <h4>Delegation</h4>
-                <p>Full audit trail</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#10145;</div>
-                <h4>Forward</h4>
-                <p>Route to others</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#128172;</div>
-                <h4>Request Info</h4>
-                <p>Ask for details</p>
-            </div>
-            <div class="capability-card">
-                <div class="capability-icon">&#8634;</div>
-                <h4>Return</h4>
-                <p>Send back for revision</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-section">
-        <div class="cta-card">
-            <div class="cta-icon">
-                <img src="assets/misc/support (1) 1.svg" alt="Support">
-            </div>
-            <div class="cta-content">
-                <h3>Ready to Transform Your Workflows?</h3>
-                <p>Our team is here to help implement the perfect solution for your organization.</p>
-                <div class="contact-grid">
-                    <div class="contact-item">
-                        <span class="contact-icon">&#9993;</span>
-                        <span>ogba.awed@gmail.com</span>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <tr>
+            <td style="width: 33%; padding: 10px; vertical-align: top;">
+                <div style="background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #714B67, #017E84); border-radius: 10px; margin: 0 auto 10px; line-height: 50px;">
+                        <span style="font-size: 24px; color: #ffffff;">&#9881;</span>
                     </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">&#128241;</span>
-                        <span>+966 509 134 503</span>
+                    <div style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px;">Dynamic Workflow</div>
+                    <div style="font-size: 11px; color: #666;">Flexible workflows for your business</div>
+                </div>
+            </td>
+            <td style="width: 33%; padding: 10px; vertical-align: top;">
+                <div style="background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #714B67, #017E84); border-radius: 10px; margin: 0 auto 10px; line-height: 50px;">
+                        <span style="font-size: 24px; color: #ffffff;">&#10010;</span>
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px;">Zero Coding</div>
+                    <div style="font-size: 11px; color: #666;">Ready to use, no development needed</div>
+                </div>
+            </td>
+            <td style="width: 33%; padding: 10px; vertical-align: top;">
+                <div style="background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #714B67, #017E84); border-radius: 10px; margin: 0 auto 10px; line-height: 50px;">
+                        <span style="font-size: 24px; color: #ffffff;">&#9776;</span>
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px;">Dashboard</div>
+                    <div style="font-size: 11px; color: #666;">Complete workflow overview</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px; vertical-align: top;">
+                <div style="background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #714B67, #017E84); border-radius: 10px; margin: 0 auto 10px; line-height: 50px;">
+                        <span style="font-size: 24px; color: #ffffff;">&#8644;</span>
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px;">User Delegation</div>
+                    <div style="font-size: 11px; color: #666;">Transfer approvals when unavailable</div>
+                </div>
+            </td>
+            <td style="width: 33%; padding: 10px; vertical-align: top;">
+                <div style="background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #714B67, #017E84); border-radius: 10px; margin: 0 auto 10px; line-height: 50px;">
+                        <span style="font-size: 24px; color: #ffffff;">&#9993;</span>
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px;">Notifications</div>
+                    <div style="font-size: 11px; color: #666;">Automated email alerts</div>
+                </div>
+            </td>
+            <td style="width: 33%; padding: 10px; vertical-align: top;">
+                <div style="background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #714B67, #017E84); border-radius: 10px; margin: 0 auto 10px; line-height: 50px;">
+                        <span style="font-size: 24px; color: #ffffff;">&#9201;</span>
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px;">SLA Management</div>
+                    <div style="font-size: 11px; color: #666;">Monitor service agreements</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 33%; padding: 10px; vertical-align: top;">
+                <div style="background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #714B67, #017E84); border-radius: 10px; margin: 0 auto 10px; line-height: 50px;">
+                        <span style="font-size: 24px; color: #ffffff;">&#10070;</span>
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px;">Multi-Level Approvals</div>
+                    <div style="font-size: 11px; color: #666;">Complex approval hierarchies</div>
+                </div>
+            </td>
+            <td style="width: 33%; padding: 10px; vertical-align: top;">
+                <div style="background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #714B67, #017E84); border-radius: 10px; margin: 0 auto 10px; line-height: 50px;">
+                        <span style="font-size: 24px; color: #ffffff;">&#9745;</span>
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px;">Document Validation</div>
+                    <div style="font-size: 11px; color: #666;">Required attachments</div>
+                </div>
+            </td>
+            <td style="width: 33%; padding: 10px; vertical-align: top;">
+                <div style="background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #714B67, #017E84); border-radius: 10px; margin: 0 auto 10px; line-height: 50px;">
+                        <span style="font-size: 24px; color: #ffffff;">&#8634;</span>
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px;">Flexible Routing</div>
+                    <div style="font-size: 11px; color: #666;">Forward, return, escalate</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Key Benefits -->
+    <h2 style="color: #714B67; font-size: 18px; border-bottom: 2px solid #714B67; padding-bottom: 8px; margin: 25px 0 15px 0;">Key Benefits</h2>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <tr>
+            <td style="width: 25%; padding: 8px; text-align: center;">
+                <div style="background: linear-gradient(135deg, #714B67, #875A7B); border-radius: 6px; padding: 20px 10px; color: #fff;">
+                    <div style="font-size: 28px;">&#9889;</div>
+                    <div style="font-size: 18px; font-weight: bold;">10x Faster</div>
+                    <div style="font-size: 11px; opacity: 0.9;">Approval Processing</div>
+                </div>
+            </td>
+            <td style="width: 25%; padding: 8px; text-align: center;">
+                <div style="background: linear-gradient(135deg, #714B67, #875A7B); border-radius: 6px; padding: 20px 10px; color: #fff;">
+                    <div style="font-size: 28px;">&#128065;</div>
+                    <div style="font-size: 18px; font-weight: bold;">100%</div>
+                    <div style="font-size: 11px; opacity: 0.9;">Process Visibility</div>
+                </div>
+            </td>
+            <td style="width: 25%; padding: 8px; text-align: center;">
+                <div style="background: linear-gradient(135deg, #714B67, #875A7B); border-radius: 6px; padding: 20px 10px; color: #fff;">
+                    <div style="font-size: 28px;">&#9881;</div>
+                    <div style="font-size: 18px; font-weight: bold;">Any Model</div>
+                    <div style="font-size: 11px; opacity: 0.9;">Full Compatibility</div>
+                </div>
+            </td>
+            <td style="width: 25%; padding: 8px; text-align: center;">
+                <div style="background: linear-gradient(135deg, #714B67, #875A7B); border-radius: 6px; padding: 20px 10px; color: #fff;">
+                    <div style="font-size: 28px;">&#128337;</div>
+                    <div style="font-size: 18px; font-weight: bold;">24/7</div>
+                    <div style="font-size: 11px; opacity: 0.9;">SLA Monitoring</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Screenshots Section -->
+    <h2 style="color: #714B67; font-size: 18px; border-bottom: 2px solid #714B67; padding-bottom: 8px; margin: 25px 0 15px 0;">Product Tour</h2>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+        <tr>
+            <td style="width: 50%; padding: 8px; vertical-align: top;">
+                <div style="border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                    <img src="assets/screenshots/1.png" style="width: 100%; display: block;"/>
+                    <div style="padding: 12px; background: #fff;">
+                        <div style="font-size: 13px; font-weight: bold; color: #333;">Personal Dashboard</div>
+                        <div style="font-size: 11px; color: #666;">Track all pending tasks and approvals</div>
                     </div>
                 </div>
-            </div>
+            </td>
+            <td style="width: 50%; padding: 8px; vertical-align: top;">
+                <div style="border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                    <img src="assets/screenshots/2.png" style="width: 100%; display: block;"/>
+                    <div style="padding: 12px; background: #fff;">
+                        <div style="font-size: 13px; font-weight: bold; color: #333;">Admin Control Center</div>
+                        <div style="font-size: 11px; color: #666;">Manage all workflow processes</div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%; padding: 8px; vertical-align: top;">
+                <div style="border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                    <img src="assets/screenshots/3.png" style="width: 100%; display: block;"/>
+                    <div style="padding: 12px; background: #fff;">
+                        <div style="font-size: 13px; font-weight: bold; color: #333;">Quick Document Access</div>
+                        <div style="font-size: 11px; color: #666;">One-click navigation to documents</div>
+                    </div>
+                </div>
+            </td>
+            <td style="width: 50%; padding: 8px; vertical-align: top;">
+                <div style="border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                    <img src="assets/screenshots/4.png" style="width: 100%; display: block;"/>
+                    <div style="padding: 12px; background: #fff;">
+                        <div style="font-size: 13px; font-weight: bold; color: #333;">Category Dashboards</div>
+                        <div style="font-size: 11px; color: #666;">Organize by HR, Finance, Sales</div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%; padding: 8px; vertical-align: top;">
+                <div style="border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                    <img src="assets/screenshots/5.png" style="width: 100%; display: block;"/>
+                    <div style="padding: 12px; background: #fff;">
+                        <div style="font-size: 13px; font-weight: bold; color: #333;">Delegation System</div>
+                        <div style="font-size: 11px; color: #666;">Delegate approvals to colleagues</div>
+                    </div>
+                </div>
+            </td>
+            <td style="width: 50%; padding: 8px; vertical-align: top;">
+                <div style="border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                    <img src="assets/screenshots/6.png" style="width: 100%; display: block;"/>
+                    <div style="padding: 12px; background: #fff;">
+                        <div style="font-size: 13px; font-weight: bold; color: #333;">Status Widget</div>
+                        <div style="font-size: 11px; color: #666;">Visual approval status on documents</div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%; padding: 8px; vertical-align: top;">
+                <div style="border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                    <img src="assets/screenshots/7.png" style="width: 100%; display: block;"/>
+                    <div style="padding: 12px; background: #fff;">
+                        <div style="font-size: 13px; font-weight: bold; color: #333;">Bulk Approvals</div>
+                        <div style="font-size: 11px; color: #666;">Approve multiple requests at once</div>
+                    </div>
+                </div>
+            </td>
+            <td style="width: 50%; padding: 8px; vertical-align: top;">
+                <div style="border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                    <img src="assets/screenshots/8.png" style="width: 100%; display: block;"/>
+                    <div style="padding: 12px; background: #fff;">
+                        <div style="font-size: 13px; font-weight: bold; color: #333;">Action Options</div>
+                        <div style="font-size: 11px; color: #666;">Approve, reject, return, comment</div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Advanced Features -->
+    <h2 style="color: #714B67; font-size: 18px; border-bottom: 2px solid #714B67; padding-bottom: 8px; margin: 25px 0 15px 0;">Advanced Capabilities</h2>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <tr>
+            <td style="padding: 8px; vertical-align: top; width: 25%;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Org Structure</div>
+                <div style="font-size: 11px; color: #666;">Departments & teams</div>
+            </td>
+            <td style="padding: 8px; vertical-align: top; width: 25%;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Role-Based</div>
+                <div style="font-size: 11px; color: #666;">Users & groups</div>
+            </td>
+            <td style="padding: 8px; vertical-align: top; width: 25%;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Manager Flow</div>
+                <div style="font-size: 11px; color: #666;">Hierarchy based</div>
+            </td>
+            <td style="padding: 8px; vertical-align: top; width: 25%;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Field Validation</div>
+                <div style="font-size: 11px; color: #666;">Dynamic required</div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; vertical-align: top;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Python Functions</div>
+                <div style="font-size: 11px; color: #666;">Custom code execution</div>
+            </td>
+            <td style="padding: 8px; vertical-align: top;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Attachment Rules</div>
+                <div style="font-size: 11px; color: #666;">Required documents</div>
+            </td>
+            <td style="padding: 8px; vertical-align: top;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Conditions</div>
+                <div style="font-size: 11px; color: #666;">Expression based</div>
+            </td>
+            <td style="padding: 8px; vertical-align: top;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Notifications</div>
+                <div style="font-size: 11px; color: #666;">Email & in-app</div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; vertical-align: top;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; SLA Enforcement</div>
+                <div style="font-size: 11px; color: #666;">Time & escalation</div>
+            </td>
+            <td style="padding: 8px; vertical-align: top;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Multi-Path</div>
+                <div style="font-size: 11px; color: #666;">Conditional routing</div>
+            </td>
+            <td style="padding: 8px; vertical-align: top;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Forward</div>
+                <div style="font-size: 11px; color: #666;">Route to others</div>
+            </td>
+            <td style="padding: 8px; vertical-align: top;">
+                <div style="font-size: 12px; font-weight: bold; color: #714B67;">&#10004; Return</div>
+                <div style="font-size: 11px; color: #666;">Send for revision</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Contact Section -->
+    <div style="background: #f8f9fa; border-radius: 8px; padding: 25px; text-align: center; margin-top: 25px;">
+        <h3 style="color: #333; font-size: 16px; margin: 0 0 8px 0;">Need Help? Contact Us</h3>
+        <p style="color: #666; font-size: 12px; margin: 0 0 15px 0;">Our team is ready to help you implement the perfect workflow solution</p>
+        <div>
+            <span style="display: inline-block; background: #714B67; color: #fff; padding: 10px 20px; border-radius: 5px; font-size: 13px; margin: 5px;">&#9993; ogba.awed@gmail.com</span>
+            <span style="display: inline-block; background: #017E84; color: #fff; padding: 10px 20px; border-radius: 5px; font-size: 13px; margin: 5px;">&#9742; +966 509 134 503</span>
         </div>
-    </section>
+    </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <img src="assets/misc/Logo.png" alt="Logo" class="footer-logo">
-                <span class="footer-text">Dynamic Workflow Engine</span>
-            </div>
-            <div class="footer-badges">
-                <div class="footer-badge">v17.0</div>
-                <div class="footer-badge">Production Ready</div>
-            </div>
-        </div>
-    </footer>
+    <div style="text-align: center; padding: 20px 0; margin-top: 20px; border-top: 1px solid #e0e0e0;">
+        <img src="assets/misc/Logo.png" style="height: 30px; margin-bottom: 10px;"/>
+        <div style="font-size: 11px; color: #999;">Dynamic Workflow Engine v17.0 | Production Ready</div>
+    </div>
 
-</body>
-</html>
+</div>
