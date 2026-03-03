@@ -9,7 +9,7 @@
         Works with Any Odoo Model | No Coding Required
     """,
     'description': """
-Workflow Engine - Complete Approval Management for Odoo 17
+Workflow Engine - Complete Approval Management
 ===========================================================
 
 MAIN FEATURES:
@@ -104,7 +104,7 @@ COMPATIBLE WITH:
     'images': ['static/description/banner.png'],
     'license': 'OPL-1',
 	'currency': 'EUR',
-	'price': '100',
+	'price': '50',
     'installable': True,
     'auto_install': False,
     'application': True,
