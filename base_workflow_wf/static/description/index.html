@@ -1,1599 +1,1215 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Complete Workflow Engine for Odoo 17. Dynamic approval management, multi-level approvals, SLA tracking, user delegation. Works with any Odoo model. No coding required.">
-    <meta name="keywords" content="odoo workflow, approval workflow, odoo approval, multi-level approval, workflow engine, approval management, document approval, purchase approval, expense approval, leave approval, SLA, delegation, process automation, odoo 17, dynamic workflow, approval process, workflow automation, approval chain, approval hierarchy, no code workflow">
-    <meta name="author" content="Aztek Computers">
-    <title>Workflow Engine - Dynamic Approval Management | Odoo 17 App</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #714B67;
-            --primary-rgb: 113, 75, 103;
-            --secondary: #017E84;
-            --secondary-rgb: 1, 126, 132;
-            --accent: #875A7B;
-            --dark: #0f0f1a;
-            --dark-2: #1a1a2e;
-            --dark-3: #252540;
-            --light: #f8fafc;
-            --gray-100: #f1f5f9;
-            --gray-200: #e2e8f0;
-            --gray-300: #cbd5e1;
-            --gray-400: #94a3b8;
-            --gray-500: #64748b;
-            --gray-600: #475569;
-            --white: #ffffff;
-            --gradient-primary: linear-gradient(135deg, #714B67 0%, #875A7B 50%, #017E84 100%);
-            --gradient-dark: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
-            --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            --shadow-glow: 0 0 60px rgba(113, 75, 103, 0.3);
-            --shadow-glow-lg: 0 0 100px rgba(113, 75, 103, 0.4);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: var(--gray-600);
-            line-height: 1.7;
-            overflow-x: hidden;
-            background: var(--white);
-        }
-
-        .container-xl {
-            max-width: 1320px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* ==================== HEADER ==================== */
-        .header {
-            background: var(--white);
-            padding: 16px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.95);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo img {
-            height: 48px;
-            width: auto;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .version-badge {
-            background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--gray-600);
-        }
-
-        .badges {
-            display: flex;
-            gap: 8px;
-        }
-
-        .badge-item {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--white);
-            box-shadow: var(--shadow-md);
-        }
-
-        .badge-community {
-            background: linear-gradient(135deg, #017E84 0%, #019ca3 100%);
-        }
-        .badge-enterprise {
-            background: linear-gradient(135deg, #714B67 0%, #8b5a7d 100%);
-        }
-        .badge-odoo-sh {
-            background: linear-gradient(135deg, #7C7BAD 0%, #9594c4 100%);
-        }
-
-        /* ==================== HERO SECTION ==================== */
-        .hero {
-            background: var(--gradient-dark);
-            padding: 80px 0 120px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(113, 75, 103, 0.3) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(1, 126, 132, 0.2) 0%, transparent 50%),
-                radial-gradient(ellipse 50% 30% at 20% 80%, rgba(135, 90, 123, 0.15) 0%, transparent 50%);
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        .hero-wrapper {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .hero-content {
-            max-width: 580px;
-        }
-
-        .hero-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 10px 20px;
-            border-radius: 100px;
-            margin-bottom: 28px;
-            backdrop-filter: blur(10px);
-        }
-
-        .hero-label-icon {
-            width: 20px;
-            height: 20px;
-            background: var(--gradient-primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero-label-icon i {
-            font-size: 10px;
-            color: var(--white);
-        }
-
-        .hero-label span {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--gray-300);
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--white);
-            margin-bottom: 24px;
-            line-height: 1.15;
-            letter-spacing: -0.02em;
-        }
-
-        .hero h1 .gradient-text {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-description {
-            font-size: 1.15rem;
-            color: var(--gray-400);
-            margin-bottom: 40px;
-            line-height: 1.8;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 48px;
-            padding-top: 40px;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .hero-stat {
-            text-align: left;
-        }
-
-        .hero-stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--white);
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-
-        .hero-stat-value span {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-stat-label {
-            font-size: 0.9rem;
-            color: var(--gray-500);
-            font-weight: 500;
-        }
-
-        .hero-visual {
-            position: relative;
-        }
-
-        .hero-image-wrapper {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow-2xl), var(--shadow-glow-lg);
-        }
-
-        .hero-image-wrapper::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }
-
-        .hero-image-wrapper img {
-            width: 100%;
-            display: block;
-            border-radius: 20px;
-        }
-
-        .hero-floating-card {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: var(--shadow-xl);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .hero-floating-card.card-1 {
-            bottom: -30px;
-            left: -40px;
-        }
-
-        .hero-floating-card.card-2 {
-            top: 40px;
-            right: -30px;
-        }
-
-        .floating-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--gradient-primary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 1.2rem;
-        }
-
-        .floating-content h4 {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 2px;
-        }
-
-        .floating-content p {
-            font-size: 0.8rem;
-            color: var(--gray-500);
-            margin: 0;
-        }
-
-        /* ==================== TRUSTED BY SECTION ==================== */
-        .trusted-section {
-            background: var(--gray-100);
-            padding: 40px 0;
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .trusted-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 60px;
-            flex-wrap: wrap;
-        }
-
-        .trusted-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--gray-500);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .trusted-features {
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .trusted-feature {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--gray-600);
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .trusted-feature i {
-            color: var(--secondary);
-            font-size: 1.1rem;
-        }
-
-        /* ==================== FEATURES SECTION ==================== */
-        .section {
-            padding: 100px 0;
-        }
-
-        .section-dark {
-            background: var(--dark);
-            position: relative;
-        }
-
-        .section-gray {
-            background: var(--gray-100);
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 70px;
-        }
-
-        .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, rgba(113, 75, 103, 0.1) 0%, rgba(1, 126, 132, 0.1) 100%);
-            padding: 8px 18px;
-            border-radius: 100px;
-            margin-bottom: 20px;
-        }
-
-        .section-label i {
-            color: var(--primary);
-            font-size: 0.85rem;
-        }
-
-        .section-label span {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .section-title {
-            font-size: 2.75rem;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 18px;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-        }
-
-        .section-dark .section-title {
-            color: var(--white);
-        }
-
-        .section-subtitle {
-            font-size: 1.15rem;
-            color: var(--gray-500);
-            line-height: 1.8;
-        }
-
-        /* Feature Cards Grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-
-        .feature-card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 36px 28px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid var(--gray-200);
-            text-align: center;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-primary);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-xl), 0 0 40px rgba(113, 75, 103, 0.1);
-            border-color: transparent;
-        }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .feature-icon-wrapper {
-            width: 72px;
-            height: 72px;
-            background: var(--gradient-primary);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 22px;
-            box-shadow: 0 12px 30px rgba(113, 75, 103, 0.3);
-            position: relative;
-        }
-
-        .feature-icon-wrapper::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 22px;
-            background: var(--gradient-primary);
-            opacity: 0.2;
-            z-index: -1;
-        }
-
-        .feature-icon-wrapper img {
-            width: 32px;
-            height: auto;
-            filter: brightness(0) invert(1);
-        }
-
-        .feature-card h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-
-        .feature-card p {
-            font-size: 0.9rem;
-            color: var(--gray-500);
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        /* ==================== CAPABILITIES SECTION ==================== */
-        .capabilities-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .capability-card {
-            background: var(--white);
-            padding: 40px 28px;
-            text-align: center;
-            border: 1px solid var(--gray-100);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .capability-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(113, 75, 103, 0.02) 0%, rgba(1, 126, 132, 0.02) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .capability-card:hover::before {
-            opacity: 1;
-        }
-
-        .capability-card:hover {
-            z-index: 1;
-        }
-
-        .capability-icon {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, rgba(113, 75, 103, 0.1) 0%, rgba(1, 126, 132, 0.1) 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            transition: all 0.3s ease;
-        }
-
-        .capability-card:hover .capability-icon {
-            background: var(--gradient-primary);
-            box-shadow: 0 12px 30px rgba(113, 75, 103, 0.3);
-            transform: scale(1.1);
-        }
-
-        .capability-icon i {
-            font-size: 1.5rem;
-            color: var(--primary);
-            transition: color 0.3s ease;
-        }
-
-        .capability-card:hover .capability-icon i {
-            color: var(--white);
-        }
-
-        .capability-card h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 12px;
-        }
-
-        .capability-card p {
-            font-size: 0.85rem;
-            color: var(--gray-500);
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        /* ==================== SCREENSHOTS SECTION ==================== */
-        .screenshots-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 32px;
-        }
-
-        .screenshot-card {
-            background: var(--white);
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: all 0.4s ease;
-            border: 1px solid var(--gray-200);
-        }
-
-        .screenshot-card:hover {
-            box-shadow: var(--shadow-xl);
-            transform: translateY(-6px);
-        }
-
-        .screenshot-card.full-width {
-            grid-column: span 2;
-        }
-
-        .screenshot-image {
-            position: relative;
-            background: linear-gradient(180deg, var(--gray-100) 0%, var(--gray-200) 100%);
-            padding: 24px;
-        }
-
-        .screenshot-image img {
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-            transition: transform 0.4s ease;
-        }
-
-        .screenshot-card:hover .screenshot-image img {
-            transform: scale(1.02);
-        }
-
-        .screenshot-badge {
-            position: absolute;
-            top: 36px;
-            left: 36px;
-            background: var(--gradient-primary);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--white);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .screenshot-content {
-            padding: 28px 32px;
-        }
-
-        .screenshot-content h4 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-
-        .screenshot-content p {
-            font-size: 0.95rem;
-            color: var(--gray-500);
-            margin: 0;
-            line-height: 1.7;
-        }
-
-        /* ==================== BENEFITS SECTION ==================== */
-        .benefits-section {
-            background: var(--gradient-dark);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .benefits-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse 60% 50% at 10% 90%, rgba(113, 75, 103, 0.2) 0%, transparent 50%),
-                radial-gradient(ellipse 50% 40% at 90% 20%, rgba(1, 126, 132, 0.15) 0%, transparent 50%);
-        }
-
-        .benefits-wrapper {
-            position: relative;
-            z-index: 1;
-        }
-
-        .benefits-section .section-label {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-        }
-
-        .benefits-section .section-label i,
-        .benefits-section .section-label span {
-            color: var(--gray-300);
-        }
-
-        .benefits-section .section-subtitle {
-            color: var(--gray-400);
-        }
-
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-
-        .benefit-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 36px 28px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .benefit-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .benefit-icon {
-            width: 72px;
-            height: 72px;
-            background: var(--gradient-primary);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
-            box-shadow: 0 15px 40px rgba(113, 75, 103, 0.4);
-        }
-
-        .benefit-icon i {
-            font-size: 1.75rem;
-            color: var(--white);
-        }
-
-        .benefit-card h4 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--white);
-            margin-bottom: 8px;
-        }
-
-        .benefit-card p {
-            font-size: 0.95rem;
-            color: var(--gray-400);
-            margin: 0;
-        }
-
-        /* ==================== CTA SECTION ==================== */
-        .cta-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, rgba(113, 75, 103, 0.05) 0%, rgba(1, 126, 132, 0.05) 100%);
-        }
-
-        .cta-card {
-            background: var(--white);
-            border-radius: 32px;
-            padding: 60px;
-            display: flex;
-            align-items: center;
-            gap: 50px;
-            box-shadow: var(--shadow-xl);
-            border: 1px solid var(--gray-200);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(113, 75, 103, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .cta-icon {
-            flex-shrink: 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-icon img {
-            width: 100px;
-            height: auto;
-        }
-
-        .cta-content {
-            flex: 1;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-content h3 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-
-        .cta-content > p {
-            font-size: 1.05rem;
-            color: var(--gray-500);
-            margin-bottom: 24px;
-        }
-
-        .contact-grid {
-            display: flex;
-            gap: 32px;
-            flex-wrap: wrap;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: var(--gray-100);
-            padding: 16px 24px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover {
-            background: var(--gradient-primary);
-            box-shadow: 0 10px 30px rgba(113, 75, 103, 0.3);
-        }
-
-        .contact-item:hover .contact-icon,
-        .contact-item:hover span {
-            color: var(--white);
-        }
-
-        .contact-icon {
-            font-size: 1.25rem;
-            color: var(--primary);
-            transition: color 0.3s ease;
-        }
-
-        .contact-item span {
-            font-weight: 600;
-            color: var(--dark);
-            transition: color 0.3s ease;
-        }
-
-        /* ==================== FOOTER ==================== */
-        .footer {
-            background: var(--dark);
-            padding: 50px 0;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
-        }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .footer-logo {
-            height: 40px;
-            opacity: 0.9;
-        }
-
-        .footer-divider {
-            width: 1px;
-            height: 24px;
-            background: var(--gray-600);
-        }
-
-        .footer-text {
-            color: var(--gray-400);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        .footer-badges {
-            display: flex;
-            gap: 12px;
-        }
-
-        .footer-badge {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 10px;
-            color: var(--gray-300);
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* ==================== RESPONSIVE ==================== */
-        @media (max-width: 1200px) {
-            .features-grid,
-            .capabilities-grid,
-            .benefits-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .hero-grid {
-                gap: 50px;
-            }
-
-            .hero h1 {
-                font-size: 2.8rem;
-            }
-        }
-
-        @media (max-width: 991px) {
-            .hero-grid {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .hero-content {
-                max-width: 100%;
-            }
-
-            .hero-stats {
-                justify-content: center;
-            }
-
-            .hero-floating-card {
-                display: none;
-            }
-
-            .section-title {
-                font-size: 2.2rem;
-            }
-
-            .screenshots-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .screenshot-card.full-width {
-                grid-column: span 1;
-            }
-
-            .cta-card {
-                flex-direction: column;
-                text-align: center;
-                padding: 40px;
-            }
-
-            .contact-grid {
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-right {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .hero {
-                padding: 60px 0 80px;
-            }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .hero-stats {
-                gap: 32px;
-                flex-wrap: wrap;
-            }
-
-            .section {
-                padding: 70px 0;
-            }
-
-            .features-grid,
-            .capabilities-grid,
-            .benefits-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-brand {
-                flex-direction: column;
-            }
-
-            .footer-divider {
-                display: none;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .badges {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-
-            .section-title {
-                font-size: 1.75rem;
-            }
-
-            .cta-card {
-                padding: 30px 24px;
-            }
-
-            .contact-grid {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .contact-item {
-                justify-content: center;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <img src="assets/misc/Logo.png" alt="Logo">
-                </div>
-                <div class="header-right">
-                    <div class="version-badge">
-                        <i class="fas fa-code-branch"></i> Version 17.0
-                    </div>
-                    <div class="badges">
-                        <span class="badge-item badge-community">Community</span>
-                        <span class="badge-item badge-enterprise">Enterprise</span>
-                        <span class="badge-item badge-odoo-sh">Odoo.sh</span>
-                    </div>
-                </div>
+<!--
+=======================================================================
+  Dynamic Workflow Engine | Approval & Automation — Odoo Marketplace
+  Premium Design v5 — Light Mode
+  ─────────────────────────────────────────────────────────────────────
+  ICON STANDARD (identical everywhere, no exceptions):
+    Container : 64 × 64 px | background #5B3A56 | border-radius 14px
+                margin 0 auto 20px (centered)
+    Image     : 32 × 32 px | display:block | margin:16px auto
+  ─────────────────────────────────────────────────────────────────────
+  Safe icons (white / near-white on purple — unified appearance):
+    multi_path · notification · user · puzzle · training
+    update · wrench · lifebuoy · cogs · consultation · email
+  ─────────────────────────────────────────────────────────────────────
+  Layout: <table> only — Odoo sanitiser strips flexbox/grid/gradients
+=======================================================================
+-->
+
+<!-- ═══════════════════════ HERO ═══════════════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f5f3ff;padding:72px 48px 64px;text-align:center;border-bottom:3px solid #5B3A56;">
+
+    <div style="display:inline-block;border:1px solid #5B3A56;border-radius:30px;padding:5px 22px;margin-bottom:24px;">
+      <span style="color:#5B3A56;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Odoo Workflow Automation</span>
+    </div>
+
+    <h1 style="color:#1a0f2e;font-size:46px;font-weight:900;line-height:1.12;margin:0 0 20px 0;letter-spacing:-1.5px;">
+      Stop Chasing Approvals.<br/>
+      <span style="color:#5B3A56;">Automate Everything.</span>
+    </h1>
+
+    <p style="color:#6b5c73;font-size:17px;line-height:1.8;margin:0 auto 48px;max-width:620px;">
+      The most powerful, flexible, and easy-to-use
+      <strong style="color:#1a0f2e;">multi-step approval workflow engine</strong>
+      for Odoo 16 &amp; 17. Configure in minutes. Works on any model. Zero code.
+    </p>
+
+    <table style="border-collapse:collapse;margin:0 auto;">
+      <tr>
+        <td style="padding:6px;">
+          <div style="background-color:#5B3A56;border-radius:12px;padding:18px 26px;text-align:center;min-width:115px;box-shadow:0 4px 20px rgba(91,58,86,0.25);">
+            <div style="color:#ffffff;font-size:30px;font-weight:900;line-height:1;">16+</div>
+            <div style="color:#C8A855;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;">Features</div>
+          </div>
+        </td>
+        <td style="padding:6px;">
+          <div style="background-color:#5B3A56;border-radius:12px;padding:18px 26px;text-align:center;min-width:115px;box-shadow:0 4px 20px rgba(91,58,86,0.25);">
+            <div style="color:#ffffff;font-size:30px;font-weight:900;line-height:1;">100%</div>
+            <div style="color:#C8A855;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;">No Code</div>
+          </div>
+        </td>
+        <td style="padding:6px;">
+          <div style="background-color:#5B3A56;border-radius:12px;padding:18px 26px;text-align:center;min-width:115px;box-shadow:0 4px 20px rgba(91,58,86,0.25);">
+            <div style="color:#ffffff;font-size:30px;font-weight:900;line-height:1;">Any</div>
+            <div style="color:#C8A855;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;">Odoo Model</div>
+          </div>
+        </td>
+        <td style="padding:6px;">
+          <div style="background-color:#5B3A56;border-radius:12px;padding:18px 26px;text-align:center;min-width:115px;box-shadow:0 4px 20px rgba(91,58,86,0.25);">
+            <div style="color:#ffffff;font-size:30px;font-weight:900;line-height:1;">v16&amp;17</div>
+            <div style="color:#C8A855;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;">Compatible</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ COMPATIBILITY ══════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f9f5f8;border-bottom:1px solid #e4d5e0;padding:15px 48px;text-align:center;">
+    <span style="color:#5B3A56;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-right:14px;">Certified for</span>
+    <span style="display:inline-block;background-color:#5B3A56;color:#fff;border-radius:20px;padding:5px 16px;font-size:12px;font-weight:600;margin:3px;">Community</span>
+    <span style="display:inline-block;background-color:#5B3A56;color:#fff;border-radius:20px;padding:5px 16px;font-size:12px;font-weight:600;margin:3px;">Enterprise</span>
+    <span style="display:inline-block;background-color:#5B3A56;color:#fff;border-radius:20px;padding:5px 16px;font-size:12px;font-weight:600;margin:3px;">Odoo.sh</span>
+    <span style="display:inline-block;background-color:#5B3A56;color:#fff;border-radius:20px;padding:5px 16px;font-size:12px;font-weight:600;margin:3px;">On-Premise</span>
+    
+  </div>
+</section>
+
+<!-- ═══════════════════════ WORKS WITH ═════════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:26px 48px;text-align:center;border-bottom:1px solid #f0e6ec;">
+    <span style="color:#9a7a90;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-right:14px;">Works with any document type</span>
+    <span style="display:inline-block;background-color:#f5eef3;color:#5B3A56;border:1px solid #d9c4d4;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:600;margin:3px;">Purchase Orders</span>
+    <span style="display:inline-block;background-color:#f5eef3;color:#5B3A56;border:1px solid #d9c4d4;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:600;margin:3px;">Invoices &amp; Bills</span>
+    <span style="display:inline-block;background-color:#f5eef3;color:#5B3A56;border:1px solid #d9c4d4;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:600;margin:3px;">HR Requests</span>
+    <span style="display:inline-block;background-color:#f5eef3;color:#5B3A56;border:1px solid #d9c4d4;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:600;margin:3px;">Leave Requests</span>
+    <span style="display:inline-block;background-color:#f5eef3;color:#5B3A56;border:1px solid #d9c4d4;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:600;margin:3px;">Expense Reports</span>
+    <span style="display:inline-block;background-color:#5B3A56;color:#fff;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;margin:3px;">+ Any Custom Model</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PAIN POINTS ════════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f9f5f8;padding:60px 48px;border-bottom:2px solid #e4d5e0;">
+    <p style="text-align:center;color:#C8A855;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">The Problem</p>
+    <h2 style="text-align:center;color:#160c14;font-size:32px;font-weight:800;margin:0 0 6px 0;">Does Any of This Sound Familiar?</h2>
+    <p style="text-align:center;color:#9a7a90;font-size:15px;margin:0 0 44px 0;">These are the approval nightmares this module was built to permanently eliminate</p>
+
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:33%;padding:10px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #f0e6ec;border-left:4px solid #c0392b;border-radius:12px;padding:28px 24px;box-shadow:0 2px 12px rgba(91,58,86,0.07);">
+            <div style="color:#c0392b;font-size:28px;margin-bottom:14px;">&#128235;</div>
+            <h4 style="color:#222222;font-size:15px;font-weight:700;margin:0 0 10px 0;">Endless Email Chains</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">"Did you approve this?" Approvals vanish in inboxes. Decisions never get recorded. Everyone chases everyone — and nothing moves forward.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:10px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #f0e6ec;border-left:4px solid #c0392b;border-radius:12px;padding:28px 24px;box-shadow:0 2px 12px rgba(91,58,86,0.07);">
+            <div style="color:#c0392b;font-size:28px;margin-bottom:14px;">&#128336;</div>
+            <h4 style="color:#222222;font-size:15px;font-weight:700;margin:0 0 10px 0;">Bottlenecks &amp; Missed Deadlines</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Requests sit idle for days with no one notified, no escalation, and no visibility. Business grinds to a halt waiting on a single person.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:10px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #f0e6ec;border-left:4px solid #c0392b;border-radius:12px;padding:28px 24px;box-shadow:0 2px 12px rgba(91,58,86,0.07);">
+            <div style="color:#c0392b;font-size:28px;margin-bottom:14px;">&#128270;</div>
+            <h4 style="color:#222222;font-size:15px;font-weight:700;margin:0 0 10px 0;">Zero Audit Trail</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Who approved this? When? With what justification? No records means no compliance, no governance, and no way to investigate later.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <p style="text-align:center;color:#5B3A56;font-size:17px;font-weight:700;margin:36px 0 0 0;">
+      Dynamic Workflow Engine eliminates all of this — inside Odoo, automatically, from day one.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ WHAT IS IT ═════════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f0ebf6;padding:56px 48px;text-align:center;border-top:3px solid #5B3A56;border-bottom:3px solid #5B3A56;">
+    <p style="color:#5B3A56;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">The Solution</p>
+    <h2 style="color:#1a0f2e;font-size:28px;font-weight:800;margin:0 0 18px 0;">What is Dynamic Workflow Engine?</h2>
+    <p style="color:#4a3855;font-size:16px;line-height:1.85;margin:0 auto 40px;max-width:740px;">
+      A fully configurable <strong style="color:#1a0f2e;">multi-step approval &amp; automation platform</strong> built natively for Odoo.
+      Design approval stages, assign approvers by role or group, trigger automatic actions, lock document fields,
+      send real-time notifications — all from a simple point-and-click interface.
+      <strong style="color:#5B3A56;">No developer needed. No customisation project. Just install and go.</strong>
+    </p>
+    <table style="border-collapse:collapse;margin:0 auto;">
+      <tr>
+        <td style="padding:8px 20px;text-align:center;border-right:1px solid rgba(91,58,86,0.25);">
+          <div style="color:#5B3A56;font-size:16px;font-weight:700;margin-bottom:5px;">&#10003;</div>
+          <div style="color:#1a0f2e;font-size:12px;font-weight:600;">Multi-Step Approvals</div>
+        </td>
+        <td style="padding:8px 20px;text-align:center;border-right:1px solid rgba(91,58,86,0.25);">
+          <div style="color:#5B3A56;font-size:16px;font-weight:700;margin-bottom:5px;">&#10003;</div>
+          <div style="color:#1a0f2e;font-size:12px;font-weight:600;">Auto Notifications</div>
+        </td>
+        <td style="padding:8px 20px;text-align:center;border-right:1px solid rgba(91,58,86,0.25);">
+          <div style="color:#5B3A56;font-size:16px;font-weight:700;margin-bottom:5px;">&#10003;</div>
+          <div style="color:#1a0f2e;font-size:12px;font-weight:600;">Complete Audit Trail</div>
+        </td>
+        <td style="padding:8px 20px;text-align:center;border-right:1px solid rgba(91,58,86,0.25);">
+          <div style="color:#5B3A56;font-size:16px;font-weight:700;margin-bottom:5px;">&#10003;</div>
+          <div style="color:#1a0f2e;font-size:12px;font-weight:600;">Delegation &amp; Escalation</div>
+        </td>
+        <td style="padding:8px 20px;text-align:center;border-right:1px solid rgba(91,58,86,0.25);">
+          <div style="color:#5B3A56;font-size:16px;font-weight:700;margin-bottom:5px;">&#10003;</div>
+          <div style="color:#1a0f2e;font-size:12px;font-weight:600;">Bulk Processing</div>
+        </td>
+        <td style="padding:8px 20px;text-align:center;">
+          <div style="color:#5B3A56;font-size:16px;font-weight:700;margin-bottom:5px;">&#10003;</div>
+          <div style="color:#1a0f2e;font-size:12px;font-weight:600;">Zero Code Required</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ 12 CORE FEATURES ═══════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:68px 48px;">
+    <p style="text-align:center;color:#C8A855;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Full Feature Set</p>
+    <h2 style="text-align:center;color:#160c14;font-size:32px;font-weight:800;margin:0 0 6px 0;">16+ Powerful Features</h2>
+    <p style="text-align:center;color:#9a7a90;font-size:15px;margin:0 0 52px 0;">One module. Complete approval management. Every use case covered.</p>
+
+    <!-- Row 1 -->
+    <table style="border-collapse:collapse;width:100%;margin-bottom:16px;">
+      <tr>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/multi_path.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Multi-Step Approval Stages</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Build approval chains with unlimited stages — sequential, parallel, or mixed. Each stage is independently configured with its own approvers, conditions, and automated actions triggered on completion.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/user.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Dynamic Approver Assignment</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Route to the right person every time. Assign approvers by specific user, security group, or a dynamic field on the document — e.g. the department manager, project lead, or CEO — auto-resolved at runtime.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/notification.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Automated Email Notifications</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Zero manual follow-up — ever. Fully customisable automated alerts fire on submission, each stage transition, approval, rejection, and escalation. Every stakeholder stays informed in real time, automatically.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Row 2 -->
+    <table style="border-collapse:collapse;width:100%;margin-bottom:16px;">
+      <tr>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/cogs.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Sequential &amp; Parallel Flows</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Require one approver or all approvers per stage. Chain stages in sequence or let multiple approvers work simultaneously. Any combination is possible — configured through a simple form, no code needed.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/consultation.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Approve / Reject / Return</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Four clear actions for every scenario: <strong style="color:#5B3A56;">Approve</strong> to advance, <strong style="color:#5B3A56;">Reject</strong> with a mandatory written comment, <strong style="color:#5B3A56;">Return</strong> to the submitter for correction, or <strong style="color:#5B3A56;">Escalate</strong> to a senior approver. Full flexibility.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/training.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Bulletproof Audit Trail</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Every decision — who acted, when, and with what comment — is timestamped and automatically logged in Odoo's native chatter. Full compliance evidence without any manual effort. Ready for any audit, any time.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Row 3 -->
+    <table style="border-collapse:collapse;width:100%;margin-bottom:16px;">
+      <tr>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/puzzle.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Bulk Approval Processing</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Month-end backlog? Select all pending records and approve in one click. The bulk engine processes high volumes in seconds — what used to take hours now takes ten seconds. Each action still logged individually.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/update.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Smart Approval Delegation</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Going on leave? Set a backup approver for a specific date range. The system auto-activates delegation on the start date, routes all your approvals to them, and automatically reverts when you return. Work never stops.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/wrench.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Live Approval Status Widget</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">A real-time visual progress bar is embedded directly on every document's form view. See the current stage, who has acted, and who is pending — all without leaving the document. Works on any Odoo model.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Row 4 -->
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/email.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Conditional Stage Logic</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Define domain-filter rules to automatically skip or enforce stages based on document values. For example: only require the CFO stage when the amount exceeds a threshold. Smart routing, zero manual intervention.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/lifebuoy.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Automatic Field Locking</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Prevent unauthorised edits while a workflow is in progress. Configured fields are locked the moment a workflow is submitted and unlock instantly when the request is rejected, returned, or completed.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 24px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/notification.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">SLA Deadlines &amp; Auto-Escalation</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.7;margin:0;">Set a time limit on any stage. If the approver doesn't act within the SLA window, the system automatically sends a reminder and escalates to the designated manager. Nothing ever gets stuck silently.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SMART ROUTING ══════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:72px 48px;">
+
+    <p style="text-align:center;color:#5B3A56;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Unlimited Flexibility</p>
+    <h2 style="text-align:center;color:#1a0f2e;font-size:32px;font-weight:900;margin:0 0 8px 0;letter-spacing:-0.5px;">Build Any Workflow. Your Way.</h2>
+    <p style="text-align:center;color:#6b5c73;font-size:15px;line-height:1.7;margin:0 auto 56px;max-width:680px;">
+      Every organisation has different approval rules. Dynamic Workflow Engine adapts to yours — not the other way around.
+      Route by hierarchy, department, amount, or any field on any form. No developer required.
+    </p>
+
+    <!-- 3-column routing types -->
+    <table style="border-collapse:collapse;width:100%;margin-bottom:20px;">
+      <tr>
+
+        <!-- Column 1: Hierarchy -->
+        <td style="width:33%;padding:10px;vertical-align:top;">
+          <div style="background-color:#f5f0fb;border:1px solid #ddd4e6;border-top:4px solid #5B3A56;border-radius:14px;padding:32px 24px;">
+            <div style="background-color:#5B3A56;border-radius:10px;width:48px;height:48px;margin:0 0 18px 0;text-align:center;line-height:48px;">
+              <span style="color:#C8A855;font-size:22px;font-weight:900;">&#9674;</span>
             </div>
-        </div>
-    </header>
+            <h3 style="color:#1a0f2e;font-size:17px;font-weight:800;margin:0 0 12px 0;">Organisational Hierarchy</h3>
+            <p style="color:#4a3855;font-size:13px;line-height:1.75;margin:0 0 18px 0;">
+              Route approvals up your org chart automatically. The engine resolves the correct approver at runtime based on the document's owner — no manual assignment needed.
+            </p>
+            <table style="border-collapse:collapse;width:100%;">
+              <tr><td style="padding:6px 0;border-bottom:1px solid #ddd4e6;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Direct line manager</td></tr>
+              <tr><td style="padding:6px 0;border-bottom:1px solid #ddd4e6;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Department head</td></tr>
+              <tr><td style="padding:6px 0;border-bottom:1px solid #ddd4e6;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; CEO / Board level</td></tr>
+              <tr><td style="padding:6px 0;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Any custom management level</td></tr>
+            </table>
+          </div>
+        </td>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-wrapper">
-                <div class="hero-grid">
-                    <div class="hero-content">
-                        <div class="hero-label">
-                            <div class="hero-label-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <span>Enterprise-Grade Workflow Solution</span>
-                        </div>
-                        <h1>Full Odoo<br><span class="gradient-text">Workflow Engine</span></h1>
-                        <p class="hero-description">
-                            A complete, dynamic workflow engine to manage all approval processes in Odoo.
-                            Works with any model, requires zero coding, and streamlines your entire organization.
-                        </p>
-                        <div class="hero-stats">
-                            <div class="hero-stat">
-                                <div class="hero-stat-value"><span>16+</span></div>
-                                <div class="hero-stat-label">Key Features</div>
-                            </div>
-                            <div class="hero-stat">
-                                <div class="hero-stat-value"><span>100%</span></div>
-                                <div class="hero-stat-label">Configurable</div>
-                            </div>
-                            <div class="hero-stat">
-                                <div class="hero-stat-value"><span>0</span></div>
-                                <div class="hero-stat-label">Code Required</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hero-visual">
-                        <div class="hero-image-wrapper">
-                            <img src="assets/screenshots/laptop_workflow.png" alt="Workflow Dashboard">
-                        </div>
-                        <div class="hero-floating-card card-1">
-                            <div class="floating-icon">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="floating-content">
-                                <h4>Quick Approval</h4>
-                                <p>One-click actions</p>
-                            </div>
-                        </div>
-                        <div class="hero-floating-card card-2">
-                            <div class="floating-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div class="floating-content">
-                                <h4>Real-time Tracking</h4>
-                                <p>Monitor all processes</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Column 2: Value/Amount -->
+        <td style="width:33%;padding:10px;vertical-align:top;">
+          <div style="background-color:#f5f0fb;border:1px solid #ddd4e6;border-top:4px solid #C8A855;border-radius:14px;padding:32px 24px;">
+            <div style="background-color:#C8A855;border-radius:10px;width:48px;height:48px;margin:0 0 18px 0;text-align:center;line-height:48px;">
+              <span style="color:#ffffff;font-size:22px;font-weight:900;">&#8771;</span>
             </div>
-        </div>
-    </section>
+            <h3 style="color:#1a0f2e;font-size:17px;font-weight:800;margin:0 0 12px 0;">Amount &amp; Value Conditions</h3>
+            <p style="color:#4a3855;font-size:13px;line-height:1.75;margin:0 0 18px 0;">
+              Define thresholds on any numeric field. Invoices under SAR 5,000 go to the supervisor; over SAR 50,000 require the CFO. The engine enforces it automatically, every time.
+            </p>
+            <table style="border-collapse:collapse;width:100%;">
+              <tr><td style="padding:6px 0;border-bottom:1px solid #ddd4e6;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Invoice / PO total amount</td></tr>
+              <tr><td style="padding:6px 0;border-bottom:1px solid #ddd4e6;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Budget or credit limits</td></tr>
+              <tr><td style="padding:6px 0;border-bottom:1px solid #ddd4e6;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Quantity, discount %, or margin</td></tr>
+              <tr><td style="padding:6px 0;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Any numeric field on any model</td></tr>
+            </table>
+          </div>
+        </td>
 
-    <!-- Trusted By -->
-    <section class="trusted-section">
-        <div class="container">
-            <div class="trusted-content">
-                <div class="trusted-label">Why Choose Us</div>
-                <div class="trusted-features">
-                    <div class="trusted-feature">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Enterprise Security</span>
-                    </div>
-                    <div class="trusted-feature">
-                        <i class="fas fa-sync-alt"></i>
-                        <span>Seamless Integration</span>
-                    </div>
-                    <div class="trusted-feature">
-                        <i class="fas fa-headset"></i>
-                        <span>Premium Support</span>
-                    </div>
-                    <div class="trusted-feature">
-                        <i class="fas fa-rocket"></i>
-                        <span>Fast Implementation</span>
-                    </div>
-                </div>
+        <!-- Column 3: Custom Conditions -->
+        <td style="width:33%;padding:10px;vertical-align:top;">
+          <div style="background-color:#f5f0fb;border:1px solid #ddd4e6;border-top:4px solid #2e7d32;border-radius:14px;padding:32px 24px;">
+            <div style="background-color:#2e7d32;border-radius:10px;width:48px;height:48px;margin:0 0 18px 0;text-align:center;line-height:48px;">
+              <span style="color:#ffffff;font-size:22px;font-weight:900;">&#9655;</span>
             </div>
-        </div>
-    </section>
+            <h3 style="color:#1a0f2e;font-size:17px;font-weight:800;margin:0 0 12px 0;">Any Form Field Condition</h3>
+            <p style="color:#4a3855;font-size:13px;line-height:1.75;margin:0 0 18px 0;">
+              Use Odoo domain filters to trigger or skip stages based on any field — department, product category, customer type, country, priority, and more. Total flexibility.
+            </p>
+            <table style="border-collapse:collapse;width:100%;">
+              <tr><td style="padding:6px 0;border-bottom:1px solid #ddd4e6;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Department or team</td></tr>
+              <tr><td style="padding:6px 0;border-bottom:1px solid #ddd4e6;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Product category or type</td></tr>
+              <tr><td style="padding:6px 0;border-bottom:1px solid #ddd4e6;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Customer, vendor, or country</td></tr>
+              <tr><td style="padding:6px 0;font-size:12px;color:#5B3A56;font-weight:600;">&#10003;&nbsp; Any field on any Odoo model</td></tr>
+            </table>
+          </div>
+        </td>
 
-    <!-- Core Features Section -->
-    <section class="section section-gray">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-label">
-                    <i class="fas fa-cubes"></i>
-                    <span>Core Features</span>
-                </div>
-                <h2 class="section-title">Everything You Need for Workflow Management</h2>
-                <p class="section-subtitle">Powerful, flexible features designed to simplify even the most complex approval processes across your organization.</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/cogs.png" alt="Dynamic Workflow">
-                    </div>
-                    <h3>Fully Dynamic Workflow</h3>
-                    <p>Create flexible workflows that adapt to your unique business needs</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/wrench.png" alt="No Customization">
-                    </div>
-                    <h3>Zero Coding Required</h3>
-                    <p>Ready to use out of the box with intuitive configuration</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/training.png" alt="Dashboard">
-                    </div>
-                    <h3>Powerful Dashboard</h3>
-                    <p>Comprehensive overview of all workflow activities at a glance</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/user.png" alt="Delegation">
-                    </div>
-                    <h3>User Delegation</h3>
-                    <p>Transfer approvals seamlessly when team members are unavailable</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/email.png" alt="Email Notification">
-                    </div>
-                    <h3>Smart Notifications</h3>
-                    <p>Automated email alerts for pending approvals and actions</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/email_t.png" alt="Email Template">
-                    </div>
-                    <h3>Custom Templates</h3>
-                    <p>Personalize notification emails to match your brand identity</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/notification.png" alt="SLA">
-                    </div>
-                    <h3>SLA Management</h3>
-                    <p>Monitor and enforce service level agreements automatically</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/multi_path.png" alt="Multi Level">
-                    </div>
-                    <h3>Multi-Level Approvals</h3>
-                    <p>Configure complex multi-tier approval hierarchies with ease</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/license.png" alt="Attachment">
-                    </div>
-                    <h3>Document Validation</h3>
-                    <p>Ensure required documents are attached before approval</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/puzzle.png" alt="Actions">
-                    </div>
-                    <h3>Step Actions</h3>
-                    <p>Execute custom actions at each workflow stage automatically</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/consultation.png" alt="Comments">
-                    </div>
-                    <h3>Approval Comments</h3>
-                    <p>Add notes and feedback throughout the approval process</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <img src="assets/icons/update.png" alt="Return Forward">
-                    </div>
-                    <h3>Flexible Routing</h3>
-                    <p>Return, forward, and escalate requests as needed</p>
-                </div>
-            </div>
-        </div>
-    </section>
+      </tr>
+    </table>
 
-    <!-- Benefits Section -->
-    <section class="section benefits-section">
-        <div class="container">
-            <div class="benefits-wrapper">
-                <div class="section-header">
-                    <div class="section-label">
-                        <i class="fas fa-star"></i>
-                        <span>Key Benefits</span>
-                    </div>
-                    <h2 class="section-title">Why Businesses Choose Our Workflow Engine</h2>
-                    <p class="section-subtitle">Transform your approval processes and boost organizational efficiency with our enterprise-grade solution.</p>
-                </div>
-                <div class="benefits-grid">
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h4>10x Faster</h4>
-                        <p>Approval Processing</p>
-                    </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        <h4>100%</h4>
-                        <p>Process Visibility</p>
-                    </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
-                            <i class="fas fa-cogs"></i>
-                        </div>
-                        <h4>Any Model</h4>
-                        <p>Full Compatibility</p>
-                    </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h4>24/7</h4>
-                        <p>SLA Monitoring</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Chain builder callout -->
+    <div style="background-color:#1a0f2e;border-radius:14px;padding:36px 40px;margin-top:10px;">
+      <table style="border-collapse:collapse;width:100%;">
+        <tr>
+          <td style="width:65%;vertical-align:middle;padding-right:32px;">
+            <p style="color:#C8A855;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Workflow Chain Builder</p>
+            <h3 style="color:#ffffff;font-size:20px;font-weight:800;margin:0 0 12px 0;line-height:1.3;">
+              Combine Any Conditions Into One Powerful Chain
+            </h3>
+            <p style="color:#c0aad0;font-size:13px;line-height:1.8;margin:0 0 20px 0;">
+              Mix and match routing types across stages. Stage 1: department manager. Stage 2: only if amount &gt; SAR 10,000, route to Finance Director. Stage 3: CFO sign-off for international vendors only. Every stage is independently configured — any combination is valid.
+            </p>
+            <table style="border-collapse:collapse;">
+              <tr>
+                <td style="padding:4px 16px 4px 0;font-size:12px;color:#e0d4ea;font-weight:600;">&#10003;&nbsp; Sequential chains</td>
+                <td style="padding:4px 16px 4px 0;font-size:12px;color:#e0d4ea;font-weight:600;">&#10003;&nbsp; Parallel multi-approver</td>
+                <td style="padding:4px 16px 4px 0;font-size:12px;color:#e0d4ea;font-weight:600;">&#10003;&nbsp; Conditional skip/enforce</td>
+              </tr>
+              <tr>
+                <td style="padding:4px 16px 4px 0;font-size:12px;color:#e0d4ea;font-weight:600;">&#10003;&nbsp; Mixed routing types</td>
+                <td style="padding:4px 16px 4px 0;font-size:12px;color:#e0d4ea;font-weight:600;">&#10003;&nbsp; Unlimited stages</td>
+                <td style="padding:4px 16px 4px 0;font-size:12px;color:#e0d4ea;font-weight:600;">&#10003;&nbsp; Zero code required</td>
+              </tr>
+            </table>
+          </td>
+          <td style="width:35%;vertical-align:middle;text-align:center;">
+            <!-- Visual chain diagram (pure HTML/CSS) -->
+            <table style="border-collapse:collapse;margin:0 auto;">
+              <tr>
+                <td style="text-align:center;padding-bottom:4px;">
+                  <div style="background-color:#5B3A56;border-radius:10px;padding:10px 18px;display:inline-block;">
+                    <div style="color:#C8A855;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Stage 1</div>
+                    <div style="color:#ffffff;font-size:12px;font-weight:700;margin-top:3px;">Dept. Manager</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:center;padding:2px 0;">
+                  <div style="color:#C8A855;font-size:18px;line-height:1;">&#8595;</div>
+                  <div style="color:#c0aad0;font-size:10px;">if amount &gt; 10,000</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:center;padding-bottom:4px;">
+                  <div style="background-color:#C8A855;border-radius:10px;padding:10px 18px;display:inline-block;">
+                    <div style="color:#1a0f2e;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Stage 2</div>
+                    <div style="color:#1a0f2e;font-size:12px;font-weight:700;margin-top:3px;">Finance Director</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:center;padding:2px 0;">
+                  <div style="color:#C8A855;font-size:18px;line-height:1;">&#8595;</div>
+                  <div style="color:#c0aad0;font-size:10px;">if vendor is international</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:center;">
+                  <div style="background-color:#2e7d32;border-radius:10px;padding:10px 18px;display:inline-block;">
+                    <div style="color:#a5d6a7;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Stage 3</div>
+                    <div style="color:#ffffff;font-size:12px;font-weight:700;margin-top:3px;">CFO Sign-off</div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
 
-    <!-- Screenshots Section -->
-    <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-label">
-                    <i class="fas fa-desktop"></i>
-                    <span>Product Tour</span>
-                </div>
-                <h2 class="section-title">See the Workflow Engine in Action</h2>
-                <p class="section-subtitle">Explore our intuitive interface and discover how easy it is to manage complex approval workflows.</p>
-            </div>
-            <div class="screenshots-grid">
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Dashboard</span>
-                        <img src="assets/screenshots/1.png" alt="User Dashboard">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Personal Approval Dashboard</h4>
-                        <p>Track all your pending tasks, approvals, and workflow items in one responsive, intuitive dashboard with real-time notifications.</p>
-                    </div>
-                </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Admin</span>
-                        <img src="assets/screenshots/2.png" alt="Admin Dashboard">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Admin Control Center</h4>
-                        <p>Manage all processes, create workflows for any module, handle delegations, and monitor organization-wide workflow activity.</p>
-                    </div>
-                </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Quick Access</span>
-                        <img src="assets/screenshots/3.png" alt="Document Details">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>One-Click Document Access</h4>
-                        <p>Navigate directly to any document requiring your action with a single click for maximum efficiency.</p>
-                    </div>
-                </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Customizable</span>
-                        <img src="assets/screenshots/4.png" alt="Custom Dashboard">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Category-Based Dashboards</h4>
-                        <p>Organize workflows by department - HR, Finance, Sales, and more - for a tailored user experience.</p>
-                    </div>
-                </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Delegation</span>
-                        <img src="assets/screenshots/5.png" alt="Delegation">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Seamless Delegation</h4>
-                        <p>Delegate your approval responsibilities to trusted colleagues when you're unavailable or on leave.</p>
-                    </div>
-                </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Widget</span>
-                        <img src="assets/screenshots/6.png" alt="Workflow Widget">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Visual Status Widget</h4>
-                        <p>See approval status at a glance with our embedded workflow widget on any document.</p>
-                    </div>
-                </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Bulk Actions</span>
-                        <img src="assets/screenshots/7.png" alt="Bulk Approval">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Bulk Approval Processing</h4>
-                        <p>Approve multiple requests at once to save time and increase productivity.</p>
-                    </div>
-                </div>
-                <div class="screenshot-card">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Actions</span>
-                        <img src="assets/screenshots/8.png" alt="Approval Actions">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Complete Action Set</h4>
-                        <p>Approve, reject, return for correction, or add detailed comments on any approval request.</p>
-                    </div>
-                </div>
-                <div class="screenshot-card full-width">
-                    <div class="screenshot-image">
-                        <span class="screenshot-badge">Attachments</span>
-                        <img src="assets/screenshots/9.png" alt="Attachments">
-                    </div>
-                    <div class="screenshot-content">
-                        <h4>Document Attachment Support</h4>
-                        <p>Attach supporting documents to your approvals that remain visible throughout the entire approval cycle for complete transparency.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  </div>
+</section>
 
-    <!-- Advanced Capabilities Section -->
-    <section class="section section-gray">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-label">
-                    <i class="fas fa-cog"></i>
-                    <span>Advanced Capabilities</span>
-                </div>
-                <h2 class="section-title">Enterprise Features for Complex Workflows</h2>
-                <p class="section-subtitle">Built to handle the most demanding business requirements with powerful, flexible configuration options.</p>
-            </div>
-            <div class="capabilities-grid">
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-sitemap"></i>
-                    </div>
-                    <h4>Organization Structure</h4>
-                    <p>Align workflows with your org structure, departments, teams, and projects.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-user-tag"></i>
-                    </div>
-                    <h4>Role-Based Assignment</h4>
-                    <p>Assign roles, users, or groups to each workflow step for precise control.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <h4>Manager Hierarchy</h4>
-                    <p>Configure flows based on department managers with multi-level support.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    <h4>Field Validation</h4>
-                    <p>Make fields required based on current workflow status dynamically.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h4>Custom Functions</h4>
-                    <p>Execute Python functions before or after specific workflow steps.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <h4>Attachment Rules</h4>
-                    <p>Require specific documents before allowing workflow progression.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-filter"></i>
-                    </div>
-                    <h4>Custom Conditions</h4>
-                    <p>Write expressions to control workflow behavior without coding.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-bell"></i>
-                    </div>
-                    <h4>Smart Notifications</h4>
-                    <p>Automatic alerts via email and in-app notifications.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-stopwatch"></i>
-                    </div>
-                    <h4>SLA Enforcement</h4>
-                    <p>Set time constraints and escalation rules for compliance.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-random"></i>
-                    </div>
-                    <h4>Multi-Path Routing</h4>
-                    <p>Create conditional paths based on amount, priority, or custom rules.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h4>Custom Dashboards</h4>
-                    <p>Personalize dashboards for different user groups and roles.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <h4>Admin Controls</h4>
-                    <p>Centralized management of all workflow processes and settings.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-people-arrows"></i>
-                    </div>
-                    <h4>Delegation System</h4>
-                    <p>Transfer responsibilities with full audit trail and control.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-share-alt"></i>
-                    </div>
-                    <h4>Forward Requests</h4>
-                    <p>Route approvals to alternative reviewers when needed.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <h4>Request Information</h4>
-                    <p>Ask for additional details from previous approval steps.</p>
-                </div>
-                <div class="capability-card">
-                    <div class="capability-icon">
-                        <i class="fas fa-undo-alt"></i>
-                    </div>
-                    <h4>Return for Revision</h4>
-                    <p>Send documents back for corrections before continuing.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- ═══════════════════════ KEY METRICS ════════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f0ebf6;padding:60px 48px;">
+    <p style="text-align:center;color:#5B3A56;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Real Impact</p>
+    <h2 style="text-align:center;color:#1a0f2e;font-size:30px;font-weight:800;margin:0 0 44px 0;">Measurable Results From Day One</h2>
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:33%;padding:10px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #ddd4e6;border-top:3px solid #5B3A56;border-radius:14px;padding:36px 28px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.08);">
+            <div style="color:#5B3A56;font-size:48px;font-weight:900;line-height:1;margin-bottom:10px;">80%</div>
+            <h4 style="color:#1a0f2e;font-size:16px;font-weight:700;margin:0 0 12px 0;">Faster Approvals</h4>
+            <p style="color:#6b5c73;font-size:13px;line-height:1.7;margin:0;">Replace multi-day email chains with same-hour automated workflows. Approvers are notified instantly and can act from anywhere.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:10px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #ddd4e6;border-top:3px solid #5B3A56;border-radius:14px;padding:36px 28px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.08);">
+            <div style="color:#5B3A56;font-size:48px;font-weight:900;line-height:1;margin-bottom:10px;">100%</div>
+            <h4 style="color:#1a0f2e;font-size:16px;font-weight:700;margin:0 0 12px 0;">Audit Compliance</h4>
+            <p style="color:#6b5c73;font-size:13px;line-height:1.7;margin:0;">Every decision is recorded automatically — who approved, when, and why. Always ready for internal reviews or external audits.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:10px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #ddd4e6;border-top:3px solid #5B3A56;border-radius:14px;padding:36px 28px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.08);">
+            <div style="color:#5B3A56;font-size:48px;font-weight:900;line-height:1;margin-bottom:10px;">Zero</div>
+            <h4 style="color:#1a0f2e;font-size:16px;font-weight:700;margin:0 0 12px 0;">Missed Requests</h4>
+            <p style="color:#6b5c73;font-size:13px;line-height:1.7;margin:0;">Auto-escalation, smart delegation, and SLA reminders ensure every single request is acted on. Nothing falls through the cracks.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-card">
-                <div class="cta-icon">
-                    <img src="assets/misc/support (1) 1.svg" alt="Support">
-                </div>
-                <div class="cta-content">
-                    <h3>Ready to Transform Your Workflows?</h3>
-                    <p>Our expert team is here to help you implement and customize the perfect workflow solution for your organization.</p>
-                    <div class="contact-grid">
-                        <div class="contact-item">
-                            <i class="fas fa-envelope contact-icon"></i>
-                            <span>ogba.awed@gmail.com</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fab fa-whatsapp contact-icon"></i>
-                            <span>+966 509 134 503</span>
-                        </div>
-                    </div>
-                </div>
+<!-- ═══════════════════════ PRODUCT TOUR HEADER ════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f9f5f8;border-top:3px solid #5B3A56;border-bottom:1px solid #e4d5e0;padding:44px 48px;text-align:center;">
+    <p style="color:#C8A855;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Detailed Product Tour</p>
+    <h2 style="color:#160c14;font-size:30px;font-weight:800;margin:0 0 8px 0;">See Every Feature in Action</h2>
+    <p style="color:#9a7a90;font-size:15px;margin:0;">Real screenshots — exactly what your team will use every day</p>
+  </div>
+</section>
+
+<!-- S1 Personal Dashboard -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:56px 48px;border-bottom:1px solid #f0e8ee;">
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:55%;padding-right:44px;vertical-align:middle;text-align:center;">
+          <img src="assets/screenshots/1.png" alt="Odoo Personal Approval Dashboard" style="max-width:100%;border-radius:12px;border:1px solid #e4d5e0;box-shadow:0 4px 24px rgba(91,58,86,0.12);"/>
+        </td>
+        <td style="width:45%;vertical-align:middle;">
+          <div style="display:inline-block;background-color:#5B3A56;color:#C8A855;border-radius:6px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:18px;">01 — PERSONAL DASHBOARD</div>
+          <h3 style="color:#160c14;font-size:23px;font-weight:800;margin:0 0 14px 0;">Your Personal Approval Command Centre</h3>
+          <p style="color:#5a4455;font-size:14px;line-height:1.8;margin:0 0 22px 0;">Every team member gets a dedicated personal dashboard showing every pending approval task assigned to them — across all workflows, all models, and all departments. No more checking multiple documents or opening emails. Your complete workload, front and centre, always up to date.</p>
+          <table style="border-collapse:collapse;width:100%;">
+            <tr><td style="padding:7px 0;border-bottom:1px solid #f5edf3;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>All pending requests in one unified view</td></tr>
+            <tr><td style="padding:7px 0;border-bottom:1px solid #f5edf3;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Filter and sort by urgency, category, or date</td></tr>
+            <tr><td style="padding:7px 0;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>One click opens the full source document</td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- S2 Admin Center -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f9f5f8;padding:56px 48px;border-bottom:1px solid #f0e8ee;">
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:45%;vertical-align:middle;padding-right:44px;">
+          <div style="display:inline-block;background-color:#5B3A56;color:#C8A855;border-radius:6px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:18px;">02 — ADMIN CENTRE</div>
+          <h3 style="color:#160c14;font-size:23px;font-weight:800;margin:0 0 14px 0;">Total Administrative Control</h3>
+          <p style="color:#5a4455;font-size:14px;line-height:1.8;margin:0 0 22px 0;">Managers get a bird's-eye view of every active workflow across every department. Instantly identify who is blocking what, how long items have been waiting, which approvers are overloaded — then act immediately to unblock it.</p>
+          <table style="border-collapse:collapse;width:100%;">
+            <tr><td style="padding:7px 0;border-bottom:1px solid #ecdce9;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Full cross-department visibility in real time</td></tr>
+            <tr><td style="padding:7px 0;border-bottom:1px solid #ecdce9;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Override, re-assign, or escalate any request</td></tr>
+            <tr><td style="padding:7px 0;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Monitor SLA compliance and team workload</td></tr>
+          </table>
+        </td>
+        <td style="width:55%;vertical-align:middle;text-align:center;">
+          <img src="assets/screenshots/2.png" alt="Odoo Workflow Admin Control Centre" style="max-width:100%;border-radius:12px;border:1px solid #e4d5e0;box-shadow:0 4px 24px rgba(91,58,86,0.12);"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- S3 Quick Document Access -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:56px 48px;border-bottom:1px solid #f0e8ee;">
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:55%;padding-right:44px;vertical-align:middle;text-align:center;">
+          <img src="assets/screenshots/3.png" alt="Odoo One-Click Document Navigation for Approvals" style="max-width:100%;border-radius:12px;border:1px solid #e4d5e0;box-shadow:0 4px 24px rgba(91,58,86,0.12);"/>
+        </td>
+        <td style="width:45%;vertical-align:middle;">
+          <div style="display:inline-block;background-color:#5B3A56;color:#C8A855;border-radius:6px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:18px;">03 — INSTANT ACCESS</div>
+          <h3 style="color:#160c14;font-size:23px;font-weight:800;margin:0 0 14px 0;">One Click to Any Document</h3>
+          <p style="color:#5a4455;font-size:14px;line-height:1.8;margin:0 0 22px 0;">Tap any item in the dashboard and you land directly on the source document — with all data fully visible and the approval action buttons right there. No navigating through menus. From dashboard to decision in a single click.</p>
+          <table style="border-collapse:collapse;width:100%;">
+            <tr><td style="padding:7px 0;border-bottom:1px solid #f5edf3;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Direct deep-link to source document</td></tr>
+            <tr><td style="padding:7px 0;border-bottom:1px solid #f5edf3;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Approve or reject without switching screens</td></tr>
+            <tr><td style="padding:7px 0;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>All document fields visible for informed decisions</td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- S4 Category Dashboards -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f9f5f8;padding:56px 48px;border-bottom:1px solid #f0e8ee;">
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:45%;vertical-align:middle;padding-right:44px;">
+          <div style="display:inline-block;background-color:#5B3A56;color:#C8A855;border-radius:6px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:18px;">04 — CATEGORY DASHBOARDS</div>
+          <h3 style="color:#160c14;font-size:23px;font-weight:800;margin:0 0 14px 0;">Department-Focused Views</h3>
+          <p style="color:#5a4455;font-size:14px;line-height:1.8;margin:0 0 22px 0;">Group workflows into categories by department or business unit. HR sees only HR requests. Finance sees only financial approvals. Each team gets a clean, focused view — no noise, no confusion, no irrelevant items cluttering the screen.</p>
+          <table style="border-collapse:collapse;width:100%;">
+            <tr><td style="padding:7px 0;border-bottom:1px solid #ecdce9;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Unlimited categories — one per team or more</td></tr>
+            <tr><td style="padding:7px 0;border-bottom:1px solid #ecdce9;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Role-based access control per category</td></tr>
+            <tr><td style="padding:7px 0;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Each team sees exactly what matters to them</td></tr>
+          </table>
+        </td>
+        <td style="width:55%;vertical-align:middle;text-align:center;">
+          <img src="assets/screenshots/4.png" alt="Odoo Workflow Category Dashboard by Department" style="max-width:100%;border-radius:12px;border:1px solid #e4d5e0;box-shadow:0 4px 24px rgba(91,58,86,0.12);"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- S5 Delegation -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:56px 48px;border-bottom:1px solid #f0e8ee;">
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:55%;padding-right:44px;vertical-align:middle;text-align:center;">
+          <img src="assets/screenshots/5.png" alt="Odoo Smart Approval Delegation System" style="max-width:100%;border-radius:12px;border:1px solid #e4d5e0;box-shadow:0 4px 24px rgba(91,58,86,0.12);"/>
+        </td>
+        <td style="width:45%;vertical-align:middle;">
+          <div style="display:inline-block;background-color:#5B3A56;color:#C8A855;border-radius:6px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:18px;">05 — SMART DELEGATION</div>
+          <h3 style="color:#160c14;font-size:23px;font-weight:800;margin:0 0 14px 0;">Work Never Stops When You're Away</h3>
+          <p style="color:#5a4455;font-size:14px;line-height:1.8;margin:0 0 22px 0;">Set a delegation before you leave — choose your backup approver and your absence dates. The system auto-activates on day one, routes all your approvals to your delegate, and automatically reverts to you the moment you return. No manual intervention ever needed.</p>
+          <table style="border-collapse:collapse;width:100%;">
+            <tr><td style="padding:7px 0;border-bottom:1px solid #f5edf3;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Set any start and end date range</td></tr>
+            <tr><td style="padding:7px 0;border-bottom:1px solid #f5edf3;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Automatically activates and expires</td></tr>
+            <tr><td style="padding:7px 0;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Complete audit trail maintained throughout</td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- S6 Status Widget -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f9f5f8;padding:56px 48px;border-bottom:1px solid #f0e8ee;">
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:45%;vertical-align:middle;padding-right:44px;">
+          <div style="display:inline-block;background-color:#5B3A56;color:#C8A855;border-radius:6px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:18px;">06 — STATUS WIDGET</div>
+          <h3 style="color:#160c14;font-size:23px;font-weight:800;margin:0 0 14px 0;">Always Know Where Things Stand</h3>
+          <p style="color:#5a4455;font-size:14px;line-height:1.8;margin:0 0 22px 0;">A live approval progress widget is embedded directly on every document's form view. At a glance: current stage, colour-coded status, who has already acted, and who is still pending. Click it to open the full decision history. Works on every Odoo model automatically.</p>
+          <table style="border-collapse:collapse;width:100%;">
+            <tr><td style="padding:7px 0;border-bottom:1px solid #ecdce9;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Embedded on every document form view</td></tr>
+            <tr><td style="padding:7px 0;border-bottom:1px solid #ecdce9;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Colour-coded: pending, approved, rejected</td></tr>
+            <tr><td style="padding:7px 0;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Click to open full decision history</td></tr>
+          </table>
+        </td>
+        <td style="width:55%;vertical-align:middle;text-align:center;">
+          <img src="assets/screenshots/6.png" alt="Odoo Approval Status Widget on Document Form" style="max-width:100%;border-radius:12px;border:1px solid #e4d5e0;box-shadow:0 4px 24px rgba(91,58,86,0.12);"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- S7 Bulk Approvals -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:56px 48px;border-bottom:1px solid #f0e8ee;">
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:55%;padding-right:44px;vertical-align:middle;text-align:center;">
+          <img src="assets/screenshots/7.png" alt="Odoo Bulk Approval Processing" style="max-width:100%;border-radius:12px;border:1px solid #e4d5e0;box-shadow:0 4px 24px rgba(91,58,86,0.12);"/>
+        </td>
+        <td style="width:45%;vertical-align:middle;">
+          <div style="display:inline-block;background-color:#5B3A56;color:#C8A855;border-radius:6px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:18px;">07 — BULK PROCESSING</div>
+          <h3 style="color:#160c14;font-size:23px;font-weight:800;margin:0 0 14px 0;">50 Approvals in 10 Seconds</h3>
+          <p style="color:#5a4455;font-size:14px;line-height:1.8;margin:0 0 22px 0;">High-volume days — month-end invoices, payroll, mass purchase orders — used to mean hours of clicking. Now: open the dashboard, select all, click Approve. Done. The bulk engine processes every record simultaneously. Each action is still individually timestamped and logged in the audit trail.</p>
+          <table style="border-collapse:collapse;width:100%;">
+            <tr><td style="padding:7px 0;border-bottom:1px solid #f5edf3;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Multi-select any number of records</td></tr>
+            <tr><td style="padding:7px 0;border-bottom:1px solid #f5edf3;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Apply approve or reject to all in one action</td></tr>
+            <tr><td style="padding:7px 0;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Every record individually logged in audit trail</td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- S8 Action Options -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f9f5f8;padding:56px 48px;border-bottom:1px solid #f0e8ee;">
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:45%;vertical-align:middle;padding-right:44px;">
+          <div style="display:inline-block;background-color:#5B3A56;color:#C8A855;border-radius:6px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:18px;">08 — DECISION ACTIONS</div>
+          <h3 style="color:#160c14;font-size:23px;font-weight:800;margin:0 0 14px 0;">The Right Action for Every Situation</h3>
+          <p style="color:#5a4455;font-size:14px;line-height:1.8;margin:0 0 22px 0;">Not every approval is a simple yes or no. Approvers get the full toolkit: approve and advance, reject with a mandatory written justification, return to the submitter with specific correction requests, or escalate to a higher authority. Every action is permanently traceable.</p>
+          <table style="border-collapse:collapse;width:100%;">
+            <tr><td style="padding:7px 0;border-bottom:1px solid #ecdce9;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Approve → advance to next stage instantly</td></tr>
+            <tr><td style="padding:7px 0;border-bottom:1px solid #ecdce9;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Reject with mandatory written comment</td></tr>
+            <tr><td style="padding:7px 0;font-size:13px;color:#5a4455;"><span style="color:#5B3A56;font-weight:800;margin-right:10px;">&#10003;</span>Return to submitter for specific revision</td></tr>
+          </table>
+        </td>
+        <td style="width:55%;vertical-align:middle;text-align:center;">
+          <img src="assets/screenshots/8.png" alt="Odoo Approve Reject Return Action Options" style="max-width:100%;border-radius:12px;border:1px solid #e4d5e0;box-shadow:0 4px 24px rgba(91,58,86,0.12);"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ DEPARTMENT USE CASES ═══════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:68px 48px;">
+    <p style="text-align:center;color:#C8A855;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Use Cases</p>
+    <h2 style="text-align:center;color:#160c14;font-size:30px;font-weight:800;margin:0 0 6px 0;">Works Across Every Department</h2>
+    <p style="text-align:center;color:#9a7a90;font-size:15px;margin:0 0 48px 0;">One engine, infinite use cases — configure any approval process in minutes</p>
+
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:25%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:30px 20px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/user.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#5B3A56;font-size:14px;font-weight:700;margin:0 0 10px 0;">Human Resources</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.6;margin:0 0 14px 0;">Leave requests, recruitment approvals, contracts, promotions, policy exceptions, and training authorisations — all automated.</p>
+            <p style="color:#C8A855;font-size:11px;font-weight:700;letter-spacing:0.5px;">Leave &#183; Recruitment &#183; Contracts</p>
+          </div>
+        </td>
+        <td style="width:25%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:30px 20px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/training.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#5B3A56;font-size:14px;font-weight:700;margin:0 0 10px 0;">Finance &amp; Accounting</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.6;margin:0 0 14px 0;">Multi-level invoice approvals with value thresholds, expense claims, budget exceptions, and credit note authorisations.</p>
+            <p style="color:#C8A855;font-size:11px;font-weight:700;letter-spacing:0.5px;">Invoices &#183; Expenses &#183; Budgets</p>
+          </div>
+        </td>
+        <td style="width:25%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:30px 20px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/puzzle.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#5B3A56;font-size:14px;font-weight:700;margin:0 0 10px 0;">Procurement</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.6;margin:0 0 14px 0;">Purchase order approvals with amount-based routing, vendor onboarding, RFQ sign-off, and supplier contract reviews.</p>
+            <p style="color:#C8A855;font-size:11px;font-weight:700;letter-spacing:0.5px;">PO &#183; RFQ &#183; Vendor Approval</p>
+          </div>
+        </td>
+        <td style="width:25%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:30px 20px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/cogs.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#5B3A56;font-size:14px;font-weight:700;margin:0 0 10px 0;">Sales &amp; Operations</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.6;margin:0 0 14px 0;">Discount approvals, custom order sign-offs, credit limit exceptions, contract reviews, and project authorisations.</p>
+            <p style="color:#C8A855;font-size:11px;font-weight:700;letter-spacing:0.5px;">Discounts &#183; Contracts &#183; Orders</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ ADVANCED CAPABILITIES ══════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f0ebf6;padding:68px 48px;">
+    <p style="text-align:center;color:#5B3A56;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Enterprise Power</p>
+    <h2 style="text-align:center;color:#1a0f2e;font-size:30px;font-weight:800;margin:0 0 6px 0;">Advanced Capabilities</h2>
+    <p style="text-align:center;color:#6b5c73;font-size:15px;margin:0 0 48px 0;">Enterprise-grade intelligence under a simple no-code interface</p>
+
+    <table style="border-collapse:collapse;width:100%;margin-bottom:16px;">
+      <tr>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #ddd4e6;border-radius:14px;padding:30px 22px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/multi_path.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#1a0f2e;font-size:14px;font-weight:700;margin:0 0 10px 0;">Conditional Stage Logic</h4>
+            <p style="color:#6b5c73;font-size:13px;line-height:1.6;margin:0;">Define Odoo domain filters to automatically skip or enforce stages based on any document field. Smart routing with zero manual intervention.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #ddd4e6;border-radius:14px;padding:30px 22px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/lifebuoy.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#1a0f2e;font-size:14px;font-weight:700;margin:0 0 10px 0;">Automatic Field Locking</h4>
+            <p style="color:#6b5c73;font-size:13px;line-height:1.6;margin:0;">Prevent edits while a workflow is active. Fields lock on submission and unlock instantly on rejection or completion. Full data integrity guaranteed.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #ddd4e6;border-radius:14px;padding:30px 22px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/notification.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#1a0f2e;font-size:14px;font-weight:700;margin:0 0 10px 0;">SLA Deadlines &amp; Escalation</h4>
+            <p style="color:#6b5c73;font-size:13px;line-height:1.6;margin:0;">Time-limit any stage. Overdue items trigger automatic reminders and escalate to the designated manager — nothing gets stuck silently.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #ddd4e6;border-radius:14px;padding:30px 22px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/training.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#1a0f2e;font-size:14px;font-weight:700;margin:0 0 10px 0;">Reports &amp; Analytics</h4>
+            <p style="color:#6b5c73;font-size:13px;line-height:1.6;margin:0;">Track approval cycle times, identify bottleneck stages, measure approver response rates, and report on overall workflow performance.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #ddd4e6;border-radius:14px;padding:30px 22px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/user.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#1a0f2e;font-size:14px;font-weight:700;margin:0 0 10px 0;">Parallel Multi-Approver Stages</h4>
+            <p style="color:#6b5c73;font-size:13px;line-height:1.6;margin:0;">Require sign-off from multiple people within a single stage simultaneously. Set "any one" or "all must approve" rules per stage.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #ddd4e6;border-radius:14px;padding:30px 22px;text-align:center;box-shadow:0 2px 14px rgba(91,58,86,0.07);">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/consultation.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#1a0f2e;font-size:14px;font-weight:700;margin:0 0 10px 0;">Native Odoo Chatter Log</h4>
+            <p style="color:#6b5c73;font-size:13px;line-height:1.6;margin:0;">Every workflow event logged automatically in the Odoo chatter on the source document. No separate tool needed — everything in one place.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ HOW IT WORKS ═══════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:68px 48px;">
+    <p style="text-align:center;color:#C8A855;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Quick Setup</p>
+    <h2 style="text-align:center;color:#160c14;font-size:30px;font-weight:800;margin:0 0 6px 0;">Live in 3 Simple Steps</h2>
+    <p style="text-align:center;color:#9a7a90;font-size:15px;margin:0 0 52px 0;">No developers. No consultants. No training required.</p>
+
+    <table style="border-collapse:collapse;width:100%;max-width:860px;margin:0 auto;">
+      <tr>
+        <td style="width:33%;padding:10px 18px;vertical-align:top;text-align:center;">
+          <div style="width:60px;height:60px;background-color:#5B3A56;border-radius:50%;margin:0 auto 20px;text-align:center;line-height:60px;font-size:24px;font-weight:900;color:#C8A855;">1</div>
+          <div style="background-color:#f9f5f8;border:1px solid #e8d8e4;border-radius:14px;padding:24px 18px;">
+            <h4 style="color:#5B3A56;font-size:15px;font-weight:700;margin:0 0 10px 0;">Create Your Workflow</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.65;margin:0;">Give it a name, select the Odoo model it applies to — any model — and add your stages. Each stage gets its own name, approvers, and settings.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:10px 18px;vertical-align:top;text-align:center;">
+          <div style="width:60px;height:60px;background-color:#5B3A56;border-radius:50%;margin:0 auto 20px;text-align:center;line-height:60px;font-size:24px;font-weight:900;color:#C8A855;">2</div>
+          <div style="background-color:#f9f5f8;border:1px solid #e8d8e4;border-radius:14px;padding:24px 18px;">
+            <h4 style="color:#5B3A56;font-size:15px;font-weight:700;margin:0 0 10px 0;">Configure Approvers</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.65;margin:0;">Assign approvers by user, group, or dynamic field. Set sequential or parallel order, require one or all, and configure notifications for each stage.</p>
+          </div>
+        </td>
+        <td style="width:33%;padding:10px 18px;vertical-align:top;text-align:center;">
+          <div style="width:60px;height:60px;background-color:#5B3A56;border-radius:50%;margin:0 auto 20px;text-align:center;line-height:60px;font-size:24px;font-weight:900;color:#C8A855;">3</div>
+          <div style="background-color:#f9f5f8;border:1px solid #e8d8e4;border-radius:14px;padding:24px 18px;">
+            <h4 style="color:#5B3A56;font-size:15px;font-weight:700;margin:0 0 10px 0;">Activate &amp; Go Live</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.65;margin:0;">Activate. Users submit. Approvers get notified. The engine tracks every stage, escalates when needed, and logs everything — fully automatic.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ COMPARISON TABLE ═══════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:72px 48px;">
+
+    <!-- Section header -->
+    <p style="text-align:center;color:#5B3A56;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Side-by-Side Comparison</p>
+    <h2 style="text-align:center;color:#1a0f2e;font-size:32px;font-weight:900;margin:0 0 8px 0;letter-spacing:-0.5px;">Before vs. After</h2>
+    <p style="text-align:center;color:#6b5c73;font-size:15px;margin:0 0 52px 0;">This is what your team experiences from day one of installation</p>
+
+    <!-- Table wrapper with shadow -->
+    <div style="max-width:900px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid #ddd4e6;box-shadow:0 8px 40px rgba(91,58,86,0.10);">
+      <table style="border-collapse:collapse;width:100%;">
+
+        <!-- Header row -->
+        <tr>
+          <td style="width:38%;background-color:#f5f0fb;padding:18px 24px;border-bottom:2px solid #ddd4e6;">
+            <span style="color:#5B3A56;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;">Feature / Challenge</span>
+          </td>
+          <td style="width:31%;background-color:#fdf0ef;padding:18px 24px;text-align:center;border-left:2px solid #f5c6c2;border-bottom:2px solid #f5c6c2;">
+            <div style="display:inline-block;background-color:#c0392b;border-radius:20px;padding:5px 16px;">
+              <span style="color:#ffffff;font-size:12px;font-weight:800;letter-spacing:0.5px;">&#10008; Without Module</span>
             </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <img src="assets/misc/Logo.png" alt="Logo" class="footer-logo">
-                    <div class="footer-divider"></div>
-                    <span class="footer-text">Odoo Workflow Engine - Enterprise Approval Management</span>
-                </div>
-                <div class="footer-badges">
-                    <div class="footer-badge">
-                        <i class="fas fa-code-branch"></i> v17.0
-                    </div>
-                    <div class="footer-badge">
-                        <i class="fas fa-check-circle"></i> Production Ready
-                    </div>
-                </div>
+          </td>
+          <td style="width:31%;background-color:#eef7f1;padding:18px 24px;text-align:center;border-left:2px solid #a8dbb9;border-bottom:2px solid #a8dbb9;">
+            <div style="display:inline-block;background-color:#5B3A56;border-radius:20px;padding:5px 16px;">
+              <span style="color:#C8A855;font-size:12px;font-weight:800;letter-spacing:0.5px;">&#10004; With Dynamic Workflow</span>
             </div>
-        </div>
-    </footer>
+          </td>
+        </tr>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+        <!-- Row 1 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#ffffff;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Approval Tracking</div>
+            <div style="color:#9a7a90;font-size:11px;">Knowing where requests stand</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">Manual emails &amp; spreadsheets</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Real-time automatic tracking</span>
+          </td>
+        </tr>
 
-</html>
+        <!-- Row 2 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#faf7fc;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Approver Notifications</div>
+            <div style="color:#9a7a90;font-size:11px;">Alerting the right person at the right time</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">Manual follow-up &amp; phone calls</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Instant automated email alerts</span>
+          </td>
+        </tr>
+
+        <!-- Row 3 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#ffffff;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Audit Trail &amp; Compliance</div>
+            <div style="color:#9a7a90;font-size:11px;">Recording who approved what and when</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">None — or scattered in emails</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Full timestamped log in Odoo chatter</span>
+          </td>
+        </tr>
+
+        <!-- Row 4 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#faf7fc;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Missed &amp; Forgotten Requests</div>
+            <div style="color:#9a7a90;font-size:11px;">Requests that fall through the cracks</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">Happens constantly</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Impossible — SLA &amp; escalation built in</span>
+          </td>
+        </tr>
+
+        <!-- Row 5 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#ffffff;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Approval Steps &amp; Routing</div>
+            <div style="color:#9a7a90;font-size:11px;">Multi-level, conditional approval chains</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">Not possible without custom dev</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Unlimited stages, configured in minutes</span>
+          </td>
+        </tr>
+
+        <!-- Row 6 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#faf7fc;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Delegation When Absent</div>
+            <div style="color:#9a7a90;font-size:11px;">Continuity during leave or travel</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">Work stops — no system in place</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Auto-delegated, date-limited, seamless</span>
+          </td>
+        </tr>
+
+        <!-- Row 7 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#ffffff;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Bulk Approval Processing</div>
+            <div style="color:#9a7a90;font-size:11px;">Handling high-volume approval days</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">Open &amp; approve one by one</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Select all &amp; approve in one click</span>
+          </td>
+        </tr>
+
+        <!-- Row 8 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#faf7fc;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Document Field Locking</div>
+            <div style="color:#9a7a90;font-size:11px;">Preventing edits during approval</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">Anyone can edit at any time</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Auto-locked on submit, unlocked on completion</span>
+          </td>
+        </tr>
+
+        <!-- Row 9 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#ffffff;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">SLA &amp; Deadline Enforcement</div>
+            <div style="color:#9a7a90;font-size:11px;">Ensuring timely decisions</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">No time limits, no escalation</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Configurable SLA with auto-escalation</span>
+          </td>
+        </tr>
+
+        <!-- Row 10 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#faf7fc;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Cross-Department Visibility</div>
+            <div style="color:#9a7a90;font-size:11px;">Managers seeing all pending items</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">No central view — ask individually</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Unified admin dashboard, real-time</span>
+          </td>
+        </tr>
+
+        <!-- Row 11 -->
+        <tr>
+          <td style="padding:15px 24px;border-bottom:1px solid #ede4f0;background-color:#ffffff;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Conditional Approval Logic</div>
+            <div style="color:#9a7a90;font-size:11px;">Routing based on amount, dept, or data</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;border-bottom:1px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">Requires developer customisation</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom:1px solid #d4edd9;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Domain filter rules, no code needed</span>
+          </td>
+        </tr>
+
+        <!-- Row 12 — last row, no bottom border -->
+        <tr>
+          <td style="padding:15px 24px;background-color:#faf7fc;border-bottom-left-radius:16px;">
+            <div style="color:#1a0f2e;font-size:13px;font-weight:700;margin-bottom:2px;">Setup &amp; Go-Live Time</div>
+            <div style="color:#9a7a90;font-size:11px;">Time from decision to live workflow</div>
+          </td>
+          <td style="padding:15px 24px;background-color:#fff8f7;text-align:center;border-left:2px solid #fce8e6;">
+            <span style="color:#c0392b;font-size:12px;font-weight:600;">Weeks — requires IT &amp; development</span>
+          </td>
+          <td style="padding:15px 24px;background-color:#f4fbf6;text-align:center;border-left:2px solid #d4edd9;border-bottom-right-radius:16px;">
+            <span style="color:#1e7a40;font-size:12px;font-weight:700;">Under 15 minutes — zero code</span>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+
+    <!-- Bottom summary strip -->
+    <div style="max-width:900px;margin:24px auto 0;background-color:#f0ebf6;border-radius:12px;padding:20px 28px;text-align:center;border:1px solid #ddd4e6;">
+      <span style="color:#5B3A56;font-size:14px;font-weight:700;">The bottom line: </span>
+      <span style="color:#4a3855;font-size:14px;">Dynamic Workflow Engine replaces chaos with clarity — every approval is tracked, notified, enforced, and recorded, automatically, from the moment you install it.</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════ WHY CHOOSE US ══════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#ffffff;padding:68px 48px;">
+    <p style="text-align:center;color:#C8A855;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;">Why Us</p>
+    <h2 style="text-align:center;color:#160c14;font-size:30px;font-weight:800;margin:0 0 6px 0;">Why Teams Choose Dynamic Workflow Engine</h2>
+    <p style="text-align:center;color:#9a7a90;font-size:15px;margin:0 0 48px 0;">Built by Odoo experts. Trusted by businesses across the region.</p>
+
+    <table style="border-collapse:collapse;width:100%;">
+      <tr>
+        <td style="width:25%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 20px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);border-top:3px solid #C8A855;">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/wrench.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Live in Minutes</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.65;margin:0;">Install, configure your first workflow, and go live — no developers, no implementation project, no training sessions needed.</p>
+          </div>
+        </td>
+        <td style="width:25%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 20px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);border-top:3px solid #C8A855;">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/cogs.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">One Engine, Every Model</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.65;margin:0;">Sales orders, invoices, HR, procurement, custom models — one module handles all. No separate tool for each department.</p>
+          </div>
+        </td>
+        <td style="width:25%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 20px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);border-top:3px solid #C8A855;">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/lifebuoy.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Expert Support</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.65;margin:0;">Real Odoo experts, fast responses. We help you configure correctly and make it work perfectly for your exact business processes.</p>
+          </div>
+        </td>
+        <td style="width:25%;padding:8px;vertical-align:top;">
+          <div style="background-color:#ffffff;border:1px solid #e8d8e4;border-radius:14px;padding:32px 20px;text-align:center;box-shadow:0 2px 16px rgba(91,58,86,0.07);border-top:3px solid #C8A855;">
+            <table style="border-collapse:collapse;margin:0 auto 20px;">
+              <tr><td style="width:64px;height:64px;background-color:#5B3A56;border-radius:14px;text-align:center;vertical-align:middle;">
+                <img src="assets/icons/update.png" style="width:32px;height:32px;display:block;margin:16px auto;"/>
+              </td></tr>
+            </table>
+            <h4 style="color:#160c14;font-size:15px;font-weight:700;margin:0 0 10px 0;">Actively Maintained</h4>
+            <p style="color:#7a6075;font-size:13px;line-height:1.65;margin:0;">Regular updates, new features, and compatibility with every new Odoo version. We invest continuously so you always have the best version.</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ CTA ════════════════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#5B3A56;padding:68px 48px;text-align:center;">
+    <p style="color:#C8A855;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 18px 0;">Get Started Today</p>
+    <h2 style="color:#ffffff;font-size:34px;font-weight:900;margin:0 0 18px 0;line-height:1.15;letter-spacing:-0.5px;">
+      Ready to Transform<br/>Your Approval Process?
+    </h2>
+    <p style="color:#e0d4ea;font-size:16px;line-height:1.8;margin:0 auto 48px;max-width:560px;">
+      Join businesses that have permanently eliminated approval bottlenecks, email chains, and missed deadlines. Buy now, or contact us for a free personalised demo.
+    </p>
+    <table style="border-collapse:collapse;margin:0 auto;">
+      <tr>
+        <td style="padding:8px;">
+          <a href="mailto:info@aztek.com" style="text-decoration:none;">
+          <div style="border:1px solid #C8A855;border-radius:12px;padding:20px 32px;text-align:center;min-width:175px;background-color:rgba(200,168,85,0.12);">
+            <div style="color:#C8A855;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:7px;">Email Us</div>
+            <div style="color:#ffffff;font-size:15px;font-weight:700;">info@aztek.com</div>
+          </div>
+          </a>
+        </td>
+        <td style="padding:8px;">
+          <a href="https://wa.me/966509134503" style="text-decoration:none;">
+          <div style="border:1px solid rgba(255,255,255,0.3);border-radius:12px;padding:20px 32px;text-align:center;min-width:175px;background-color:rgba(255,255,255,0.08);">
+            <div style="color:#C8A855;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:7px;">WhatsApp</div>
+            <div style="color:#ffffff;font-size:15px;font-weight:700;">+966 509 134 503</div>
+          </div>
+          </a>
+        </td>
+        <td style="padding:8px;">
+          <a href="https://www.aztek.com" style="text-decoration:none;">
+          <div style="border:1px solid rgba(255,255,255,0.3);border-radius:12px;padding:20px 32px;text-align:center;min-width:175px;background-color:rgba(255,255,255,0.08);">
+            <div style="color:#C8A855;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:7px;">Website</div>
+            <div style="color:#ffffff;font-size:15px;font-weight:700;">www.aztek.com</div>
+          </div>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═════════════════════════════════ -->
+<section class="oe_container" style="padding:0;margin:0;max-width:100%;">
+  <div style="background-color:#f5f0fb;padding:28px 48px;text-align:center;border-top:2px solid #ddd4e6;">
+    <img src="assets/misc/Logo.png" alt="Aztek Computers" style="height:32px;margin-bottom:10px;"/>
+    <p style="color:#6b5c73;font-size:12px;margin:0 0 4px 0;">
+      Dynamic Workflow Engine &nbsp;&#183;&nbsp; Odoo Approval &amp; Workflow Automation &nbsp;&#183;&nbsp; v16.0 / v17.0 &nbsp;&#183;&nbsp; OPL-1 License
+    </p>
+    <p style="color:#c0aad0;font-size:10px;margin:0;">
+      odoo workflow &#183; odoo approval workflow &#183; multi-step approval &#183; purchase order approval odoo &#183; invoice approval odoo &#183; hr workflow odoo &#183; leave approval odoo &#183; expense approval odoo &#183; no-code workflow builder odoo &#183; approval management odoo 16 17
+    </p>
+  </div>
+</section>
