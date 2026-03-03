@@ -48,7 +48,7 @@ Technical Highlights
 • RESTful API ready
 • Multi-company support
 • Full audit logging
-• Odoo 17.0 optimized
+• Compatible with all Odoo versions
 
 Support & Documentation
 -----------------------
@@ -104,7 +104,7 @@ Support & Documentation
     'images': ['static/description/banner.png'],
     'license': 'OPL-1',
 	'currency': 'EUR',
-	'price': '100',
+	'price': '50',
     'installable': True,
     'auto_install': False,
     'application': True,
