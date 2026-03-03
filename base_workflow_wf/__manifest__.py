@@ -1,15 +1,15 @@
 {
-    'name': "Workflow Engine - Dynamic Approval Management",
+    'name': "Approval Workflow Engine | Multi-Step Workflow & Approval Automation",
     'version': '17.0.1.0.0',
     'sequence': 1,
-    'category': 'Productivity/Documents',
+    'category': 'Productivity/Workflow',
     'summary': """
-        Complete Workflow & Approval Management System | Multi-Level Approvals |
-        SLA Tracking | User Delegation | Dynamic Process Automation |
-        Works with Any Odoo Model | No Coding Required
+        Approval Workflow Engine for Odoo | Multi-Step Workflow | SLA Tracking |
+        Delegation | Bulk Approval | Dynamic Workflow Builder | No Code Required |
+        Works on Any Odoo Model | Purchase Approval | Invoice Approval | HR Workflow
     """,
     'description': """
-Workflow Engine - Complete Approval Management
+Approval Workflow Engine - Dynamic Multi-Step Workflow & Approval Automation
 ===========================================================
 
 MAIN FEATURES:
