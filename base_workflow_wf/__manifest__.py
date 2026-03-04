@@ -4,79 +4,141 @@
     'sequence': 1,
     'category': 'Productivity/Workflow',
     'summary': """
-        Approval Workflow Engine for Odoo | Multi-Step Workflow | SLA Tracking |
-        Delegation | Bulk Approval | Dynamic Workflow Builder | No Code Required |
-        Works on Any Odoo Model | Purchase Approval | Invoice Approval | HR Workflow
+        Approval Workflow | Workflow Engine | Multi-Step Approval | Dynamic Workflow |
+        Purchase Approval | Invoice Approval | HR Workflow | Leave Approval |
+        Expense Approval | Sales Approval | SLA | Delegation | Bulk Approval |
+        No Code Workflow Builder | Works on Any Odoo Model | Approval Automation
     """,
     'description': """
 Approval Workflow Engine - Dynamic Multi-Step Workflow & Approval Automation
 ============================================================================
 
 The most powerful no-code approval workflow engine for Odoo.
-Build any approval workflow chain — multi-step, conditional, parallel, or sequential —
-for any Odoo model without writing a single line of code.
+Build any approval workflow, multi-step approval chain, conditional workflow,
+parallel approval, or sequential approval for any Odoo model — zero code required.
+
+WHAT IS IT:
+-----------
+A fully configurable approval workflow engine and automation platform built natively
+for Odoo. Design approval workflow stages, assign approvers dynamically by role,
+group, department manager, or hierarchy, trigger automatic actions, lock fields,
+send real-time notifications, and maintain a complete audit trail — all from a
+simple point-and-click interface. No developer needed.
 
 MAIN FEATURES:
 --------------
 * Approval Workflow Engine - Build multi-step approval workflows for any Odoo model
-* Multi-Level Approval Process - Configure complex approval hierarchies
-* Dynamic Approver Assignment - Route by user, group, manager, or any field on the form
-* Hierarchy-Based Routing - Route to direct manager, department head, or any management level
-* Amount-Based Conditions - Trigger different approval chains based on invoice amount or any numeric field
-* Any-Field Conditions - Use Odoo domain filters to conditionally skip or enforce stages
-* Sequential & Parallel Approvals - Any-one or all-must-approve per stage
-* SLA Management - Set time limits and auto-escalate overdue approvals
-* Smart Delegation - Delegate approvals during absence with auto-activation by date
-* Bulk Approval - Approve multiple requests simultaneously in one click
-* Email Notifications - Automatic alerts at every workflow stage transition
-* Approval Dashboard - Unified view of all pending approvals across all models
-* Audit Trail - Complete timestamped log of every decision in Odoo chatter
-* Field Locking - Lock document fields during active workflow to prevent edits
-* Forward & Return - Route requests for corrections back to submitter
+* Multi-Level Approval - Configure unlimited approval levels and hierarchies
+* Dynamic Approver Assignment - Route by user, security group, manager, or any field
+* Organisational Hierarchy Routing - Direct manager, department head, CEO, any level
+* Amount-Based Approval Routing - Different chains based on invoice/PO amount or any value
+* Any-Field Condition Logic - Domain filter rules to skip or enforce stages automatically
+* Sequential Approvals - Staged one-after-another approval chains
+* Parallel Approvals - Multiple approvers working simultaneously in one stage
+* Any-One or All-Must-Approve - Flexible quorum rules per stage
+* SLA & Deadline Management - Time-limit stages, auto-remind, auto-escalate overdue
+* Smart Delegation - Date-based auto-delegation for absences, auto-reverts on return
+* Bulk Approval Processing - Approve or reject hundreds of records in one click
+* Automated Email Notifications - Instant alerts on submission, transition, approval, rejection
+* Personal Approval Dashboard - Every pending task in one unified view per user
+* Admin Control Centre - Cross-department real-time visibility for managers
+* Complete Audit Trail - Timestamped decision log in Odoo native chatter
+* Document Field Locking - Auto-lock fields on submission, unlock on completion
+* Forward & Return Routing - Return to submitter or escalate to higher authority
+* Approve / Reject / Return / Escalate Actions - Full decision toolkit per stage
+* Category-Based Dashboards - Organise workflows by department or business unit
 
 USE CASES:
 ----------
 * Purchase Order Approval Workflow
+* Purchase Request Approval
+* Vendor Approval Workflow
+* Supplier Approval Process
+* RFQ Approval Odoo
 * Invoice Approval Workflow
+* Bill Approval Odoo
+* Payment Approval Workflow
+* Credit Note Approval
 * Sales Order Approval Workflow
-* Quotation Approval Workflow
+* Quotation Approval Odoo
+* Discount Approval Workflow
+* Price Approval Odoo
 * Expense Report Approval Workflow
 * Leave Request Approval Workflow
-* HR Document Approval Workflow
+* Time Off Approval Odoo
+* Overtime Approval Workflow
+* HR Document Approval
+* Recruitment Approval Workflow
 * Contract Approval Workflow
-* Project Approval Workflow
 * Budget Approval Workflow
-* Employee Onboarding Workflow
+* Project Approval Workflow
+* Asset Approval Odoo
+* Manufacturing Approval Workflow
+* Quality Approval Workflow
+* Inventory Approval Odoo
+* CRM Opportunity Approval
 * Custom Document Approval Workflow
 * Any Odoo Model Approval Workflow
 
 KEYWORDS:
 ---------
-approval workflow, odoo workflow, workflow engine, approval workflow engine,
-multi-step approval, multi level approval, dynamic workflow, workflow automation,
-approval automation, workflow management, approval management, workflow builder,
-no-code workflow, no code approval, workflow odoo, odoo approval workflow,
-purchase order approval, purchase approval, invoice approval, bill approval,
-hr workflow, hr approval, leave approval, leave request approval,
-expense approval, expense report approval, sales order approval, quotation approval,
-contract approval, document approval, sequential approval, parallel approval,
-conditional approval, sla workflow, deadline approval, escalation workflow,
-delegation workflow, approval delegation, bulk approval, mass approval,
-manager approval, department approval, line manager approval, hierarchy approval,
-approval audit trail, workflow log, configurable workflow, flexible workflow,
-custom workflow, workflow stages, approval stages, approval process,
-business process workflow, workflow notification, approval notification,
-workflow dashboard, approval dashboard, workflow any model, approval management system,
-workflow management system, dynamic approval, approval chain, approval hierarchy,
-workflow routing, approval routing, amount based approval, value based workflow
+approval workflow, workflow approval, odoo workflow, odoo approval,
+workflow engine, approval workflow engine, dynamic workflow engine,
+multi-step approval, multi level approval, multi-level approval workflow,
+multi step approval odoo, approval levels, approval tiers, approval stages,
+sequential approval, sequential workflow, parallel approval, parallel workflow,
+conditional approval, conditional workflow, approval chain, workflow chain,
+approval hierarchy, workflow hierarchy, approval routing, workflow routing,
+dynamic workflow, dynamic approval, automated approval, automated workflow,
+workflow automation, approval automation, process automation, business process automation,
+workflow management, approval management, approval management system,
+workflow management system, workflow builder, approval builder,
+no-code workflow, no code workflow, no code approval, zero code workflow,
+low code workflow, no developer needed, workflow without coding,
+odoo approval workflow, odoo workflow module, odoo workflow engine,
+odoo multi step approval, odoo approval automation, odoo process automation,
+purchase order approval, purchase approval, purchase request approval, po approval,
+rfq approval, vendor approval, supplier approval,
+invoice approval, bill approval, invoice approval odoo, payment approval,
+credit note approval, payment workflow, financial approval,
+sales order approval, quotation approval, discount approval, price approval,
+sales approval odoo, crm approval, opportunity approval,
+expense approval, expense report approval, expense workflow, expense claim approval,
+leave approval, leave request approval, time off approval, overtime approval,
+hr workflow, hr approval, hr approval workflow, employee approval,
+recruitment approval, contract approval, onboarding workflow,
+hr document approval, payroll approval, attendance approval,
+project approval, task approval, budget approval, asset approval,
+manufacturing approval, quality approval, mrp approval,
+inventory approval, stock approval, warehouse approval,
+sla workflow, sla approval, deadline approval, approval deadline,
+escalation workflow, approval escalation, auto escalation,
+delegation workflow, approval delegation, auto delegation,
+bulk approval, mass approval, batch approval, bulk workflow,
+manager approval, department approval, line manager approval,
+department manager approval, hierarchy approval, organisational hierarchy approval,
+ceo approval, director approval, management approval,
+amount based approval, value based workflow, threshold approval,
+invoice amount approval, po amount approval, budget threshold workflow,
+approval audit trail, approval log, workflow log, audit trail odoo,
+approval history, approval record, approval tracking, approval status,
+field locking, document locking, workflow field lock,
+email notification workflow, approval notification, automated email approval,
+approval dashboard, workflow dashboard, approval status widget,
+workflow status bar, approval progress, workflow progress,
+configurable workflow, flexible workflow, custom workflow, universal workflow,
+generic workflow, multi model workflow, workflow any model,
+workflow community, workflow enterprise, workflow odoo sh,
+workflow mixin, approval mixin, workflow plugin, approval plugin,
+workflow addon, approval addon, workflow module, approval module
 
 COMPATIBLE WITH:
 ----------------
 * Odoo Community Edition
 * Odoo Enterprise Edition
 * Odoo.sh
-* On-Premise installations
-* All Odoo versions
+* On-Premise Installations
+* All Odoo Versions
 
     """,
     'author': 'Aztek Computers',
@@ -124,7 +186,7 @@ COMPATIBLE WITH:
     'images': ['static/description/banner.png'],
     'license': 'OPL-1',
 	'currency': 'EUR',
-	'price': '50',
+	'price': '20',
     'installable': True,
     'auto_install': False,
     'application': True,
