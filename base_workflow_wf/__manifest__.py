@@ -10,53 +10,73 @@
     """,
     'description': """
 Approval Workflow Engine - Dynamic Multi-Step Workflow & Approval Automation
-===========================================================
+============================================================================
+
+The most powerful no-code approval workflow engine for Odoo.
+Build any approval workflow chain — multi-step, conditional, parallel, or sequential —
+for any Odoo model without writing a single line of code.
 
 MAIN FEATURES:
 --------------
-* Dynamic Workflow Engine - Create workflows for any Odoo model
+* Approval Workflow Engine - Build multi-step approval workflows for any Odoo model
 * Multi-Level Approval Process - Configure complex approval hierarchies
-* User Delegation - Delegate approvals when unavailable
-* SLA Management - Set time limits and escalation rules
-* Email Notifications - Automatic alerts for pending approvals
-* Custom Conditions - Define approval rules without coding
-* Approval Dashboard - Track all pending and completed approvals
-* Attachment Validation - Require documents before approval
-* Bulk Approval - Approve multiple requests at once
-* Forward & Return - Route requests for corrections
-
-KEYWORDS:
----------
-workflow, approval, approval workflow, multi-level approval, approval process,
-workflow engine, approval management, document approval, purchase approval,
-expense approval, leave approval, hr approval, sales approval, invoice approval,
-manager approval, approval chain, approval hierarchy, approval routing,
-SLA, delegation, process automation, workflow automation, business process,
-notification, email notification, approval notification, dynamic workflow,
-sequential approval, parallel approval, conditional approval, approval rules,
-workflow mixin, approval mixin, statusbar, state management, process flow,
-workflow state, approval state, reject, return, forward, escalation,
-approval dashboard, workflow dashboard, approval widget, workflow widget,
-no code workflow, configurable workflow, flexible workflow, custom workflow
+* Dynamic Approver Assignment - Route by user, group, manager, or any field on the form
+* Hierarchy-Based Routing - Route to direct manager, department head, or any management level
+* Amount-Based Conditions - Trigger different approval chains based on invoice amount or any numeric field
+* Any-Field Conditions - Use Odoo domain filters to conditionally skip or enforce stages
+* Sequential & Parallel Approvals - Any-one or all-must-approve per stage
+* SLA Management - Set time limits and auto-escalate overdue approvals
+* Smart Delegation - Delegate approvals during absence with auto-activation by date
+* Bulk Approval - Approve multiple requests simultaneously in one click
+* Email Notifications - Automatic alerts at every workflow stage transition
+* Approval Dashboard - Unified view of all pending approvals across all models
+* Audit Trail - Complete timestamped log of every decision in Odoo chatter
+* Field Locking - Lock document fields during active workflow to prevent edits
+* Forward & Return - Route requests for corrections back to submitter
 
 USE CASES:
 ----------
-* Purchase Order Approvals
-* Sales Order Approvals
-* Invoice Approvals
-* Expense Approvals
-* Leave Request Approvals
-* Employee Document Approvals
-* Contract Approvals
-* Project Approvals
-* Custom Document Approvals
-* Any Odoo Model Approvals
+* Purchase Order Approval Workflow
+* Invoice Approval Workflow
+* Sales Order Approval Workflow
+* Quotation Approval Workflow
+* Expense Report Approval Workflow
+* Leave Request Approval Workflow
+* HR Document Approval Workflow
+* Contract Approval Workflow
+* Project Approval Workflow
+* Budget Approval Workflow
+* Employee Onboarding Workflow
+* Custom Document Approval Workflow
+* Any Odoo Model Approval Workflow
+
+KEYWORDS:
+---------
+approval workflow, odoo workflow, workflow engine, approval workflow engine,
+multi-step approval, multi level approval, dynamic workflow, workflow automation,
+approval automation, workflow management, approval management, workflow builder,
+no-code workflow, no code approval, workflow odoo, odoo approval workflow,
+purchase order approval, purchase approval, invoice approval, bill approval,
+hr workflow, hr approval, leave approval, leave request approval,
+expense approval, expense report approval, sales order approval, quotation approval,
+contract approval, document approval, sequential approval, parallel approval,
+conditional approval, sla workflow, deadline approval, escalation workflow,
+delegation workflow, approval delegation, bulk approval, mass approval,
+manager approval, department approval, line manager approval, hierarchy approval,
+approval audit trail, workflow log, configurable workflow, flexible workflow,
+custom workflow, workflow stages, approval stages, approval process,
+business process workflow, workflow notification, approval notification,
+workflow dashboard, approval dashboard, workflow any model, approval management system,
+workflow management system, dynamic approval, approval chain, approval hierarchy,
+workflow routing, approval routing, amount based approval, value based workflow
 
 COMPATIBLE WITH:
 ----------------
 * Odoo Community Edition
 * Odoo Enterprise Edition
 * Odoo.sh
+* On-Premise installations
+* All Odoo versions
 
     """,
     'author': 'Aztek Computers',
